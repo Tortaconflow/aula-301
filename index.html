@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:,">
+<title>Aula 301 — Estadística Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-role="estudiante">
+
+<!-- VISTA 1: LOGIN DE DEMOSTRACIÓN (Fuente única) -->
+<div id="loginView">
+  <div class="login-card">
+    <span class="cap" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/><path d="M22 9v5"/></svg></span>
+    <h1>Hola, bienvenido de nuevo</h1>
+    <p class="sub">Aula 301 · Estadística Aplicada a las Ciencias Sociales</p>
+    <form class="login-form" id="loginForm">
+      <label>Nombre de usuario o matrícula
+        <input type="text" id="loginUser" autocomplete="username" placeholder="Ej. Carlos Arturo">
+      </label>
+      <label>Contraseña
+        <input type="password" id="loginPass" autocomplete="current-password" placeholder="••••••••">
+      </label>
+      <button type="submit" class="btn">Iniciar sesión</button>
+      <p style="text-align:center;margin:2px 0 0"><button type="button" class="forgot" id="forgotBtn">Olvidé mi contraseña</button></p>
+      <p id="forgotMsg" class="hidden" style="text-align:center;margin:0">En este modelo de demostración el acceso lo restablece el docente del grupo.</p>
+    </form>
+    <p class="login-note">Modelo visual de demostración: no hay autenticación real ni se guarda ninguna contraseña.</p>
+  </div>
+</div>
+
+<!-- CONTENEDOR PRINCIPAL DE VISTAS -->
+<div id="appView" class="hidden">
+  <div class="topbar"><div class="wrap">
+    <div class="brand">
+      <span class="cap" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5z"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/><path d="M22 9v5"/></svg></span>
+      <span class="div" aria-hidden="true"></span>
+      <span>ICEUABJO</span>
+    </div>
+    <nav class="topnav" aria-label="Navegación principal">
+      <button type="button" data-nav="inicio" aria-current="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span></button>
+      <button type="button" data-nav="actividades" aria-current="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Mis actividades</span></button>
+      <button type="button" data-nav="calificaciones" aria-current="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><span>Mis calificaciones</span></button>
+      <button type="button" data-nav="recursos" aria-current="false"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg><span>Recursos</span></button>
+      <button type="button" id="logoutBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg><span>Salir</span></button>
+    </nav>
+  </div></div>
+
+  <main class="app-main">
+    <!-- VISTA 2: INICIO (Fuente única, sin scroll vertical) -->
+    <div class="view view-home" id="view-inicio">
+      <div class="hero-grid">
+        <div>
+          <h1 class="greeting">Bienvenido/a,<br><span class="name" id="greetName">Carlos Arturo</span></h1>
+          <p class="semester">Que sea un gran semestre
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--purple-2)" aria-hidden="true"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z"/><path d="M19 15l.9 3.1L23 19l-3.1.9L19 23l-.9-3.1L15 19l3.1-.9L19 15z" transform="scale(.8) translate(4 4)"/></svg>
+          </p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg width="190" height="160" viewBox="0 0 190 160" fill="none" stroke="#4b2e83" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M95 8 178 38 95 68 12 38 95 8z"/>
+            <path d="M178 38v34"/>
+            <circle cx="178" cy="80" r="5"/>
+            <path d="M52 52v22c0 10 19 18 43 18s43-8 43-18V52"/>
+            <path d="M30 118c14-6 32-6 46 0v26c-14-6-32-6-46 0v-26z"/>
+            <path d="M114 118c14-6 32-6 46 0v26c-14-6-32-6-46 0v-26z"/>
+            <path d="M95 112v32"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="avisos" id="avisos">
+        <span class="ic" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-6v14L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>
+        <span class="div" aria-hidden="true"></span>
+        <span><b>Avisos</b><span>No tienes avisos nuevos por el momento.</span></span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </div>
+
+      <nav class="portal" aria-label="Portal del estudiante">
+        <button type="button" class="portal-card" data-nav="actividades">
+          <span class="ic" aria-hidden="true"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.2 1.2L6.5 5M3 12l1.2 1.2L6.5 11M3 18l1.2 1.2L6.5 17"/></svg></span>
+          <b>Mis actividades</b>
+        </button>
+        <button type="button" class="portal-card" data-nav="calificaciones">
+          <span class="ic" aria-hidden="true"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></span>
+          <b>Mis calificaciones</b>
+        </button>
+        <button type="button" class="portal-card" data-nav="recursos">
+          <span class="ic" aria-hidden="true"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></span>
+          <b>Recursos</b>
+        </button>
+      </nav>
+    </div>
+
+    <!-- VISTA 3: MIS ACTIVIDADES (Fuente única; datos desde js/data.js) -->
+    <section class="view hidden" id="view-actividades">
+      <h2>Mis actividades</h2>
+
+      <div class="rolebar">
+        <span class="role-label">Ver como: <span id="roleStatus">Estudiante</span></span>
+        <div class="seg" role="group" aria-label="Cambiar rol">
+          <button type="button" data-role-btn="estudiante" aria-pressed="true">Estudiante</button>
+          <button type="button" data-role-btn="docente" aria-pressed="false">Docente</button>
+          <button type="button" data-role-btn="administrador" aria-pressed="false">Administrador</button>
+        </div>
+        <button type="button" class="btn secondary small" id="offlineBtn" aria-pressed="false">Simular sin conexión</button>
+      </div>
+
+      <span class="example-badge badge-top">EJEMPLO</span>
+      <div class="case-detail">
+        <div class="panel">
+          <span class="tag">Minicaso 1 · n = 30 estudiantes (ficticios)</span>
+          <h3>Acceso tecnológico y participación en clase</h3>
+          <table aria-label="Datos del minicaso de ejemplo">
+            <thead>
+              <tr><th>Categoría</th><th class="num">Casos</th><th class="num">%</th></tr>
+            </thead>
+            <tbody id="caseTableBody"></tbody>
+          </table>
+          <div class="task"><strong>Tu tarea:</strong> Construye la tabla de frecuencias con porcentajes, dibuja el gráfico de barras y escribe dos frases: qué dispositivo domina y qué implica eso para entregar tareas.</div>
+          <p style="margin-top:16px"><button type="button" class="btn" id="csvBtn">Descargar datos (CSV)</button></p>
+        </div>
+        <div class="panel">
+          <h3>Gráfica</h3>
+          <div id="caseBars"></div>
+          <hr class="divider">
+          <h3>Pregunta guía</h3>
+          <p>Si casi la mitad estudia solo con celular, ¿qué debe cuidar el docente al pedir trabajos en computadora?</p>
+        </div>
+      </div>
+
+      <div class="empty" id="emptyActivities">
+        <h3>Sin actividades todavía</h3>
+        <p>Aquí aparecerán las actividades que agregue el docente.</p>
+      </div>
+      <div class="added" id="addedList" aria-live="polite"></div>
+
+      <div class="teacher-only panel panel-spaced">
+        <h3>Agregar actividad</h3>
+        <form class="form-grid" id="addForm">
+          <label>Título de la actividad
+            <input type="text" id="addTitle" required placeholder="Ej. Minicaso: acceso a servicios básicos">
+          </label>
+          <label>Instrucciones para el estudiante
+            <textarea id="addDesc" rows="3" required placeholder="Qué tiene que hacer, qué entregar y para cuándo…"></textarea>
+          </label>
+          <label>Rúbrica — criterios y niveles
+            <textarea id="addRubric" rows="3" placeholder="Ej. Planteamiento: Logrado / En proceso / Inicial… Un criterio por línea."></textarea>
+          </label>
+          <p style="margin:0"><button type="submit" class="btn">+ Agregar actividad</button></p>
+        </form>
+        <hr class="divider">
+        <div class="switch-row"><div><strong>Autoevaluación</strong></div><button type="button" class="toggle" id="toggleAuto" aria-pressed="false" aria-label="Activar o desactivar autoevaluación"></button></div>
+        <div class="switch-row"><div><strong>Coevaluación</strong></div><button type="button" class="toggle" id="toggleCo" aria-pressed="false" aria-label="Activar o desactivar coevaluación"></button></div>
+        <p style="margin-top:12px"><button type="button" class="btn secondary small" id="editRubricBtn">Editar rúbrica de ejemplo</button></p>
+      </div>
+
+      <div class="panel panel-spaced">
+        <span class="example-badge">EJEMPLO</span>
+        <h3 style="margin-top:10px">Rúbrica</h3>
+        <table class="rubric" id="rubricTable">
+          <thead>
+            <tr><th>Criterio</th><th>Logrado</th><th>En proceso</th><th>Inicial</th></tr>
+          </thead>
+          <tbody id="rubricTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="panel panel-spaced hidden" id="selfPanel">
+        <h3>Autoevaluación</h3>
+        <p id="selfStatus" style="color:var(--muted)">Elige un nivel por criterio.</p>
+        <div id="selfForm">
+          <div id="selfCriteriaList"></div>
+          <p id="selfSummary" style="margin-top:16px;font-weight:700">Sin respuestas todavía.</p>
+        </div>
+      </div>
+
+      <div class="panel panel-spaced hidden" id="coPanel">
+        <h3>Coevaluación</h3>
+        <p style="color:var(--muted)" id="coStatus">Revisa el trabajo de un compañero con la misma rúbrica y justifica cada nivel que marques.</p>
+      </div>
+
+      <div class="admin-only panel panel-spaced">
+        <h3>Administrador</h3>
+        <p style="color:var(--muted)">Avisos y recursos del portal.</p>
+      </div>
+    </section>
+
+    <!-- VISTA 4: MIS CALIFICACIONES (Fuente única) -->
+    <section class="view hidden" id="view-calificaciones">
+      <h2>Mis calificaciones</h2>
+      <div class="empty">
+        <h3>Sin resultados todavía</h3>
+        <table aria-label="Formato de calificaciones">
+          <thead><tr><th>Actividad</th><th>Resultado</th><th>Retroalimentación</th></tr></thead>
+          <tbody><tr><td colspan="3" style="text-align:center;color:var(--muted)">Sin resultados todavía</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VISTA 5: RECURSOS (Fuente única) -->
+    <section class="view hidden" id="view-recursos">
+      <h2>Recursos</h2>
+
+      <div class="benefits">
+        <article class="benefit">
+          <span class="tag">Ofimática · Cuenta educativa</span>
+          <h3>Microsoft 365 para estudiantes</h3>
+          <p>Versiones web de Word, Excel y PowerPoint y almacenamiento en OneDrive sin costo, si tu institución está registrada en el programa de Microsoft para educación. Excel es justo la herramienta de los minicasos.</p>
+          <h4>Requisitos</h4>
+          <ul><li>Correo institucional activo de una institución educativa elegible.</li><li>Que la institución esté registrada en Microsoft 365 Education (lo verifica Microsoft con tu correo).</li></ul>
+          <details><summary>Cómo canjearlo, paso a paso</summary>
+            <ol><li>Entra al sitio de Microsoft Educación enlazado abajo.</li><li>Escribe tu correo institucional en el campo de registro para estudiantes.</li><li>Microsoft comprueba si tu institución es elegible y te envía la confirmación a ese correo.</li><li>Crea tu cuenta o inicia sesión y entra a las apps web desde el navegador.</li><li>Si tu correo no es aceptado, no es un error tuyo: significa que la institución aún no está registrada; coméntalo con tu docente o con servicios escolares.</li></ol>
+          </details>
+          <p class="source">Fuente: Microsoft Educación — <a href="https://www.microsoft.com/es-mx/education" target="_blank" rel="noopener">microsoft.com/es-mx/education</a></p>
+        </article>
+
+        <article class="benefit">
+          <span class="tag">Herramientas · Cuenta educativa</span>
+          <h3>GitHub Student Developer Pack</h3>
+          <p>Acceso gratuito, mientras seas estudiante, a herramientas y servicios para aprender a construir software y publicar proyectos —útil si llevas tu portafolio o el prototipo de una plataforma más lejos.</p>
+          <h4>Requisitos</h4>
+          <ul><li>Tener al menos 13 años y estar inscrito en un programa de estudios.</li><li>Comprobar tu condición de estudiante: correo escolar o un documento con fechas vigentes (credencial, constancia de estudios u horario).</li></ul>
+          <details><summary>Cómo canjearlo, paso a paso</summary>
+            <ol><li>Crea una cuenta gratuita en GitHub, si aún no tienes una.</li><li>Entra a GitHub Education y elige unirte como estudiante.</li><li>Completa la solicitud: nombre de tu escuela y para qué usarás GitHub.</li><li>Verifica tu condición de estudiante con tu correo escolar o subiendo la foto de tu documento vigente.</li><li>Espera la aprobación y, desde tu panel de estudiante, activa las ofertas del Pack que necesites.</li></ol>
+          </details>
+          <p class="source">Fuente: GitHub Education — <a href="https://education.github.com/pack" target="_blank" rel="noopener">education.github.com/pack</a></p>
+        </article>
+
+        <article class="benefit">
+          <span class="tag">Notas y proyectos · Correo escolar</span>
+          <h3>Notion para Educación</h3>
+          <p>El plan Plus de Notion sin costo para estudiantes y docentes que se registran con su correo escolar: notas, bases de datos y trabajo en equipo para organizar materias y proyectos.</p>
+          <h4>Requisitos</h4>
+          <ul><li>Una cuenta de Notion registrada con el correo de tu institución educativa.</li><li>Ser estudiante o docente actualmente (Notion lo asocia al dominio del correo escolar).</li></ul>
+          <details><summary>Cómo canjearlo, paso a paso</summary>
+            <ol><li>Crea tu cuenta en Notion usando tu correo institucional, no tu correo personal.</li><li>Entra a la configuración de tu espacio de trabajo, en la sección de planes y mejoras.</li><li>Elige la opción de obtener el plan de Educación.</li><li>Confirma que tu cuenta usa el correo escolar; el cambio de plan se aplica a tu espacio personal.</li><li>Si tu cuenta ya existía con correo personal, primero cambia el correo asociado al institucional desde la configuración.</li></ol>
+          </details>
+          <p class="source">Fuente: Notion — <a href="https://www.notion.com/product/notion-for-education" target="_blank" rel="noopener">notion.com/product/notion-for-education</a></p>
+        </article>
+
+        <article class="benefit">
+          <span class="tag">Diseño · Gratis para estudiantes</span>
+          <h3>Figma para Educación</h3>
+          <p>Plan profesional de Figma sin costo para estudiantes y docentes verificados: diseño de interfaces y trabajo colaborativo en línea, útil para prototipar páginas como esta.</p>
+          <h4>Requisitos</h4>
+          <ul><li>Ser estudiante o docente de una institución educativa.</li><li>Verificar esa condición durante la solicitud dentro de Figma.</li></ul>
+          <details><summary>Cómo canjearlo, paso a paso</summary>
+            <ol><li>Crea tu cuenta en Figma o inicia sesión.</li><li>Entra a la página de Figma para Educación y solicita unirte.</li><li>Indica si eres estudiante o docente y los datos de tu institución.</li><li>Completa la verificación que te pida el formulario.</li><li>Al aprobarse, crea tu equipo de Educación: ahí se activa el plan sin costo.</li></ol>
+          </details>
+          <p class="source">Fuente: Figma Education — <a href="https://www.figma.com/education/" target="_blank" rel="noopener">figma.com/education</a></p>
+        </article>
+
+        <article class="benefit">
+          <span class="tag">Descuento · Música</span>
+          <h3>Spotify Premium para Estudiantes</h3>
+          <p>El plan Premium con precio reducido para estudiantes de educación superior, mientras dure tu condición de estudiante verificado.</p>
+          <h4>Requisitos</h4>
+          <ul><li>Estar inscrito en una institución de educación superior acreditada.</li><li>Verificar tu inscripción con SheerID, el servicio que usa Spotify; la verificación se renueva cada 12 meses.</li></ul>
+          <details><summary>Cómo canjearlo, paso a paso</summary>
+            <ol><li>Entra a la página de Premium para Estudiantes de Spotify México.</li><li>Inicia sesión o crea tu cuenta de Spotify.</li><li>Completa el formulario de verificación de SheerID: elige tu universidad y confirma tus datos de inscripción; si te lo pide, sube un documento que lo compruebe.</li><li>Cuando SheerID confirme tu condición, regresa a Spotify y contrata el plan con tu medio de pago.</li><li>Repite la verificación cada año mientras sigas estudiando para conservar el descuento.</li></ol>
+          </details>
+          <p class="source">Fuente: Spotify México — <a href="https://www.spotify.com/mx/student/" target="_blank" rel="noopener">spotify.com/mx/student</a></p>
+        </article>
+
+        <article class="benefit">
+          <span class="tag">Cursos gratuitos · México</span>
+          <h3>Capacítate para el Empleo</h3>
+          <p>Plataforma de la Fundación Carlos Slim con cursos y diplomados en línea sin costo y con constancia, en áreas como tecnología, educación y oficios digitales. No pide correo institucional.</p>
+          <h4>Requisitos</h4>
+          <ul><li>Registro gratuito con un correo que uses (puede ser personal).</li><li>Conexión para registrarte y avanzar en los módulos en línea, a tu ritmo.</li></ul>
+          <details><summary>Cómo inscribirte, paso a paso</summary>
+            <ol><li>Entra a capacitateparaelempleo.org y crea tu cuenta gratuita.</li><li>Busca por área o por nombre el curso o diplomado que te interese.</li><li>Abre su ficha, revisa los módulos y elige inscribirte.</li><li>Avanza lección por lección y aprueba las evaluaciones de cada módulo.</li><li>Al concluir, descarga tu constancia desde tu perfil.</li></ol>
+          </details>
+          <p class="source">Fuente: Fundación Carlos Slim — <a href="https://capacitateparaelempleo.org" target="_blank" rel="noopener">capacitateparaelempleo.org</a></p>
+        </article>
+      </div>
+
+      <div class="courses">
+        <div class="panel">
+          <h3>Para estudiar Estadística sin pagar, desde hoy</h3>
+          <p><strong>LibreOffice Calc</strong> — Hoja de cálculo libre para tablas, porcentajes y gráficos; funciona sin conexión una vez instalado. Descárgalo en <a href="https://es.libreoffice.org" target="_blank" rel="noopener">es.libreoffice.org</a>.</p>
+          <p><strong>Khan Academy en español</strong> — Lecciones breves y gratuitas de estadística y probabilidad para repasar antes de cada minicaso; solo necesitas crear una cuenta gratuita. <a href="https://es.khanacademy.org" target="_blank" rel="noopener">es.khanacademy.org</a>.</p>
+          <p><strong>MéxicoX</strong> — Cursos en línea gratuitos de instituciones mexicanas; te registras con tu correo y eliges el curso. <a href="https://mexicox.gob.mx" target="_blank" rel="noopener">mexicox.gob.mx</a>.</p>
+          <p><strong>INEGI y CONEVAL</strong> — Fuentes públicas y gratuitas para, después de practicar con datos ficticios, leer cifras reales de México y Oaxaca con criterio. <a href="https://www.inegi.org.mx" target="_blank" rel="noopener">inegi.org.mx</a> · <a href="https://www.coneval.org.mx" target="_blank" rel="noopener">coneval.org.mx</a>.</p>
+        </div>
+      </div>
+      <p class="muted-note">Los programas de beneficios pueden cambiar sus condiciones; la información válida es siempre la de la fuente oficial enlazada en cada tarjeta.</p>
+    </section>
+  </main>
+
+  <footer class="app-footer"><div class="wrap">
+    <p><strong>Aula 301</strong> · Estadística Aplicada a las Ciencias Sociales · Grupo 301 · IISUABJO, UABJO</p>
+  </div></footer>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

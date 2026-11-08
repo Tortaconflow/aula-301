@@ -1,0 +1,1159 @@
+/* ==========================================================================
+   Aula 301 — Hoja de estilos Mobile-First (Base: 390px -> Tablet -> Escritorio)
+   Paleta oficial ICEUABJO lila y morado, fondo claro y tarjetas blancas.
+   ========================================================================== */
+
+:root {
+  --bg: #f7f4fc;
+  --surface: #ffffff;
+  --ink: #2b1a4d;
+  --muted: #6f6390;
+  --purple: #4b2e83;
+  --purple-2: #6d4cbb;
+  --purple-dark: #2b1a4d;
+  --lilac: #d9cdf5;
+  --lilac-soft: #ece5fb;
+  --lilac-bg: #efe9fd;
+  --line: #e2daf5;
+  --radius: 20px;
+  --shadow: 0 8px 24px rgba(75, 46, 131, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: "Public Sans", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--purple-2);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.12;
+  margin: 0;
+  color: var(--purple-dark);
+}
+
+h2 {
+  font-size: clamp(1.35rem, 4vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+p {
+  margin: 0.45rem 0;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 14px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   1. Vista de Inicio de Sesión (Base móvil 390px)
+   ========================================================================== */
+
+#loginView {
+  min-height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  place-items: center;
+  padding: 18px 14px;
+  background: linear-gradient(
+    160deg,
+    var(--lilac-bg) 0%,
+    var(--bg) 55%,
+    var(--lilac-soft) 100%
+  );
+}
+
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  max-width: 400px;
+  width: 100%;
+  padding: 26px 20px 22px;
+  text-align: center;
+}
+
+.login-card .cap {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--lilac-soft);
+  display: grid;
+  place-items: center;
+  color: var(--purple);
+  margin: 0 auto 12px;
+}
+
+.login-card h1 {
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.login-card .sub {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin-top: 6px;
+}
+
+.login-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  text-align: left;
+}
+
+.login-form label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: grid;
+  gap: 6px;
+}
+
+.login-form input {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  width: 100%;
+  min-height: 44px;
+}
+
+.login-form .btn {
+  justify-content: center;
+  width: 100%;
+  padding: 13px 16px;
+  margin-top: 4px;
+  min-height: 46px;
+}
+
+.forgot {
+  background: none;
+  border: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--purple-2);
+  cursor: pointer;
+  padding: 8px 10px;
+  min-height: 40px;
+}
+
+.login-note {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+#forgotMsg {
+  color: var(--purple);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   2. Estructura general de la aplicación y Barra Superior ICEUABJO (390px)
+   ========================================================================== */
+
+#appView {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.topbar {
+  background: var(--surface);
+  border-bottom: 2px solid var(--lilac);
+  flex-shrink: 0;
+}
+
+.topbar .wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--purple-dark);
+}
+
+.brand .cap {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--lilac-soft);
+  display: grid;
+  place-items: center;
+  color: var(--purple);
+  flex-shrink: 0;
+}
+
+.brand .div {
+  width: 2px;
+  height: 22px;
+  background: var(--lilac);
+}
+
+.topnav {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  width: 100%;
+}
+
+.topnav button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: var(--purple-dark);
+  font-weight: 700;
+  font-size: 0.72rem;
+  line-height: 1.12;
+  text-align: center;
+  padding: 6px 2px;
+  min-height: 46px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.topnav button svg {
+  flex-shrink: 0;
+}
+
+.topnav button:hover {
+  background: var(--lilac-soft);
+}
+
+.topnav button[aria-current="true"] {
+  background: var(--lilac-soft);
+  color: var(--purple);
+}
+
+.app-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.view {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1080px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px 14px 28px;
+}
+
+.app-footer {
+  flex-shrink: 0;
+  margin-top: 0;
+  border-top: 1px solid var(--line);
+  padding: 8px 0 10px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  background: var(--bg);
+}
+
+.app-footer p {
+  margin: 0;
+}
+
+/* ==========================================================================
+   3. Vista Inicio (Estática, cabe en una sola pantalla a 390px sin scroll)
+   ========================================================================== */
+
+.view-home {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.greeting {
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+.greeting .name {
+  display: inline-block;
+  background: var(--lilac);
+  border-radius: 999px;
+  padding: 2px 14px 4px;
+  margin-top: 4px;
+}
+
+.semester {
+  font-size: 0.95rem;
+  color: var(--purple-dark);
+  margin-top: 8px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-art {
+  display: grid;
+  place-items: center;
+  background: var(--lilac-bg);
+  border-radius: 48% 52% 55% 45% / 52% 46% 54% 48%;
+  padding: 10px;
+  width: 86px;
+  height: 78px;
+  flex-shrink: 0;
+}
+
+.hero-art svg {
+  width: 68px;
+  height: 58px;
+}
+
+.avisos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--lilac-soft);
+  border-radius: 14px;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.avisos .ic {
+  color: var(--purple);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.avisos .div {
+  width: 2px;
+  align-self: stretch;
+  background: var(--lilac);
+  flex-shrink: 0;
+}
+
+.avisos b {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--purple-dark);
+}
+
+.avisos span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.3;
+}
+
+.avisos .arrow {
+  margin-left: auto;
+  color: var(--purple);
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.portal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0;
+}
+
+button.portal-card {
+  font: inherit;
+  cursor: pointer;
+  width: 100%;
+}
+
+.portal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  min-height: 96px;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.portal-card:last-child {
+  grid-column: 1 / -1;
+}
+
+.portal-card:hover {
+  border-color: var(--purple-2);
+}
+
+.portal-card .ic {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--lilac-soft);
+  display: grid;
+  place-items: center;
+  color: var(--purple);
+  flex-shrink: 0;
+}
+
+.portal-card .ic svg {
+  width: 28px;
+  height: 28px;
+}
+
+.portal-card b {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--purple-dark);
+}
+
+/* ==========================================================================
+   4. Controles comunes, Mis actividades, Mis calificaciones y Recursos (390px)
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--purple);
+  background: var(--purple);
+  color: #fff;
+  padding: 10px 16px;
+  min-height: 42px;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn.secondary {
+  background: var(--surface);
+  color: var(--purple);
+}
+
+.btn.small {
+  padding: 8px 14px;
+  font-size: 0.88rem;
+  min-height: 40px;
+}
+
+.rolebar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.role-label {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.seg {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.seg button {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 8px 12px;
+  min-height: 38px;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.86rem;
+}
+
+.seg button[aria-pressed="true"] {
+  background: var(--purple);
+  color: #fff;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.panel-spaced {
+  margin-top: 18px;
+}
+
+.example-badge {
+  display: inline-flex;
+  background: var(--purple);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.badge-top {
+  margin-top: 16px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--lilac-soft);
+  color: var(--purple);
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.case-detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: start;
+  margin-top: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px 8px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+th {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+td.num,
+th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  margin-top: 12px;
+}
+
+.bar-track {
+  grid-column: 1 / -1;
+  height: 10px;
+  background: var(--lilac-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--purple-2);
+  border-radius: 999px;
+}
+
+.task {
+  background: var(--lilac-soft);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 16px;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 20px 0;
+}
+
+.empty {
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 22px 16px;
+  text-align: center;
+  margin-top: 18px;
+  background: var(--surface);
+}
+
+.empty p {
+  color: var(--muted);
+  margin: 4px auto;
+}
+
+.switch-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.switch-row:last-child {
+  border-bottom: 0;
+}
+
+.toggle {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--lilac-soft);
+  position: relative;
+  cursor: pointer;
+  padding: 0;
+}
+
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: left 0.18s;
+}
+
+.toggle[aria-pressed="true"] {
+  background: var(--purple-2);
+}
+
+.toggle[aria-pressed="true"]::after {
+  left: 27px;
+}
+
+/* Rúbrica adaptada a 390px sin scroll horizontal */
+.rubric {
+  table-layout: fixed;
+  width: 100%;
+  font-size: 0.78rem;
+}
+
+.rubric th,
+.rubric td {
+  padding: 7px 5px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rubric td[contenteditable="true"] {
+  outline: 2px dashed var(--purple-2);
+  outline-offset: -4px;
+  background: var(--lilac-soft);
+}
+
+.crit-block {
+  margin-top: 14px;
+}
+
+.eval-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.eval-grid button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 10px 6px;
+  min-height: 42px;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.eval-grid button.sel {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.form-grid label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: grid;
+  gap: 6px;
+}
+
+.form-grid input,
+.form-grid textarea {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.added {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.added:empty {
+  display: none;
+}
+
+.added-card {
+  background: var(--surface);
+  border: 1px solid var(--purple-2);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.added-card p {
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.added-card .rub {
+  font-size: 0.92rem;
+  background: var(--lilac-soft);
+  border-radius: 10px;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+}
+
+.teacher-only,
+.admin-only {
+  display: none;
+}
+
+body[data-role="docente"] .teacher-only {
+  display: block;
+}
+
+body[data-role="administrador"] .admin-only,
+body[data-role="administrador"] .teacher-only {
+  display: block;
+}
+
+/* Recursos (Base 1 columna en móvil 390px) */
+.benefits {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.benefit {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.benefit h4 {
+  margin: 14px 0 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--purple-2);
+}
+
+.benefit ul,
+.benefit ol {
+  margin: 4px 0 0;
+  padding-left: 20px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.benefit li {
+  margin: 4px 0;
+}
+
+.benefit details {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.benefit summary {
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--purple-2);
+  padding: 4px 0;
+}
+
+.benefit .source {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.courses {
+  margin-top: 16px;
+}
+
+.courses .panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 22px;
+}
+
+.courses h3 {
+  grid-column: 1 / -1;
+}
+
+.muted-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+
+/* ==========================================================================
+   5. Ampliación progresiva: Tablet (min-width: 640px)
+   ========================================================================== */
+
+@media (min-width: 640px) {
+  .wrap {
+    padding: 0 18px;
+  }
+
+  .login-card {
+    padding: 34px 30px 28px;
+  }
+
+  .login-card .cap {
+    width: 64px;
+    height: 64px;
+  }
+
+  .login-card h1 {
+    font-size: 1.55rem;
+  }
+
+  .view {
+    padding: 24px 18px 34px;
+  }
+
+  .view-home {
+    gap: 16px;
+  }
+
+  .portal {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .portal-card {
+    padding: 28px 16px 22px;
+    gap: 12px;
+  }
+
+  .portal-card:last-child {
+    grid-column: auto;
+  }
+
+  .portal-card .ic {
+    width: 76px;
+    height: 76px;
+  }
+
+  .portal-card .ic svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .portal-card b {
+    font-size: 1.2rem;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  table {
+    font-size: 0.94rem;
+  }
+
+  th,
+  td {
+    padding: 9px 10px;
+  }
+
+  .rubric {
+    table-layout: auto;
+    font-size: 0.92rem;
+  }
+
+  .rubric th,
+  .rubric td {
+    padding: 9px 10px;
+  }
+
+  .app-footer {
+    font-size: 0.85rem;
+    padding: 10px 0 12px;
+  }
+}
+
+/* ==========================================================================
+   6. Ampliación progresiva: Escritorio (min-width: 880px)
+   ========================================================================== */
+
+@media (min-width: 880px) {
+  .topbar .wrap {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .brand {
+    font-size: 1.25rem;
+    gap: 10px;
+  }
+
+  .brand .cap {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .brand .div {
+    height: 30px;
+  }
+
+  .topnav {
+    display: flex;
+    width: auto;
+    gap: 4px;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+
+  .topnav button {
+    flex-direction: row;
+    gap: 7px;
+    font-size: 0.93rem;
+    padding: 8px 12px;
+    min-height: 40px;
+    border-radius: 10px;
+  }
+
+  .topnav button + button {
+    border-left: 1px solid var(--line);
+  }
+
+  .hero-grid {
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 20px;
+  }
+
+  .greeting {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.04;
+  }
+
+  .greeting .name {
+    padding: 2px 22px 6px;
+    margin-top: 6px;
+  }
+
+  .semester {
+    font-size: 1.22rem;
+    margin-top: 14px;
+  }
+
+  .hero-art {
+    width: 100%;
+    height: auto;
+    min-height: 190px;
+    padding: 24px 18px;
+  }
+
+  .hero-art svg {
+    width: 180px;
+    height: 150px;
+  }
+
+  .avisos {
+    padding: 14px 18px;
+    border-radius: 16px;
+    gap: 14px;
+  }
+
+  .avisos b {
+    font-size: 1rem;
+  }
+
+  .avisos span {
+    font-size: 0.93rem;
+  }
+
+  .portal {
+    gap: 18px;
+  }
+
+  .portal-card {
+    padding: 32px 18px 24px;
+  }
+
+  .portal-card .ic {
+    width: 84px;
+    height: 84px;
+  }
+
+  .portal-card .ic svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  .portal-card b {
+    font-size: 1.3rem;
+  }
+
+  .case-detail {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 18px;
+    margin-top: 16px;
+  }
+
+  .benefits {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .benefit {
+    padding: 20px;
+  }
+
+  .courses .panel {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .toggle::after {
+    transition: none;
+  }
+}
