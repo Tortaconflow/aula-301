@@ -12,9 +12,26 @@
     role: "aula301_session_role",
     activities: "aula301_teacher_activities",
     selfEval: "aula301_self_evaluation",
+    submission1: "aula301_submission_act1",
     toggleAuto: "aula301_toggle_auto",
     toggleCo: "aula301_toggle_co"
   };
+
+  // Cargar datos previos de localStorage de forma segura
+  function loadStoredSubmission() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEYS.submission1);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveStoredSubmission(sub) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.submission1, JSON.stringify(sub));
+    } catch (e) {}
+  }
 
   // Cargar datos previos de localStorage de forma segura
   function loadStoredActivities() {
@@ -217,6 +234,16 @@
     });
   }
 
+  function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // 4. Navegación entre vistas únicas
   function showView(name) {
     ["inicio", "actividades", "calificaciones", "recursos"].forEach(function (v) {
@@ -228,6 +255,9 @@
     document.querySelectorAll("[data-nav]").forEach(function (b) {
       b.setAttribute("aria-current", b.getAttribute("data-nav") === name ? "true" : "false");
     });
+    if (name === "calificaciones") {
+      renderGradesView();
+    }
   }
 
   function setupNavigation() {
@@ -294,31 +324,191 @@
   }
 
   // 6. Selector de rol, simulación offline y persistencia de actividades del docente
-  function renderAddedCard(activity) {
+  function renderAddedCard(activity, idx) {
+    var count = document.querySelectorAll(".activity-card-carlos").length;
+    var num = count + 1;
     var card = document.createElement("article");
-    card.className = "added-card";
-    var h = document.createElement("h3");
-    h.textContent = activity.title;
-    var p = document.createElement("p");
-    p.textContent = activity.desc;
-    card.appendChild(h);
-    card.appendChild(p);
+    card.className = "activity-card-carlos";
+    card.innerHTML =
+      '<div class="activity-card-top">' +
+        '<div class="activity-card-badge">Actividad ' + num + '</div>' +
+        '<span class="status-pill scheduled">Creada por docente</span>' +
+      '</div>' +
+      '<h3 class="activity-card-title">' + escapeHtml(activity.title) + '</h3>' +
+      '<p class="activity-card-desc">' + escapeHtml(activity.desc) + '</p>' +
+      (activity.rubric ? '<div style="font-size:0.86rem;background:var(--lilac-soft);border-radius:10px;padding:8px 12px;margin-top:6px;"><strong>Rúbrica:</strong> ' + escapeHtml(activity.rubric) + '</div>' : '') +
+      '<div class="activity-card-footer">' +
+        '<span class="activity-meta">Almacenada localmente</span>' +
+        '<button type="button" class="btn secondary small">Ver detalles</button>' +
+      '</div>';
 
-    if (activity.rubric) {
-      var r = document.createElement("div");
-      r.className = "rub";
-      r.textContent = "Rúbrica:\n" + activity.rubric;
-      card.appendChild(r);
+    var container = document.getElementById("addedList");
+    if (container) container.appendChild(card);
+  }
+
+  // 7. Espacio de trabajo de Actividad 1 y Entrega Offline-First
+  function setupActivityWorkspaceAndSubmission() {
+    var toggleBtn = document.getElementById("toggleActividad1Btn");
+    var workspace = document.getElementById("workspaceActividad1");
+    var badgeAct1 = document.getElementById("badgeActividad1");
+    var submissionForm = document.getElementById("submissionForm");
+    var submissionText = document.getElementById("submissionText");
+    var saveDraftBtn = document.getElementById("saveDraftBtn");
+    var exportBtn = document.getElementById("exportSubmissionBtn");
+    var feedbackEl = document.getElementById("submissionFeedback");
+
+    // Restaurar entrega previa si existe
+    var savedSub = loadStoredSubmission();
+    if (savedSub) {
+      if (submissionText && savedSub.text) submissionText.value = savedSub.text;
+      if (savedSub.status === "delivered") {
+        if (badgeAct1) {
+          badgeAct1.textContent = "Entregada";
+          badgeAct1.className = "status-pill delivered";
+        }
+      }
     }
 
-    var tag = document.createElement("p");
-    tag.style.marginTop = "10px";
-    var strongTag = document.createElement("strong");
-    strongTag.textContent = "Agregada por el docente (Guardada localmente)";
-    tag.appendChild(strongTag);
-    card.appendChild(tag);
+    if (toggleBtn && workspace) {
+      toggleBtn.addEventListener("click", function () {
+        var isOpen = workspace.classList.toggle("is-open");
+        toggleBtn.textContent = isOpen ? "Cerrar detalle" : "Ver detalle y resolver";
+      });
+    }
 
-    document.getElementById("addedList").appendChild(card);
+    function showFeedback(msg, isSuccess) {
+      if (!feedbackEl) return;
+      feedbackEl.textContent = msg;
+      feedbackEl.classList.remove("hidden");
+      feedbackEl.style.color = isSuccess ? "#15803d" : "#b45309";
+      feedbackEl.style.borderColor = isSuccess ? "rgba(22, 163, 74, 0.3)" : "rgba(235, 148, 12, 0.35)";
+      feedbackEl.style.background = isSuccess ? "rgba(22, 163, 74, 0.12)" : "rgba(235, 148, 12, 0.12)";
+      setTimeout(function () {
+        feedbackEl.classList.add("hidden");
+      }, 5000);
+    }
+
+    if (saveDraftBtn && submissionText) {
+      saveDraftBtn.addEventListener("click", function () {
+        var txt = submissionText.value.trim();
+        saveStoredSubmission({
+          text: txt,
+          status: "draft",
+          updatedAt: new Date().toISOString()
+        });
+        showFeedback("Borrador guardado localmente (Offline)", true);
+      });
+    }
+
+    if (submissionForm && submissionText) {
+      submissionForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var txt = submissionText.value.trim();
+        if (!txt) return;
+
+        saveStoredSubmission({
+          text: txt,
+          status: "delivered",
+          updatedAt: new Date().toISOString()
+        });
+
+        if (badgeAct1) {
+          badgeAct1.textContent = "Entregada";
+          badgeAct1.className = "status-pill delivered";
+        }
+
+        showFeedback("¡Actividad 1 entregada con éxito! Registro persistido localmente.", true);
+        renderGradesView();
+      });
+    }
+
+    if (exportBtn && submissionText) {
+      exportBtn.addEventListener("click", function () {
+        var sub = loadStoredSubmission() || { text: submissionText.value.trim(), status: "draft" };
+        var selfEval = loadStoredSelfEval();
+        var student = document.getElementById("greetName") ? document.getElementById("greetName").textContent : "Carlos Arturo";
+        var receipt = {
+          plataforma: "Aula 301 — IISUABJO",
+          actividad: "Actividad 1: Acceso tecnológico y participación en clase",
+          estudiante: student,
+          fecha_generacion: new Date().toLocaleString("es-MX"),
+          estado_entrega: sub.status === "delivered" ? "ENTREGADA" : "BORRADOR",
+          conclusiones_estudiante: sub.text || "(Sin texto)",
+          autoevaluacion_rubrica: selfEval
+        };
+
+        var blob = new Blob([JSON.stringify(receipt, null, 2)], { type: "application/json;charset=utf-8" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "comprobante_entrega_actividad_1.json";
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          URL.revokeObjectURL(a.href);
+          a.remove();
+        }, 400);
+      });
+    }
+  }
+
+  // 8. Renderizado dinámico de Mis calificaciones
+  function renderGradesView() {
+    var studentName = document.getElementById("greetName") ? document.getElementById("greetName").textContent : "Carlos Arturo";
+    var gradesStudentEl = document.getElementById("gradesStudentName");
+    if (gradesStudentEl) gradesStudentEl.textContent = studentName;
+
+    var sub = loadStoredSubmission();
+    var selfEval = loadStoredSelfEval();
+    var isDelivered = sub && sub.status === "delivered";
+
+    var completedEl = document.getElementById("metricsCompleted");
+    var statusEl = document.getElementById("metricsStatus");
+    var gradeCircleVal = document.getElementById("overallGradeVal");
+    var gradeCardStatus1 = document.getElementById("gradeCardStatus1");
+    var gradeCardBody1 = document.getElementById("gradeCardBody1");
+
+    if (completedEl) completedEl.textContent = isDelivered ? "1" : "0";
+    if (statusEl) statusEl.textContent = isDelivered ? "Al corriente" : "En proceso";
+
+    // Calcular puntaje estimado basado en la autoevaluación
+    var criterios = Object.keys(selfEval);
+    if (isDelivered) {
+      if (gradeCardStatus1) {
+        gradeCardStatus1.textContent = "Entregada";
+        gradeCardStatus1.className = "status-pill delivered";
+      }
+
+      var logradoCount = 0;
+      criterios.forEach(function (k) {
+        if (selfEval[k] === "Logrado") logradoCount += 2.5;
+        else if (selfEval[k] === "En proceso") logradoCount += 1.8;
+        else logradoCount += 1.0;
+      });
+      var estimatedGrade = criterios.length > 0 ? (logradoCount / (criterios.length * 2.5) * 10).toFixed(1) : "10";
+      if (gradeCircleVal) gradeCircleVal.textContent = estimatedGrade;
+
+      if (gradeCardBody1) {
+        gradeCardBody1.innerHTML =
+          '<p><strong>Estado:</strong> Entregada con registro local (' + (sub.updatedAt ? new Date(sub.updatedAt).toLocaleTimeString("es-MX") : "Hoy") + ').</p>' +
+          '<p style="margin-top:6px"><strong>Tus conclusiones:</strong> "' + escapeHtml(sub.text) + '"</p>' +
+          '<div style="background:var(--lilac-soft);border-radius:10px;padding:10px 12px;margin-top:8px;">' +
+            '<strong>Autoevaluación:</strong> ' +
+            (criterios.length > 0
+              ? criterios.map(function(k){ return k + ": " + selfEval[k]; }).join(" · ")
+              : "Pendiente de marcar criterios") +
+          '</div>' +
+          '<p style="color:#15803d;margin-top:8px;font-weight:700;">✓ Trabajo listo para revisión del docente.</p>';
+      }
+    } else {
+      if (gradeCircleVal) gradeCircleVal.textContent = "--";
+      if (gradeCardStatus1) {
+        gradeCardStatus1.textContent = "Sin entregar";
+        gradeCardStatus1.className = "status-pill";
+      }
+      if (gradeCardBody1) {
+        gradeCardBody1.innerHTML = '<p style="color:var(--muted)">Aún no has registrado tu entrega o autoevaluación para esta actividad. Ve a "Mis actividades" para completarla.</p>';
+      }
+    }
   }
 
   function setupRoleAndTeacherControls() {
@@ -439,6 +629,8 @@
   setupCsvDownload();
   setupNavigation();
   setupLogin();
+  setupActivityWorkspaceAndSubmission();
+  renderGradesView();
   setupRoleAndTeacherControls();
   registerServiceWorker();
 })();

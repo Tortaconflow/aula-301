@@ -145,54 +145,131 @@
       </div>
     </div>
 
-    <!-- VISTA 3: MIS ACTIVIDADES (Datos desde js/data.js) -->
+    <!-- VISTA 3: MIS ACTIVIDADES (Fiel a la maqueta 3 de Carlos con tarjetas modulares) -->
     <section class="view hidden" id="view-actividades">
-      <h2>Mis actividades</h2>
-
-      <div class="rolebar">
-        <span class="role-label">Ver como: <span id="roleStatus">Estudiante</span></span>
-        <div class="seg" role="group" aria-label="Cambiar rol">
-          <button type="button" data-role-btn="estudiante" aria-pressed="true">Estudiante</button>
-          <button type="button" data-role-btn="docente" aria-pressed="false">Docente</button>
-          <button type="button" data-role-btn="administrador" aria-pressed="false">Administrador</button>
-        </div>
-        <button type="button" class="btn secondary small" id="offlineBtn" aria-pressed="false">Simular sin conexión</button>
-      </div>
-
-      <span class="example-badge badge-top">EJEMPLO</span>
-      <div class="case-detail">
-        <div class="panel">
-          <span class="tag">Minicaso 1 · n = 30 estudiantes (ficticios)</span>
-          <h3>Acceso tecnológico y participación en clase</h3>
-          <table aria-label="Datos del minicaso de ejemplo">
-            <thead>
-              <tr><th>Categoría</th><th class="num">Casos</th><th class="num">%</th></tr>
-            </thead>
-            <tbody id="caseTableBody"></tbody>
-          </table>
-          <div class="task"><strong>Tu tarea:</strong> Construye la tabla de frecuencias con porcentajes, dibuja el gráfico de barras y escribe dos frases: qué dispositivo domina y qué implica eso para entregar tareas.</div>
-          <p style="margin-top:16px"><button type="button" class="btn" id="csvBtn">Descargar datos (CSV)</button></p>
-        </div>
-        <div class="panel">
-          <h3>Gráfica</h3>
-          <div id="caseBars"></div>
-          <hr class="divider">
-          <h3>Pregunta guía</h3>
-          <p>Si casi la mitad estudia solo con celular, ¿qué debe cuidar el docente al pedir trabajos en computadora?</p>
+      <div class="view-header">
+        <h2>Mis actividades</h2>
+        <div class="rolebar">
+          <span class="role-label">Modo: <span id="roleStatus">Estudiante</span></span>
+          <div class="seg" role="group" aria-label="Cambiar rol">
+            <button type="button" data-role-btn="estudiante" aria-pressed="true">Estudiante</button>
+            <button type="button" data-role-btn="docente" aria-pressed="false">Docente</button>
+            <button type="button" data-role-btn="administrador" aria-pressed="false">Admin</button>
+          </div>
+          <button type="button" class="btn secondary small" id="offlineBtn" aria-pressed="false">Simular sin conexión</button>
         </div>
       </div>
 
-      <div class="empty" id="emptyActivities">
-        <h3>Sin actividades todavía</h3>
-        <p>Aquí aparecerán las actividades que agregue el docente.</p>
-      </div>
-      <div class="added" id="addedList" aria-live="polite"></div>
+      <!-- LISTA DE TARJETAS DE ACTIVIDADES (Estilo maqueta Carlos) -->
+      <div class="activities-stack" id="activitiesStack">
+        <!-- Tarjeta Actividad 1 -->
+        <article class="activity-card-carlos active-card" id="cardActividad1">
+          <div class="activity-card-top">
+            <div class="activity-card-badge">Actividad 1</div>
+            <span class="status-pill" id="badgeActividad1">Pendiente</span>
+          </div>
+          <h3 class="activity-card-title">Minicaso 1: Acceso tecnológico y participación en clase</h3>
+          <p class="activity-card-desc">Construye la tabla de frecuencias con porcentajes, gráfica de barras y redacta tus conclusiones sobre cómo influye el tipo de dispositivo en la entrega de tareas.</p>
+          
+          <div class="activity-card-footer">
+            <span class="activity-meta">Estadística Descriptiva · n = 30 estudiantes</span>
+            <button type="button" class="btn small" id="toggleActividad1Btn">Ver detalle y resolver</button>
+          </div>
+        </article>
 
+        <!-- ESPACIO DE TRABAJO INTERACTIVO DE ACTIVIDAD 1 (Desplegable) -->
+        <div class="activity-workspace-panel" id="workspaceActividad1">
+          <div class="workspace-header">
+            <span class="tag">Espacio de trabajo · Actividad 1</span>
+            <span class="example-badge">EJEMPLO</span>
+          </div>
+
+          <div class="case-detail">
+            <div class="panel">
+              <span class="tag">Datos del grupo · n = 30 casos ficticios</span>
+              <h3>Acceso tecnológico y participación en clase</h3>
+              <table aria-label="Datos del minicaso de ejemplo">
+                <thead>
+                  <tr><th>Categoría</th><th class="num">Casos</th><th class="num">%</th></tr>
+                </thead>
+                <tbody id="caseTableBody"></tbody>
+              </table>
+              <div class="task"><strong>Tu consigna:</strong> Analiza la distribución porcentual, identifica qué dispositivo domina y escribe dos frases explicando qué debe cuidar el docente al pedir trabajos digitales.</div>
+              <p style="margin-top:16px"><button type="button" class="btn small" id="csvBtn">Descargar datos (CSV)</button></p>
+            </div>
+            
+            <div class="panel">
+              <h3>Gráfica de frecuencias</h3>
+              <div id="caseBars"></div>
+              <hr class="divider">
+              <h3>Pregunta reflexiva</h3>
+              <p>Si casi la mitad estudia únicamente con celular, ¿qué formato de entrega es el más inclusivo?</p>
+            </div>
+          </div>
+
+          <!-- RÚBRICA Y AUTOEVALUACIÓN -->
+          <div class="panel panel-spaced">
+            <h3>Rúbrica de evaluación</h3>
+            <table class="rubric" id="rubricTable">
+              <thead>
+                <tr><th>Criterio</th><th>Logrado</th><th>En proceso</th><th>Inicial</th></tr>
+              </thead>
+              <tbody id="rubricTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="panel panel-spaced" id="selfPanel">
+            <h3>Autoevaluación del estudiante</h3>
+            <p id="selfStatus" style="color:var(--muted)">Marca tu nivel de logro en cada criterio antes de registrar tu entrega.</p>
+            <div id="selfForm">
+              <div id="selfCriteriaList"></div>
+              <p id="selfSummary" style="margin-top:16px;font-weight:700">Sin respuestas todavía.</p>
+            </div>
+          </div>
+
+          <!-- ZONA DE ENTREGA LOCAL-FIRST / OFFLINE -->
+          <div class="panel panel-spaced submission-panel">
+            <h3>Entrega de tarea (Offline-First)</h3>
+            <p style="color:var(--muted);font-size:0.9rem">Puedes redactar y guardar tu respuesta aunque no tengas internet. Se almacena localmente en tu celular.</p>
+            
+            <form id="submissionForm">
+              <label for="submissionText"><strong>Tus conclusiones (2 frases):</strong></label>
+              <textarea id="submissionText" rows="3" placeholder="Escribe aquí tu análisis sobre el dispositivo dominante y su impacto en las tareas..." required></textarea>
+              
+              <div class="submission-actions">
+                <button type="button" class="btn secondary" id="saveDraftBtn">Guardar borrador local</button>
+                <button type="submit" class="btn" id="submitActivityBtn">Registrar entrega final</button>
+                <button type="button" class="btn secondary small" id="exportSubmissionBtn">Exportar comprobante</button>
+              </div>
+              <p id="submissionFeedback" class="submission-feedback hidden" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+
+        <!-- Tarjeta Actividad 2 -->
+        <article class="activity-card-carlos future-card" id="cardActividad2">
+          <div class="activity-card-top">
+            <div class="activity-card-badge">Actividad 2</div>
+            <span class="status-pill scheduled">Próxima semana</span>
+          </div>
+          <h3 class="activity-card-title">Minicaso 2: Horas de estudio vs. Desempeño en exámenes</h3>
+          <p class="activity-card-desc">Medidas de tendencia central y dispersión: media, mediana y desviación estándar en grupos de estudio.</p>
+          <div class="activity-card-footer">
+            <span class="activity-meta">Unidad 2 · Apertura programada</span>
+            <button type="button" class="btn secondary small" disabled>Disponible pronto</button>
+          </div>
+        </article>
+
+        <!-- Tarjetas dinámicas agregadas por el Docente -->
+        <div class="added" id="addedList" aria-live="polite"></div>
+      </div>
+
+      <!-- Panel del Docente (para crear nuevas actividades) -->
       <div class="teacher-only panel panel-spaced">
-        <h3>Agregar actividad</h3>
+        <h3>+ Crear nueva actividad (Docente)</h3>
         <form class="form-grid" id="addForm">
           <label>Título de la actividad
-            <input type="text" id="addTitle" required placeholder="Ej. Minicaso: acceso a servicios básicos">
+            <input type="text" id="addTitle" required placeholder="Ej. Minicaso: Acceso a servicios básicos">
           </label>
           <label>Instrucciones para el estudiante
             <textarea id="addDesc" rows="3" required placeholder="Qué tiene que hacer, qué entregar y para cuándo…"></textarea>
@@ -200,122 +277,128 @@
           <label>Rúbrica — criterios y niveles
             <textarea id="addRubric" rows="3" placeholder="Ej. Planteamiento: Logrado / En proceso / Inicial… Un criterio por línea."></textarea>
           </label>
-          <p style="margin:0"><button type="submit" class="btn">+ Agregar actividad</button></p>
+          <p style="margin:0"><button type="submit" class="btn">+ Publicar actividad</button></p>
         </form>
         <hr class="divider">
-        <div class="switch-row"><div><strong>Autoevaluación</strong></div><button type="button" class="toggle" id="toggleAuto" aria-pressed="false" aria-label="Activar o desactivar autoevaluación"></button></div>
-        <div class="switch-row"><div><strong>Coevaluación</strong></div><button type="button" class="toggle" id="toggleCo" aria-pressed="false" aria-label="Activar o desactivar coevaluación"></button></div>
+        <div class="switch-row"><div><strong>Autoevaluación obligatoria</strong></div><button type="button" class="toggle" id="toggleAuto" aria-pressed="false" aria-label="Activar o desactivar autoevaluación"></button></div>
+        <div class="switch-row"><div><strong>Coevaluación entre pares</strong></div><button type="button" class="toggle" id="toggleCo" aria-pressed="false" aria-label="Activar o desactivar coevaluación"></button></div>
         <p style="margin-top:12px"><button type="button" class="btn secondary small" id="editRubricBtn">Editar rúbrica de ejemplo</button></p>
-      </div>
-
-      <div class="panel panel-spaced">
-        <span class="example-badge">EJEMPLO</span>
-        <h3 style="margin-top:10px">Rúbrica</h3>
-        <table class="rubric" id="rubricTable">
-          <thead>
-            <tr><th>Criterio</th><th>Logrado</th><th>En proceso</th><th>Inicial</th></tr>
-          </thead>
-          <tbody id="rubricTableBody"></tbody>
-        </table>
-      </div>
-
-      <div class="panel panel-spaced hidden" id="selfPanel">
-        <h3>Autoevaluación</h3>
-        <p id="selfStatus" style="color:var(--muted)">Elige un nivel por criterio.</p>
-        <div id="selfForm">
-          <div id="selfCriteriaList"></div>
-          <p id="selfSummary" style="margin-top:16px;font-weight:700">Sin respuestas todavía.</p>
-        </div>
-      </div>
-
-      <div class="panel panel-spaced hidden" id="coPanel">
-        <h3>Coevaluación</h3>
-        <p style="color:var(--muted)" id="coStatus">Revisa el trabajo de un compañero con la misma rúbrica y justifica cada nivel que marques.</p>
       </div>
 
       <div class="admin-only panel panel-spaced">
         <h3>Administrador</h3>
-        <p style="color:var(--muted)">Avisos y recursos del portal.</p>
+        <p style="color:var(--muted)">Gestión del grupo Aula 301, configuración de sincronización y estado del servidor de contingencia.</p>
       </div>
     </section>
 
-    <!-- VISTA 4: MIS CALIFICACIONES -->
+    <!-- VISTA 4: MIS CALIFICACIONES (Formato en tarjetas glass) -->
     <section class="view hidden" id="view-calificaciones">
       <h2>Mis calificaciones</h2>
-      <div class="empty">
-        <h3>Sin resultados todavía</h3>
-        <table aria-label="Formato de calificaciones">
-          <thead><tr><th>Actividad</th><th>Resultado</th><th>Retroalimentación</th></tr></thead>
-          <tbody><tr><td colspan="3" style="text-align:center;color:var(--muted)">Sin resultados todavía</td></tr></tbody>
-        </table>
+      
+      <!-- Resumen General del Estudiante -->
+      <div class="grades-summary-card">
+        <div class="grade-circle" id="overallGradeCircle">
+          <span class="grade-val" id="overallGradeVal">--</span>
+          <span class="grade-label">Promedio</span>
+        </div>
+        <div class="grade-summary-details">
+          <h3 id="gradesStudentName">Carlos Arturo</h3>
+          <p class="sub">Grupo 301 · Estadística Aplicada · IISUABJO</p>
+          <div class="grades-metrics">
+            <span class="metric-chip"><b id="metricsCompleted">0</b> de 2 entregadas</span>
+            <span class="metric-chip"><b id="metricsStatus">En proceso</b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjetas individuales de calificación por actividad -->
+      <div class="grades-stack">
+        <!-- Calificación Actividad 1 -->
+        <article class="grade-card" id="gradeCardAct1">
+          <div class="grade-card-top">
+            <span class="tag">Actividad 1</span>
+            <span class="status-pill" id="gradeCardStatus1">Sin entregar</span>
+          </div>
+          <h3>Minicaso 1: Acceso tecnológico y participación en clase</h3>
+          <div class="grade-card-body" id="gradeCardBody1">
+            <p style="color:var(--muted)">Aún no has registrado tu entrega o autoevaluación para esta actividad. Ve a "Mis actividades" para completarla.</p>
+          </div>
+        </article>
+
+        <!-- Calificación Actividad 2 -->
+        <article class="grade-card future-card">
+          <div class="grade-card-top">
+            <span class="tag">Actividad 2</span>
+            <span class="status-pill scheduled">Próxima</span>
+          </div>
+          <h3>Minicaso 2: Horas de estudio vs. Desempeño en exámenes</h3>
+          <div class="grade-card-body">
+            <p style="color:var(--muted)">Esta actividad aún no está habilitada para entrega.</p>
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- VISTA 5: RECURSOS -->
+    <!-- VISTA 5: RECURSOS (Tarjetas glassmorphism estilo maqueta) -->
     <section class="view hidden" id="view-recursos">
-      <h2>Recursos</h2>
+      <h2>Recursos y Beneficios</h2>
+      <p class="view-intro">Herramientas y convenios educativos gratuitos o con descuento disponibles con tu correo y matrícula de la UABJO.</p>
 
       <div class="benefits">
         <article class="benefit">
           <span class="tag">Ofimática · Cuenta educativa</span>
           <h3>Microsoft 365 para estudiantes</h3>
-          <p>Versiones web de Word, Excel y PowerPoint y almacenamiento en OneDrive sin costo, si tu institución está registrada en el programa de Microsoft para educación. Excel es justo la herramienta de los minicasos.</p>
+          <p>Word, Excel, PowerPoint y 1 TB de almacenamiento en OneDrive sin costo para estudiantes de la UABJO. Esencial para los ejercicios de estadística y minicasos.</p>
           <h4>Requisitos</h4>
-          <ul><li>Correo institucional activo de una institución educativa elegible.</li><li>Que la institución esté registrada en Microsoft 365 Education (lo verifica Microsoft con tu correo).</li></ul>
+          <ul><li>Correo institucional activo (@uabjo.mx).</li><li>Matrícula de estudiante vigente.</li></ul>
           <details><summary>Cómo canjearlo, paso a paso</summary>
-            <ol><li>Entra al sitio de Microsoft Educación enlazado abajo.</li><li>Escribe tu correo institucional en el campo de registro para estudiantes.</li><li>Microsoft comprueba si tu institución es elegible y te envía la confirmación a ese correo.</li><li>Crea tu cuenta o inicia sesión y entra a las apps web desde el navegador.</li><li>Si tu correo no es aceptado, no es un error tuyo: significa que la institución aún no está registrada; coméntalo con tu docente o con servicios escolares.</li></ol>
+            <ol><li>Entra al sitio oficial de Microsoft Educación.</li><li>Escribe tu correo institucional de la UABJO.</li><li>Sigue la confirmación que llegará a tu bandeja de correo.</li><li>Accede a las aplicaciones web o descárgalas en tu computadora.</li></ol>
           </details>
-          <p class="source">Fuente: Microsoft Educación — <a href="https://www.microsoft.com/es-mx/education" target="_blank" rel="noopener">microsoft.com/es-mx/education</a></p>
+          <p class="source">Fuente: <a href="https://www.microsoft.com/es-mx/education" target="_blank" rel="noopener">microsoft.com/es-mx/education</a></p>
         </article>
 
         <article class="benefit">
-          <span class="tag">Herramientas · Cuenta educativa</span>
+          <span class="tag">Herramientas · Portafolio</span>
           <h3>GitHub Student Developer Pack</h3>
-          <p>Acceso gratuito, mientras seas estudiante, a herramientas y servicios para aprender a construir software y publicar proyectos —útil si llevas tu portafolio o el prototipo de una plataforma más lejos.</p>
+          <p>Acceso gratuito a GitHub Pro, herramientas para desarrolladores, dominios gratis y cursos técnicos para alojar tus proyectos y código fuente.</p>
           <h4>Requisitos</h4>
-          <ul><li>Tener al menos 13 años y estar inscrito en un programa de estudios.</li><li>Comprobar tu condición de estudiante: correo escolar o un documento con fechas vigentes (credencial, constancia de estudios u horario).</li></ul>
+          <ul><li>Tener cuenta en GitHub.</li><li>Comprobar estatus de estudiante (correo institucional o credencial vigente).</li></ul>
           <details><summary>Cómo canjearlo, paso a paso</summary>
-            <ol><li>Crea una cuenta gratuita en GitHub, si aún no tienes una.</li><li>Entra a GitHub Education y elige unirte como estudiante.</li><li>Completa la solicitud: nombre de tu escuela y para qué usarás GitHub.</li><li>Verifica tu condición de estudiante con tu correo escolar o subiendo la foto de tu documento vigente.</li><li>Espera la aprobación y, desde tu panel de estudiante, activa las ofertas del Pack que necesites.</li></ol>
+            <ol><li>Inicia sesión en GitHub y entra a GitHub Education.</li><li>Solicita el Student Pack y sube tu comprobante de estudios.</li><li>Una vez aprobado, activa los beneficios y repositorios privados ilimitados.</li></ol>
           </details>
-          <p class="source">Fuente: GitHub Education — <a href="https://education.github.com/pack" target="_blank" rel="noopener">education.github.com/pack</a></p>
+          <p class="source">Fuente: <a href="https://education.github.com/pack" target="_blank" rel="noopener">education.github.com/pack</a></p>
         </article>
 
         <article class="benefit">
-          <span class="tag">Notas y proyectos · Correo escolar</span>
+          <span class="tag">Organización · Cuenta educativa</span>
           <h3>Notion para Educación</h3>
-          <p>El plan Plus de Notion sin costo para estudiantes y docentes que se registran con su correo escolar: notas, bases de datos y trabajo en equipo para organizar materias y proyectos.</p>
+          <p>Plan Plus gratuito de Notion con bloques ilimitados para organizar tus apuntes de materias, bibliografía y proyectos de investigación.</p>
           <h4>Requisitos</h4>
-          <ul><li>Una cuenta de Notion registrada con el correo de tu institución educativa.</li><li>Ser estudiante o docente actualmente (Notion lo asocia al dominio del correo escolar).</li></ul>
+          <ul><li>Cuenta registrada con tu correo institucional de la UABJO.</li></ul>
           <details><summary>Cómo canjearlo, paso a paso</summary>
-            <ol><li>Crea tu cuenta en Notion usando tu correo institucional, no tu correo personal.</li><li>Entra a la configuración de tu espacio de trabajo, en la sección de planes y mejoras.</li><li>Elige la opción de obtener el plan de Educación.</li><li>Confirma que tu cuenta usa el correo escolar; el cambio de plan se aplica a tu espacio personal.</li><li>Si tu cuenta ya existía con correo personal, primero cambia el correo asociado al institucional desde la configuración.</li></ol>
+            <ol><li>Crea tu cuenta con tu correo @uabjo.mx.</li><li>Entra a Planes y elige "Notion for Education".</li><li>El plan Plus se activará automáticamente sin costo.</li></ol>
           </details>
-          <p class="source">Fuente: Notion — <a href="https://www.notion.com/product/notion-for-education" target="_blank" rel="noopener">notion.com/product/notion-for-education</a></p>
+          <p class="source">Fuente: <a href="https://www.notion.com/product/notion-for-education" target="_blank" rel="noopener">notion.com/product/notion-for-education</a></p>
         </article>
 
         <article class="benefit">
-          <span class="tag">Diseño · Gratis para estudiantes</span>
+          <span class="tag">Diseño e Interfaces · Prototipos</span>
           <h3>Figma para Educación</h3>
-          <p>Plan profesional de Figma sin costo para estudiantes y docentes verificados: diseño de interfaces y trabajo colaborativo en línea, útil para prototipar páginas como esta.</p>
+          <p>Plan Profesional gratuito de Figma para diseñar interfaces, esquemas conceptuales y maquetas colaborativas en tiempo real.</p>
           <h4>Requisitos</h4>
-          <ul><li>Ser estudiante o docente de una institución educativa.</li><li>Verificar esa condición durante la solicitud dentro de Figma.</li></ul>
+          <ul><li>Estatus de estudiante o docente comprobable.</li></ul>
           <details><summary>Cómo canjearlo, paso a paso</summary>
-            <ol><li>Crea tu cuenta en Figma o inicia sesión.</li><li>Entra a la página de Figma para Educación y solicita unirte.</li><li>Indica si eres estudiante o docente y los datos de tu institución.</li><li>Completa la verificación que te pida el formulario.</li><li>Al aprobarse, crea tu equipo de Educación: ahí se activa el plan sin costo.</li></ol>
+            <ol><li>Entra a figma.com/education.</li><li>Solicita la verificación con tu escuela y correo institucional.</li><li>Crea tu equipo con funciones profesionales habilitadas.</li></ol>
           </details>
-          <p class="source">Fuente: Figma Education — <a href="https://www.figma.com/education/" target="_blank" rel="noopener">figma.com/education</a></p>
+          <p class="source">Fuente: <a href="https://www.figma.com/education/" target="_blank" rel="noopener">figma.com/education</a></p>
         </article>
 
         <article class="benefit">
-          <span class="tag">Descuento · Música</span>
+          <span class="tag">Música · Plan universitario</span>
           <h3>Spotify Premium para Estudiantes</h3>
-          <p>El plan Premium con precio reducido para estudiantes de educación superior, mientras dure tu condición de estudiante verificado.</p>
-          <h4>Requisitos</h4>
-          <ul><li>Estar inscrito en una institución de educación superior acreditada.</li><li>Verificar tu inscripción con SheerID, el servicio que usa Spotify; la verificación se renueva cada 12 meses.</li></ul>
-          <details><summary>Cómo canjearlo, paso a paso</summary>
-            <ol><li>Entra a la página de Premium para Estudiantes de Spotify México.</li><li>Inicia sesión o crea tu cuenta de Spotify.</li><li>Completa el formulario de verificación de SheerID: elige tu universidad y confirma tus datos de inscripción; si te lo pide, sube un documento que lo compruebe.</li><li>Cuando SheerID confirme tu condición, regresa a Spotify y contrata el plan con tu medio de pago.</li><li>Repite la verificación cada año mientras sigas estudiando para conservar el descuento.</li></ol>
-          </details>
-          <p class="source">Fuente: Spotify México — <a href="https://www.spotify.com/mx/student/" target="_blank" rel="noopener">spotify.com/mx/student</a></p>
+          <p>Tarifa con 50% de descuento mientras seas estudiante de educación superior activo.</p>
+          <p class="source">Fuente: <a href="https://www.spotify.com/mx/student/" target="_blank" rel="noopener">spotify.com/mx/student</a></p>
         </article>
-
         <article class="benefit">
           <span class="tag">Cursos gratuitos · México</span>
           <h3>Capacítate para el Empleo</h3>
@@ -325,7 +408,7 @@
           <details><summary>Cómo inscribirte, paso a paso</summary>
             <ol><li>Entra a capacitateparaelempleo.org y crea tu cuenta gratuita.</li><li>Busca por área o por nombre el curso o diplomado que te interese.</li><li>Abre su ficha, revisa los módulos y elige inscribirte.</li><li>Avanza lección por lección y aprueba las evaluaciones de cada módulo.</li><li>Al concluir, descarga tu constancia desde tu perfil.</li></ol>
           </details>
-          <p class="source">Fuente: Fundación Carlos Slim — <a href="https://capacitateparaelempleo.org" target="_blank" rel="noopener">capacitateparaelempleo.org</a></p>
+          <p class="source">Fuente: <a href="https://capacitateparaelempleo.org" target="_blank" rel="noopener">capacitateparaelempleo.org</a></p>
         </article>
       </div>
 
