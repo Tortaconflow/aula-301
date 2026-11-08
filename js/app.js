@@ -1,10 +1,51 @@
 /**
- * Aula 301 — Lógica de interfaz y navegación por vistas
+ * Aula 301 — Lógica de interfaz, persistencia offline y navegación
  */
 (function () {
   var data = window.AULA301_DATA;
   var answers = {};
   var editingRubric = false;
+
+  // Claves de almacenamiento local (Offline Persistence)
+  var STORAGE_KEYS = {
+    user: "aula301_session_user",
+    role: "aula301_session_role",
+    activities: "aula301_teacher_activities",
+    selfEval: "aula301_self_evaluation",
+    toggleAuto: "aula301_toggle_auto",
+    toggleCo: "aula301_toggle_co"
+  };
+
+  // Cargar datos previos de localStorage de forma segura
+  function loadStoredActivities() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEYS.activities);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveStoredActivities(activities) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.activities, JSON.stringify(activities));
+    } catch (e) {}
+  }
+
+  function loadStoredSelfEval() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEYS.selfEval);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveStoredSelfEval(ans) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.selfEval, JSON.stringify(ans));
+    } catch (e) {}
+  }
 
   // 1. Renderizar tabla y gráfica del minicaso desde la fuente única de verdad
   function renderMinicaso() {
@@ -49,7 +90,7 @@
     });
   }
 
-  // 2. Renderizar rúbrica y formulario de autoevaluación desde la misma fuente de verdad
+  // 2. Renderizar rúbrica y formulario de autoevaluación con persistencia offline
   function renderRubricaYAutoevaluacion() {
     var rubricBody = document.getElementById("rubricTableBody");
     var selfCriteriaContainer = document.getElementById("selfCriteriaList");
@@ -58,6 +99,7 @@
     rubricBody.innerHTML = "";
     selfCriteriaContainer.innerHTML = "";
 
+    answers = loadStoredSelfEval();
     var totalCriterios = data.rubricaEjemplo.criterios.length;
 
     data.rubricaEjemplo.criterios.forEach(function (item, idx) {
@@ -98,26 +140,18 @@
         var btn = document.createElement("button");
         btn.type = "button";
         btn.textContent = nivel;
+        if (answers[item.criterio] === nivel) {
+          btn.classList.add("sel");
+        }
+
         btn.addEventListener("click", function () {
           grid.querySelectorAll("button").forEach(function (b) {
             b.classList.remove("sel");
           });
           btn.classList.add("sel");
           answers[item.criterio] = nivel;
-          var done = Object.keys(answers).length;
-          var txt =
-            done === totalCriterios
-              ? "Autoevaluación completa en esta sesión: "
-              : "Llevas " + done + " de " + totalCriterios + " criterios. ";
-          if (done === totalCriterios) {
-            txt +=
-              Object.keys(answers)
-                .map(function (k) {
-                  return k + ": " + answers[k];
-                })
-                .join(" · ") + ".";
-          }
-          document.getElementById("selfSummary").textContent = txt;
+          saveStoredSelfEval(answers);
+          updateSelfSummary(totalCriterios);
         });
         grid.appendChild(btn);
       });
@@ -125,6 +159,33 @@
       block.appendChild(grid);
       selfCriteriaContainer.appendChild(block);
     });
+
+    updateSelfSummary(totalCriterios);
+  }
+
+  function updateSelfSummary(totalCriterios) {
+    var done = Object.keys(answers).length;
+    var summaryEl = document.getElementById("selfSummary");
+    if (!summaryEl) return;
+
+    if (done === 0) {
+      summaryEl.textContent = "Sin respuestas todavía.";
+      return;
+    }
+
+    var txt =
+      done === totalCriterios
+        ? "Autoevaluación completa en este dispositivo: "
+        : "Llevas " + done + " de " + totalCriterios + " criterios guardados localmente. ";
+    if (done === totalCriterios) {
+      txt +=
+        Object.keys(answers)
+          .map(function (k) {
+            return k + ": " + answers[k];
+          })
+          .join(" · ") + ".";
+    }
+    summaryEl.textContent = txt;
   }
 
   // 3. Descarga de CSV usando la misma fuente de verdad del minicaso
@@ -165,7 +226,6 @@
       if (v === name) el.scrollTop = 0;
     });
     document.querySelectorAll("[data-nav]").forEach(function (b) {
-      if (b.classList.contains("portal-card")) return;
       b.setAttribute("aria-current", b.getAttribute("data-nav") === name ? "true" : "false");
     });
   }
@@ -178,7 +238,7 @@
     });
   }
 
-  // 5. Login de demostración y cierre de sesión
+  // 5. Login de demostración con memoria local
   function setupLogin() {
     var forgotBtn = document.getElementById("forgotBtn");
     var loginForm = document.getElementById("loginForm");
@@ -194,11 +254,16 @@
       loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
         var u = document.getElementById("loginUser").value.trim();
+        var displayName = "Carlos Arturo";
         if (u && !/^\d+$/.test(u)) {
           var first = u.split(/\s+/)[0];
-          document.getElementById("greetName").textContent =
-            first.charAt(0).toUpperCase() + first.slice(1);
+          displayName = first.charAt(0).toUpperCase() + first.slice(1);
         }
+        document.getElementById("greetName").textContent = displayName;
+        try {
+          localStorage.setItem(STORAGE_KEYS.user, displayName);
+        } catch (err) {}
+
         document.getElementById("loginView").classList.add("hidden");
         document.getElementById("appView").classList.remove("hidden");
         showView("inicio");
@@ -210,22 +275,62 @@
         document.getElementById("appView").classList.add("hidden");
         document.getElementById("loginView").classList.remove("hidden");
         document.getElementById("loginPass").value = "";
+        try {
+          localStorage.removeItem(STORAGE_KEYS.user);
+        } catch (err) {}
       });
     }
+
+    // Auto-restaurar sesión guardada localmente si ya había iniciado
+    try {
+      var savedUser = localStorage.getItem(STORAGE_KEYS.user);
+      if (savedUser) {
+        document.getElementById("greetName").textContent = savedUser;
+        document.getElementById("loginView").classList.add("hidden");
+        document.getElementById("appView").classList.remove("hidden");
+        showView("inicio");
+      }
+    } catch (err) {}
   }
 
-  // 6. Selector de rol, simulación offline y herramientas del docente
-  function bindToggle(id, onChange) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener("click", function () {
-      var v = el.getAttribute("aria-pressed") === "true";
-      el.setAttribute("aria-pressed", v ? "false" : "true");
-      onChange(!v);
-    });
+  // 6. Selector de rol, simulación offline y persistencia de actividades del docente
+  function renderAddedCard(activity) {
+    var card = document.createElement("article");
+    card.className = "added-card";
+    var h = document.createElement("h3");
+    h.textContent = activity.title;
+    var p = document.createElement("p");
+    p.textContent = activity.desc;
+    card.appendChild(h);
+    card.appendChild(p);
+
+    if (activity.rubric) {
+      var r = document.createElement("div");
+      r.className = "rub";
+      r.textContent = "Rúbrica:\n" + activity.rubric;
+      card.appendChild(r);
+    }
+
+    var tag = document.createElement("p");
+    tag.style.marginTop = "10px";
+    var strongTag = document.createElement("strong");
+    strongTag.textContent = "Agregada por el docente (Guardada localmente)";
+    tag.appendChild(strongTag);
+    card.appendChild(tag);
+
+    document.getElementById("addedList").appendChild(card);
   }
 
   function setupRoleAndTeacherControls() {
+    var storedActivities = loadStoredActivities();
+    if (storedActivities.length > 0) {
+      storedActivities.forEach(renderAddedCard);
+      document
+        .getElementById("emptyActivities")
+        .querySelector("p").textContent =
+        "Hay " + storedActivities.length + " actividad(es) guardada(s) en este dispositivo.";
+    }
+
     document.querySelectorAll("[data-role-btn]").forEach(function (b) {
       b.addEventListener("click", function () {
         var r = b.getAttribute("data-role-btn");
@@ -242,11 +347,19 @@
 
     var offBtn = document.getElementById("offlineBtn");
     if (offBtn) {
+      function updateOnlineState(simulated) {
+        var isOnline = simulated !== undefined ? !simulated : navigator.onLine;
+        offBtn.setAttribute("aria-pressed", isOnline ? "false" : "true");
+        offBtn.textContent = isOnline ? "Simular sin conexión" : "Modo sin conexión: activo";
+      }
+
       offBtn.addEventListener("click", function () {
-        var on = offBtn.getAttribute("aria-pressed") === "true";
-        offBtn.setAttribute("aria-pressed", on ? "false" : "true");
-        offBtn.textContent = on ? "Simular sin conexión" : "Modo sin conexión: activo";
+        var currentlySimulated = offBtn.getAttribute("aria-pressed") === "true";
+        updateOnlineState(!currentlySimulated);
       });
+
+      window.addEventListener("online", function () { updateOnlineState(false); });
+      window.addEventListener("offline", function () { updateOnlineState(true); });
     }
 
     var addForm = document.getElementById("addForm");
@@ -255,49 +368,45 @@
         e.preventDefault();
         var title = document.getElementById("addTitle").value.trim();
         var desc = document.getElementById("addDesc").value.trim();
-        var rub = document.getElementById("addRubric").value.trim();
+        var rubric = document.getElementById("addRubric").value.trim();
         if (!title || !desc) return;
 
-        var card = document.createElement("article");
-        card.className = "added-card";
-        var h = document.createElement("h3");
-        h.textContent = title;
-        var p = document.createElement("p");
-        p.textContent = desc;
-        card.appendChild(h);
-        card.appendChild(p);
+        var newActivity = { title: title, desc: desc, rubric: rubric, id: Date.now() };
+        var list = loadStoredActivities();
+        list.push(newActivity);
+        saveStoredActivities(list);
 
-        if (rub) {
-          var r = document.createElement("div");
-          r.className = "rub";
-          r.textContent = "Rúbrica:\n" + rub;
-          card.appendChild(r);
-        }
-
-        var tag = document.createElement("p");
-        tag.style.marginTop = "10px";
-        var strongTag = document.createElement("strong");
-        strongTag.textContent = "Agregada por el docente";
-        tag.appendChild(strongTag);
-        card.appendChild(tag);
-
-        document.getElementById("addedList").appendChild(card);
+        renderAddedCard(newActivity);
         document
           .getElementById("emptyActivities")
           .querySelector("p").textContent =
-          "Ya hay actividades agregadas por el docente en esta sesión.";
+          "Hay " + list.length + " actividad(es) guardada(s) en este dispositivo.";
         e.target.reset();
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
       });
     }
 
-    bindToggle("toggleAuto", function (enabled) {
-      document.getElementById("selfPanel").classList.toggle("hidden", !enabled);
-    });
+    function bindToggle(id, storageKey, panelId) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var saved = localStorage.getItem(storageKey) === "true";
+      if (saved) {
+        el.setAttribute("aria-pressed", "true");
+        document.getElementById(panelId).classList.remove("hidden");
+      }
 
-    bindToggle("toggleCo", function (enabled) {
-      document.getElementById("coPanel").classList.toggle("hidden", !enabled);
-    });
+      el.addEventListener("click", function () {
+        var v = el.getAttribute("aria-pressed") === "true";
+        var next = !v;
+        el.setAttribute("aria-pressed", next ? "true" : "false");
+        document.getElementById(panelId).classList.toggle("hidden", !next);
+        try {
+          localStorage.setItem(storageKey, String(next));
+        } catch (err) {}
+      });
+    }
+
+    bindToggle("toggleAuto", STORAGE_KEYS.toggleAuto, "selfPanel");
+    bindToggle("toggleCo", STORAGE_KEYS.toggleCo, "coPanel");
 
     var editRubricBtn = document.getElementById("editRubricBtn");
     if (editRubricBtn) {
@@ -311,6 +420,19 @@
     }
   }
 
+  // 7. Registro de Service Worker para funcionamiento 100% Offline
+  function registerServiceWorker() {
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./sw.js").then(function (reg) {
+          console.log("Service Worker registrado con éxito para Aula 301:", reg.scope);
+        }).catch(function (err) {
+          console.log("Fallo al registrar Service Worker:", err);
+        });
+      });
+    }
+  }
+
   // Inicializar todo
   renderMinicaso();
   renderRubricaYAutoevaluacion();
@@ -318,4 +440,5 @@
   setupNavigation();
   setupLogin();
   setupRoleAndTeacherControls();
+  registerServiceWorker();
 })();
