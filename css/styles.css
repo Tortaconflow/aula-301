@@ -1,22 +1,37 @@
 /* ==========================================================================
-   Aula 301 — Hoja de estilos Mobile-First (Base: 390px -> Tablet -> Escritorio)
-   Paleta oficial ICEUABJO lila y morado, fondo claro y tarjetas blancas.
+   Aula 301 — Hoja de estilos Mobile-First basada en la maqueta de Carlos
+   Atmósfera estética: degradado ambiental sutil (azul/lila/morado),
+   glassmorphism (cristal translúcido) y diseño estático sin scroll.
    ========================================================================== */
 
 :root {
-  --bg: #f7f4fc;
-  --surface: #ffffff;
-  --ink: #2b1a4d;
-  --muted: #6f6390;
+  --bg-gradient: radial-gradient(at 10% 20%, rgba(135, 172, 255, 0.5) 0px, transparent 50%),
+                 radial-gradient(at 90% 15%, rgba(200, 170, 250, 0.55) 0px, transparent 50%),
+                 radial-gradient(at 50% 50%, rgba(230, 240, 255, 0.65) 0px, transparent 60%),
+                 radial-gradient(at 85% 85%, rgba(165, 135, 230, 0.45) 0px, transparent 50%),
+                 radial-gradient(at 15% 85%, rgba(110, 75, 190, 0.28) 0px, transparent 50%),
+                 #ebf0fc;
+  --glass-surface: rgba(255, 255, 255, 0.62);
+  --glass-surface-strong: rgba(255, 255, 255, 0.82);
+  --glass-card: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-border-subtle: rgba(255, 255, 255, 0.45);
+  
+  --ink: #1f143a;
+  --muted: #5e547a;
   --purple: #4b2e83;
-  --purple-2: #6d4cbb;
-  --purple-dark: #2b1a4d;
-  --lilac: #d9cdf5;
-  --lilac-soft: #ece5fb;
-  --lilac-bg: #efe9fd;
-  --line: #e2daf5;
-  --radius: 20px;
-  --shadow: 0 8px 24px rgba(75, 46, 131, 0.09);
+  --purple-2: #6545b2;
+  --purple-dark: #231342;
+  --lilac: #d7c9f7;
+  --lilac-soft: rgba(236, 229, 251, 0.7);
+  --lilac-bg: rgba(239, 233, 253, 0.6);
+  --line: rgba(216, 204, 243, 0.6);
+  
+  --radius: 22px;
+  --radius-sm: 14px;
+  --radius-pill: 999px;
+  --shadow-glass: 0 12px 36px rgba(50, 30, 95, 0.08), 0 2px 8px rgba(255, 255, 255, 0.4) inset;
+  --shadow-sm: 0 4px 16px rgba(50, 30, 95, 0.05);
 }
 
 * {
@@ -33,25 +48,24 @@ body {
   margin: 0;
   overflow: hidden;
   font-family: "Public Sans", system-ui, sans-serif;
-  background: var(--bg);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 a {
   color: var(--purple-2);
 }
 
-h1,
-h2,
-h3 {
-  line-height: 1.12;
+h1, h2, h3 {
+  line-height: 1.1;
   margin: 0;
   color: var(--purple-dark);
 }
 
 h2 {
-  font-size: clamp(1.35rem, 4vw, 1.9rem);
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
   font-weight: 800;
   letter-spacing: -0.01em;
 }
@@ -76,90 +90,142 @@ p {
 }
 
 /* ==========================================================================
-   1. Vista de Inicio de Sesión (Base móvil 390px)
+   1. Vista de Login de Demostración (Fiel a la maqueta de Carlos)
    ========================================================================== */
 
 #loginView {
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
   overflow-y: auto;
-  overflow-x: hidden;
+  padding: 16px;
+  background: var(--bg-gradient);
+}
+
+.login-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 8px 12px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+  color: var(--purple-dark);
+}
+
+.login-topbar .brand-text {
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.login-topbar .group-badge {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+.login-center {
+  flex: 1;
   display: grid;
   place-items: center;
-  padding: 18px 14px;
-  background: linear-gradient(
-    160deg,
-    var(--lilac-bg) 0%,
-    var(--bg) 55%,
-    var(--lilac-soft) 100%
-  );
+  width: 100%;
+  padding: 12px 0 20px;
 }
 
 .login-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  box-shadow: var(--shadow);
-  max-width: 400px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-glass);
+  max-width: 380px;
   width: 100%;
-  padding: 26px 20px 22px;
+  padding: 28px 22px 24px;
   text-align: center;
 }
 
-.login-card .cap {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--lilac-soft);
-  display: grid;
-  place-items: center;
-  color: var(--purple);
-  margin: 0 auto 12px;
-}
-
 .login-card h1 {
-  font-size: 1.45rem;
+  font-size: 1.48rem;
   font-weight: 900;
   letter-spacing: -0.01em;
+  color: var(--purple-dark);
 }
 
 .login-card .sub {
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   margin-top: 6px;
 }
 
 .login-form {
   display: grid;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 14px;
+  margin-top: 20px;
   text-align: left;
 }
 
-.login-form label {
-  font-weight: 700;
-  font-size: 0.9rem;
+/* Campos con icono integrado a la izquierda */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--purple-2);
   display: grid;
-  gap: 6px;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0.85;
 }
 
-.login-form input {
+.input-group input {
   font: inherit;
-  font-size: 1rem;
+  font-size: 0.94rem;
   color: var(--ink);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 12px 16px 12px 42px;
   width: 100%;
-  min-height: 44px;
+  min-height: 48px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(75, 46, 131, 0.04) inset;
 }
 
-.login-form .btn {
+.input-group input:focus {
+  background: #ffffff;
+  border-color: var(--purple-2);
+  box-shadow: 0 0 0 3px rgba(109, 76, 187, 0.2);
+}
+
+.login-form .btn-submit {
   justify-content: center;
   width: 100%;
-  padding: 13px 16px;
-  margin-top: 4px;
-  min-height: 46px;
+  padding: 13px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--purple);
+  color: #ffffff;
+  border: none;
+  font: inherit;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  min-height: 48px;
+  box-shadow: 0 6px 18px rgba(75, 46, 131, 0.25);
+  transition: transform 0.15s, background 0.15s;
+}
+
+.login-form .btn-submit:active {
+  transform: scale(0.98);
 }
 
 .forgot {
@@ -169,26 +235,27 @@ p {
   font-weight: 700;
   color: var(--purple-2);
   cursor: pointer;
-  padding: 8px 10px;
-  min-height: 40px;
+  padding: 6px 10px;
+  font-size: 0.88rem;
 }
 
 .login-note {
   color: var(--muted);
-  font-size: 0.82rem;
-  margin-top: 14px;
+  font-size: 0.78rem;
+  margin-top: 16px;
   border-top: 1px solid var(--line);
   padding-top: 12px;
+  line-height: 1.4;
 }
 
 #forgotMsg {
   color: var(--purple);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
 }
 
 /* ==========================================================================
-   2. Estructura general de la aplicación y Barra Superior ICEUABJO (390px)
+   2. Barra Superior y Contenedor Principal (Mobile-First 390px)
    ========================================================================== */
 
 #appView {
@@ -196,21 +263,30 @@ p {
   flex-direction: column;
   height: 100dvh;
   overflow: hidden;
+  background: var(--bg-gradient);
 }
 
 .topbar {
-  background: var(--surface);
-  border-bottom: 2px solid var(--lilac);
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1.5px solid var(--glass-border);
   flex-shrink: 0;
+  z-index: 20;
 }
 
 .topbar .wrap {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   gap: 6px;
   padding-top: 8px;
   padding-bottom: 8px;
+}
+
+.topbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .brand {
@@ -219,7 +295,7 @@ p {
   gap: 8px;
   font-weight: 900;
   font-size: 1.05rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--purple-dark);
 }
 
@@ -234,10 +310,17 @@ p {
   flex-shrink: 0;
 }
 
-.brand .div {
-  width: 2px;
-  height: 22px;
-  background: var(--lilac);
+.user-avatar-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--glass-surface-strong);
+  border: 1.5px solid var(--glass-border);
+  color: var(--purple);
+  box-shadow: var(--shadow-sm);
 }
 
 .topnav {
@@ -252,19 +335,20 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  background: none;
+  gap: 2px;
+  background: transparent;
   border: 0;
   font: inherit;
   color: var(--purple-dark);
   font-weight: 700;
   font-size: 0.72rem;
-  line-height: 1.12;
+  line-height: 1.1;
   text-align: center;
   padding: 6px 2px;
-  min-height: 46px;
+  min-height: 44px;
   border-radius: 10px;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .topnav button svg {
@@ -272,12 +356,13 @@ p {
 }
 
 .topnav button:hover {
-  background: var(--lilac-soft);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .topnav button[aria-current="true"] {
-  background: var(--lilac-soft);
+  background: var(--glass-surface-strong);
   color: var(--purple);
+  box-shadow: 0 2px 8px rgba(75, 46, 131, 0.08);
 }
 
 .app-main {
@@ -293,13 +378,12 @@ p {
   bottom: 0;
   left: 0;
   right: 0;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   max-width: 1080px;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 18px 14px 28px;
+  padding: 16px 14px 24px;
 }
 
 .app-footer {
@@ -309,7 +393,8 @@ p {
   padding: 8px 0 10px;
   color: var(--muted);
   font-size: 0.76rem;
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(10px);
 }
 
 .app-footer p {
@@ -317,7 +402,7 @@ p {
 }
 
 /* ==========================================================================
-   3. Vista Inicio (Estática, cabe en una sola pantalla a 390px sin scroll)
+   3. Vista Inicio — Idéntica a la captura de Carlos (Estática, sin scroll)
    ========================================================================== */
 
 .view-home {
@@ -325,109 +410,100 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: center;
-}
-
-.greeting {
-  font-size: clamp(1.5rem, 6vw, 2.2rem);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 1.08;
-}
-
-.greeting .name {
-  display: inline-block;
-  background: var(--lilac);
-  border-radius: 999px;
-  padding: 2px 14px 4px;
-  margin-top: 4px;
-}
-
-.semester {
-  font-size: 0.95rem;
-  color: var(--purple-dark);
-  margin-top: 8px;
-  margin-bottom: 0;
+.hero-box {
   display: flex;
+  flex-direction: column;
+  padding: 6px 4px;
+}
+
+.greeting-prefix {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2rem, 8vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--purple-dark);
+}
+
+.greeting-user {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.4rem, 10vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  color: var(--purple);
+}
+
+.semester-badge {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-top: 6px;
+  font-weight: 600;
 }
 
-.hero-art {
-  display: grid;
-  place-items: center;
-  background: var(--lilac-bg);
-  border-radius: 48% 52% 55% 45% / 52% 46% 54% 48%;
-  padding: 10px;
-  width: 86px;
-  height: 78px;
-  flex-shrink: 0;
-}
-
-.hero-art svg {
-  width: 68px;
-  height: 58px;
-}
-
-.avisos {
+/* Cápsula de Avisos con estilo glassmorphism */
+.avisos-glass {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--lilac-soft);
-  border-radius: 14px;
-  padding: 10px 14px;
-  text-decoration: none;
+  gap: 12px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-sm);
   color: var(--ink);
 }
 
-.avisos .ic {
+.avisos-glass .ic {
   color: var(--purple);
   display: grid;
   place-items: center;
   flex-shrink: 0;
 }
 
-.avisos .div {
+.avisos-glass .div {
   width: 2px;
-  align-self: stretch;
-  background: var(--lilac);
+  height: 28px;
+  background: var(--line);
   flex-shrink: 0;
 }
 
-.avisos b {
+.avisos-glass b {
   display: block;
   font-size: 0.92rem;
   color: var(--purple-dark);
 }
 
-.avisos span {
+.avisos-glass span {
   color: var(--muted);
   font-size: 0.84rem;
   line-height: 1.3;
 }
 
-.avisos .arrow {
+.avisos-glass .arrow {
   margin-left: auto;
-  color: var(--purple);
+  color: var(--purple-2);
   font-weight: 800;
   font-size: 1.1rem;
   flex-shrink: 0;
 }
 
+/* Portal con 3 tarjetas estilo cristal translúcido */
 .portal {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin: 0;
+  margin-top: 2px;
 }
 
 button.portal-card {
@@ -442,15 +518,18 @@ button.portal-card {
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  gap: 6px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
-  padding: 14px 10px;
-  min-height: 96px;
+  padding: 12px 8px;
+  min-height: 90px;
   text-decoration: none;
   color: var(--ink);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-glass);
+  transition: all 0.2s ease;
 }
 
 .portal-card:last-child {
@@ -458,12 +537,14 @@ button.portal-card {
 }
 
 .portal-card:hover {
+  background: rgba(255, 255, 255, 0.85);
   border-color: var(--purple-2);
+  transform: translateY(-2px);
 }
 
 .portal-card .ic {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--lilac-soft);
   display: grid;
@@ -473,18 +554,18 @@ button.portal-card {
 }
 
 .portal-card .ic svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 
 .portal-card b {
-  font-size: 1rem;
+  font-size: 0.96rem;
   font-weight: 800;
   color: var(--purple-dark);
 }
 
 /* ==========================================================================
-   4. Controles comunes, Mis actividades, Mis calificaciones y Recursos (390px)
+   4. Estilos de Paneles, Actividades, Calificaciones y Recursos (Glass)
    ========================================================================== */
 
 .btn {
@@ -492,27 +573,29 @@ button.portal-card {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid var(--purple);
+  border: 1.5px solid var(--purple);
   background: var(--purple);
   color: #fff;
   padding: 10px 16px;
   min-height: 42px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
+  box-shadow: 0 4px 12px rgba(75, 46, 131, 0.15);
 }
 
 .btn.secondary {
-  background: var(--surface);
+  background: var(--glass-surface-strong);
   color: var(--purple);
+  border-color: var(--glass-border);
 }
 
 .btn.small {
-  padding: 8px 14px;
-  font-size: 0.88rem;
-  min-height: 40px;
+  padding: 7px 14px;
+  font-size: 0.86rem;
+  min-height: 38px;
 }
 
 .rolebar {
@@ -520,22 +603,22 @@ button.portal-card {
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .role-label {
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--muted);
 }
 
 .seg {
   display: flex;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 4px;
-  gap: 4px;
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  gap: 3px;
   flex-wrap: wrap;
 }
 
@@ -543,13 +626,13 @@ button.portal-card {
   border: 0;
   background: transparent;
   color: var(--ink);
-  padding: 8px 12px;
-  min-height: 38px;
-  border-radius: 999px;
+  padding: 7px 11px;
+  min-height: 36px;
+  border-radius: var(--radius-pill);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  font-size: 0.86rem;
+  font-size: 0.84rem;
 }
 
 .seg button[aria-pressed="true"] {
@@ -558,11 +641,13 @@ button.portal-card {
 }
 
 .panel {
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
-  padding: 16px;
-  box-shadow: var(--shadow);
+  padding: 18px;
+  box-shadow: var(--shadow-glass);
 }
 
 .panel-spaced {
@@ -574,14 +659,14 @@ button.portal-card {
   background: var(--purple);
   color: #fff;
   font-weight: 800;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   letter-spacing: 0.08em;
-  padding: 5px 12px;
-  border-radius: 999px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
 }
 
 .badge-top {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .tag {
@@ -593,7 +678,7 @@ button.portal-card {
   background: var(--lilac-soft);
   color: var(--purple);
   padding: 3px 9px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   margin-bottom: 8px;
 }
 
@@ -612,8 +697,7 @@ table {
   margin-top: 12px;
 }
 
-th,
-td {
+th, td {
   text-align: left;
   padding: 8px 8px;
   border-bottom: 1px solid var(--line);
@@ -627,8 +711,7 @@ th {
   color: var(--muted);
 }
 
-td.num,
-th.num {
+td.num, th.num {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -644,19 +727,19 @@ th.num {
   grid-column: 1 / -1;
   height: 10px;
   background: var(--lilac-soft);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 
 .bar-fill {
   height: 100%;
   background: var(--purple-2);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 .task {
   background: var(--lilac-soft);
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   padding: 14px;
   margin-top: 16px;
 }
@@ -664,7 +747,7 @@ th.num {
 .divider {
   border: 0;
   border-top: 1px solid var(--line);
-  margin: 20px 0;
+  margin: 18px 0;
 }
 
 .empty {
@@ -673,7 +756,7 @@ th.num {
   padding: 22px 16px;
   text-align: center;
   margin-top: 18px;
-  background: var(--surface);
+  background: var(--glass-surface);
 }
 
 .empty p {
@@ -686,7 +769,7 @@ th.num {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  padding: 14px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -696,9 +779,9 @@ th.num {
 
 .toggle {
   flex: 0 0 auto;
-  width: 56px;
-  height: 32px;
-  border-radius: 999px;
+  width: 54px;
+  height: 30px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line);
   background: var(--lilac-soft);
   position: relative;
@@ -709,12 +792,12 @@ th.num {
 .toggle::after {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 2px;
+  left: 2px;
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--surface);
+  background: #ffffff;
   border: 1px solid var(--line);
   transition: left 0.18s;
 }
@@ -724,18 +807,16 @@ th.num {
 }
 
 .toggle[aria-pressed="true"]::after {
-  left: 27px;
+  left: 26px;
 }
 
-/* Rúbrica adaptada a 390px sin scroll horizontal */
 .rubric {
   table-layout: fixed;
   width: 100%;
   font-size: 0.78rem;
 }
 
-.rubric th,
-.rubric td {
+.rubric th, .rubric td {
   padding: 7px 5px;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -759,12 +840,12 @@ th.num {
 }
 
 .eval-grid button {
-  border: 1px solid var(--line);
-  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-surface);
   color: var(--ink);
   border-radius: 10px;
   padding: 10px 6px;
-  min-height: 42px;
+  min-height: 40px;
   font: inherit;
   font-size: 0.86rem;
   font-weight: 600;
@@ -785,19 +866,18 @@ th.num {
 
 .form-grid label {
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   display: grid;
   gap: 6px;
 }
 
-.form-grid input,
-.form-grid textarea {
+.form-grid input, .form-grid textarea {
   font: inherit;
-  font-size: 1rem;
+  font-size: 0.96rem;
   color: var(--ink);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
   padding: 10px 12px;
   width: 100%;
 }
@@ -813,27 +893,26 @@ th.num {
 }
 
 .added-card {
-  background: var(--surface);
-  border: 1px solid var(--purple-2);
+  background: var(--glass-surface-strong);
+  border: 1.5px solid var(--purple-2);
   border-radius: 14px;
   padding: 16px;
 }
 
 .added-card p {
   color: var(--muted);
-  font-size: 0.94rem;
+  font-size: 0.92rem;
 }
 
 .added-card .rub {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   background: var(--lilac-soft);
   border-radius: 10px;
   padding: 10px 12px;
   white-space: pre-wrap;
 }
 
-.teacher-only,
-.admin-only {
+.teacher-only, .admin-only {
   display: none;
 }
 
@@ -846,7 +925,7 @@ body[data-role="administrador"] .teacher-only {
   display: block;
 }
 
-/* Recursos (Base 1 columna en móvil 390px) */
+/* Recursos */
 .benefits {
   display: grid;
   grid-template-columns: 1fr;
@@ -855,28 +934,29 @@ body[data-role="administrador"] .teacher-only {
 }
 
 .benefit {
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 18px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-glass);
   display: flex;
   flex-direction: column;
 }
 
 .benefit h4 {
   margin: 14px 0 4px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--purple-2);
 }
 
-.benefit ul,
-.benefit ol {
+.benefit ul, .benefit ol {
   margin: 4px 0 0;
   padding-left: 20px;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--muted);
 }
 
@@ -900,7 +980,7 @@ body[data-role="administrador"] .teacher-only {
 .benefit .source {
   margin-top: auto;
   padding-top: 14px;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: var(--muted);
 }
 
@@ -920,7 +1000,7 @@ body[data-role="administrador"] .teacher-only {
 
 .muted-note {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   margin-top: 12px;
 }
 
@@ -934,34 +1014,25 @@ body[data-role="administrador"] .teacher-only {
   }
 
   .login-card {
-    padding: 34px 30px 28px;
-  }
-
-  .login-card .cap {
-    width: 64px;
-    height: 64px;
+    padding: 34px 28px;
   }
 
   .login-card h1 {
-    font-size: 1.55rem;
+    font-size: 1.6rem;
   }
 
   .view {
-    padding: 24px 18px 34px;
-  }
-
-  .view-home {
-    gap: 16px;
+    padding: 22px 18px 30px;
   }
 
   .portal {
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 14px;
   }
 
   .portal-card {
-    padding: 28px 16px 22px;
-    gap: 12px;
+    padding: 24px 14px 20px;
+    gap: 10px;
   }
 
   .portal-card:last-child {
@@ -969,45 +1040,26 @@ body[data-role="administrador"] .teacher-only {
   }
 
   .portal-card .ic {
-    width: 76px;
-    height: 76px;
+    width: 68px;
+    height: 68px;
   }
 
   .portal-card .ic svg {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
 
   .portal-card b {
-    font-size: 1.2rem;
-  }
-
-  .panel {
-    padding: 20px;
-  }
-
-  table {
-    font-size: 0.94rem;
-  }
-
-  th,
-  td {
-    padding: 9px 10px;
+    font-size: 1.15rem;
   }
 
   .rubric {
     table-layout: auto;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
   }
 
-  .rubric th,
-  .rubric td {
+  .rubric th, .rubric td {
     padding: 9px 10px;
-  }
-
-  .app-footer {
-    font-size: 0.85rem;
-    padding: 10px 0 12px;
   }
 }
 
@@ -1020,128 +1072,71 @@ body[data-role="administrador"] .teacher-only {
     flex-direction: row;
     align-items: center;
     gap: 14px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .brand {
-    font-size: 1.25rem;
-    gap: 10px;
+    font-size: 1.22rem;
   }
 
   .brand .cap {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-  }
-
-  .brand .div {
-    height: 30px;
+    width: 38px;
+    height: 38px;
   }
 
   .topnav {
     display: flex;
     width: auto;
-    gap: 4px;
+    gap: 6px;
     margin-left: auto;
-    flex-wrap: wrap;
   }
 
   .topnav button {
     flex-direction: row;
     gap: 7px;
-    font-size: 0.93rem;
-    padding: 8px 12px;
+    font-size: 0.92rem;
+    padding: 8px 14px;
     min-height: 40px;
-    border-radius: 10px;
+    border-radius: var(--radius-pill);
   }
 
-  .topnav button + button {
-    border-left: 1px solid var(--line);
+  .hero-box {
+    padding: 10px 0;
   }
 
-  .hero-grid {
-    grid-template-columns: 1.35fr 0.65fr;
-    gap: 20px;
+  .greeting-prefix {
+    font-size: 3.2rem;
   }
 
-  .greeting {
-    font-size: clamp(2.4rem, 5vw, 3.8rem);
-    line-height: 1.04;
+  .greeting-user {
+    font-size: 4.5rem;
   }
 
-  .greeting .name {
-    padding: 2px 22px 6px;
-    margin-top: 6px;
-  }
-
-  .semester {
-    font-size: 1.22rem;
-    margin-top: 14px;
-  }
-
-  .hero-art {
-    width: 100%;
-    height: auto;
-    min-height: 190px;
-    padding: 24px 18px;
-  }
-
-  .hero-art svg {
-    width: 180px;
-    height: 150px;
-  }
-
-  .avisos {
-    padding: 14px 18px;
-    border-radius: 16px;
-    gap: 14px;
-  }
-
-  .avisos b {
-    font-size: 1rem;
-  }
-
-  .avisos span {
-    font-size: 0.93rem;
+  .avisos-glass {
+    padding: 14px 20px;
+    border-radius: 18px;
+    max-width: 800px;
   }
 
   .portal {
+    max-width: 900px;
     gap: 18px;
+    margin-top: 10px;
   }
 
   .portal-card {
-    padding: 32px 18px 24px;
-  }
-
-  .portal-card .ic {
-    width: 84px;
-    height: 84px;
-  }
-
-  .portal-card .ic svg {
-    width: 44px;
-    height: 44px;
-  }
-
-  .portal-card b {
-    font-size: 1.3rem;
+    padding: 30px 18px 24px;
   }
 
   .case-detail {
     grid-template-columns: 1.1fr 0.9fr;
     gap: 18px;
-    margin-top: 16px;
   }
 
   .benefits {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
-    margin-top: 18px;
-  }
-
-  .benefit {
-    padding: 20px;
   }
 
   .courses .panel {
