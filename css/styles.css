@@ -498,70 +498,24 @@ p {
   flex-shrink: 0;
 }
 
-/* Portal con 3 tarjetas estilo cristal translúcido */
-.portal {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 2px;
-}
-
-button.portal-card {
-  font: inherit;
-  cursor: pointer;
-  width: 100%;
-}
-
-.portal-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 6px;
+/* Leyenda de propósito en Inicio (sustituye a las tarjetas repetidas) */
+.intro-legend-glass {
   background: var(--glass-surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
-  padding: 12px 8px;
-  min-height: 90px;
-  text-decoration: none;
-  color: var(--ink);
+  padding: 18px 20px;
   box-shadow: var(--shadow-glass);
-  transition: all 0.2s ease;
+  margin-top: 6px;
 }
 
-.portal-card:last-child {
-  grid-column: 1 / -1;
-}
-
-.portal-card:hover {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: var(--purple-2);
-  transform: translateY(-2px);
-}
-
-.portal-card .ic {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--lilac-soft);
-  display: grid;
-  place-items: center;
-  color: var(--purple);
-  flex-shrink: 0;
-}
-
-.portal-card .ic svg {
-  width: 24px;
-  height: 24px;
-}
-
-.portal-card b {
-  font-size: 0.96rem;
-  font-weight: 800;
-  color: var(--purple-dark);
+.intro-legend-glass p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 500;
 }
 
 /* ==========================================================================
