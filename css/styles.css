@@ -979,33 +979,7 @@ body[data-role="administrador"] .teacher-only {
     padding: 22px 18px 30px;
   }
 
-  .portal {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
 
-  .portal-card {
-    padding: 24px 14px 20px;
-    gap: 10px;
-  }
-
-  .portal-card:last-child {
-    grid-column: auto;
-  }
-
-  .portal-card .ic {
-    width: 68px;
-    height: 68px;
-  }
-
-  .portal-card .ic svg {
-    width: 36px;
-    height: 36px;
-  }
-
-  .portal-card b {
-    font-size: 1.15rem;
-  }
 
   .rubric {
     table-layout: auto;
@@ -1073,14 +1047,10 @@ body[data-role="administrador"] .teacher-only {
     max-width: 800px;
   }
 
-  .portal {
-    max-width: 900px;
-    gap: 18px;
+  .intro-legend-glass {
+    padding: 20px 24px;
+    max-width: 800px;
     margin-top: 10px;
-  }
-
-  .portal-card {
-    padding: 30px 18px 24px;
   }
 
   .case-detail {
