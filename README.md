@@ -3,7 +3,8 @@
 Plataforma educativa interactiva y **Offline-First** desarrollada para **Estadística Aplicada a las Ciencias Sociales · Grupo 301** (ICEUABJO / IISUABJO, UABJO). Diseñada con enfoque **mobile-first**, estética moderna *glassmorphism* y capacidades PWA para operar 100% sin conexión a internet en beneficio de estudiantes con conectividad intermitente en Oaxaca.
 
 🌐 **Demo en vivo:** [https://aula-301.vercel.app](https://aula-301.vercel.app)  
-📦 **Repositorio:** [https://github.com/Tortaconflow/aula-301](https://github.com/Tortaconflow/aula-301)
+📦 **Repositorio:** [https://github.com/Tortaconflow/aula-301](https://github.com/Tortaconflow/aula-301)  
+📄 **Dossier de Ingeniería Industrial (Dra. Maldonado):** [docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md](docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md)
 
 ---
 
