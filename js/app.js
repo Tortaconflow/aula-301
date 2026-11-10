@@ -714,7 +714,89 @@
     }
   }
 
-  // 7. Registro de Service Worker para funcionamiento 100% Offline
+  // 7. Visualizador de Tablas del Proyecto de Adecuación Curricular (IISUABJO)
+  function setupCurriculumTablesViewer() {
+    var container = document.getElementById("curriculumTableContent");
+    if (!container || !data.tablasAdecuacionCurricular) return;
+
+    var buttons = [
+      { id: "showTable1Btn", num: 1 },
+      { id: "showTable2Btn", num: 2 },
+      { id: "showTable3Btn", num: 3 },
+      { id: "showTable4Btn", num: 4 },
+      { id: "showTable5Btn", num: 5 },
+      { id: "showTable6Btn", num: 6 }
+    ];
+
+    function renderTable(tableNum) {
+      var found = data.tablasAdecuacionCurricular.find(function (t) { return t.numero === tableNum; });
+      if (!found) return;
+
+      var html = '<h4 style="margin:0 0 6px 0;color:var(--text-color)">Tabla ' + found.numero + ': ' + escapeHtml(found.titulo) + '</h4>' +
+                 '<p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px">' + escapeHtml(found.descripcion) + '</p>' +
+                 '<div style="overflow-x:auto"><table class="rubric" style="width:100%;font-size:0.86rem">';
+
+      if (found.numero === 1) {
+        html += '<thead><tr><th style="width:30%">Elemento original</th><th>Continuidad en la propuesta</th></tr></thead><tbody>';
+        found.filas.forEach(function (f) {
+          html += '<tr><td><strong>' + escapeHtml(f.elemento) + '</strong></td><td>' + escapeHtml(f.detalle) + '</td></tr>';
+        });
+      } else if (found.numero === 2) {
+        html += '<thead><tr><th>Componente</th><th>Base curricular original</th><th>Ajuste de acceso y mediación (BAP)</th></tr></thead><tbody>';
+        found.filas.forEach(function (f) {
+          html += '<tr><td><strong>' + escapeHtml(f.componente) + '</strong></td><td>' + escapeHtml(f.original) + '</td><td>' + escapeHtml(f.ajuste) + '</td></tr>';
+        });
+      } else if (found.numero === 3) {
+        html += '<thead><tr><th style="width:40%">Contenidos originales</th><th>Aplicación contextualizada propuesta</th></tr></thead><tbody>';
+        found.filas.forEach(function (f) {
+          html += '<tr><td><strong>' + escapeHtml(f.bloques) + '</strong></td><td>' + escapeHtml(f.aplicacion) + '</td></tr>';
+        });
+      } else if (found.numero === 4) {
+        html += '<thead><tr><th>Saber de la UCA</th><th>Definición formativa</th><th>Aporte y evidencia de aprendizaje</th></tr></thead><tbody>';
+        found.filas.forEach(function (f) {
+          html += '<tr><td><strong>' + escapeHtml(f.saber) + '</strong></td><td>' + escapeHtml(f.definicion) + '</td><td>' + escapeHtml(f.evidencia) + '</td></tr>';
+        });
+      } else if (found.numero === 5) {
+        html += '<thead><tr><th style="width:40%">Mini caso didáctico</th><th>Aplicación de los contenidos estadísticos</th></tr></thead><tbody>';
+        found.filas.forEach(function (f) {
+          html += '<tr><td><strong>' + escapeHtml(f.minicaso) + '</strong></td><td>' + escapeHtml(f.aplicacion) + '</td></tr>';
+        });
+      } else if (found.numero === 6) {
+        html += '<thead><tr><th style="width:30%">Semana y contenidos</th><th>Trabajo docente y actividad guiada</th><th>Evidencia independiente del estudiante</th></tr></thead><tbody>';
+        found.filas.forEach(function (f) {
+          html += '<tr><td><strong>' + escapeHtml(f.semana) + '</strong></td><td>' + escapeHtml(f.docente) + '</td><td>' + escapeHtml(f.evidencia) + '</td></tr>';
+        });
+      }
+
+      html += '</tbody></table></div>';
+      container.innerHTML = html;
+
+      buttons.forEach(function (btnDef) {
+        var el = document.getElementById(btnDef.id);
+        if (el) {
+          if (btnDef.num === tableNum) {
+            el.className = "btn small";
+          } else {
+            el.className = "btn secondary small";
+          }
+        }
+      });
+    }
+
+    buttons.forEach(function (btnDef) {
+      var btnEl = document.getElementById(btnDef.id);
+      if (btnEl) {
+        btnEl.addEventListener("click", function () {
+          renderTable(btnDef.num);
+        });
+      }
+    });
+
+    // Cargar por defecto la Tabla 5 (Mini casos)
+    renderTable(5);
+  }
+
+  // 8. Registro de Service Worker para funcionamiento 100% Offline
   function registerServiceWorker() {
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
@@ -736,5 +818,6 @@
   setupActivityWorkspaceAndSubmission();
   renderGradesView();
   setupRoleAndTeacherControls();
+  setupCurriculumTablesViewer();
   registerServiceWorker();
 })();

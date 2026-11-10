@@ -3,7 +3,7 @@
  * Permite que la plataforma funcione al 100% sin conexión a internet.
  */
 
-const CACHE_NAME = 'aula301-cache-v3';
+const CACHE_NAME = 'aula301-cache-v4';
 const LOCAL_ASSETS_TO_CACHE = [
   './',
   './index.html',
