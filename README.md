@@ -4,7 +4,8 @@ Plataforma educativa interactiva y **Offline-First** desarrollada para **Estadí
 
 🌐 **Demo en vivo:** [https://aula-301.vercel.app](https://aula-301.vercel.app)  
 📦 **Repositorio:** [https://github.com/Tortaconflow/aula-301](https://github.com/Tortaconflow/aula-301)  
-📄 **Dossier de Ingeniería Industrial (Dra. Maldonado):** [docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md](docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md)
+📄 **Dossier de Ingeniería Industrial (Dra. Maldonado):** [docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md](docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md)  
+🎓 **Artículo Académico Formal (Metodología REA & Goldfish Swarm):** [docs/METODOLOGIA_INGENIERIA_INVERSA_Y_AGENTES_GOLDFISH.md](docs/METODOLOGIA_INGENIERIA_INVERSA_Y_AGENTES_GOLDFISH.md)
 
 ---
 
