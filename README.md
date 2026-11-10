@@ -4,6 +4,7 @@ Plataforma educativa interactiva y **Offline-First** desarrollada para **Estadí
 
 🌐 **Demo en vivo:** [https://aula-301.vercel.app](https://aula-301.vercel.app)  
 📦 **Repositorio:** [https://github.com/Tortaconflow/aula-301](https://github.com/Tortaconflow/aula-301)  
+🏛️ **Dictamen Universitario Formal (Ingeniería Inversa REA & Goldfish Swarm):** [docs/JUSTIFICACION_FORMAL_REA_GOLDFISH_UNIVERSIDAD.md](docs/JUSTIFICACION_FORMAL_REA_GOLDFISH_UNIVERSIDAD.md)  
 📖 **Manual Oficial Docente y Alumno:** [docs/MANUAL_USUARIO_DOCENTE_ALUMNO.md](docs/MANUAL_USUARIO_DOCENTE_ALUMNO.md)  
 🎯 **Guía de Presentación, Simulación y Banco de 100 Preguntas:** [docs/presentacion/PROTOCOLO_PRESENTACION_Y_SIMULACION.md](docs/presentacion/PROTOCOLO_PRESENTACION_Y_SIMULACION.md)  
 📄 **Dossier de Ingeniería Industrial (Dra. Maldonado):** [docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md](docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md)  
