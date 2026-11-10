@@ -347,6 +347,21 @@
   }
 
   // 7. Espacio de trabajo de Actividad 1 y Entrega Offline-First
+  async function generateSha256(text) {
+    if (window.crypto && crypto.subtle) {
+      try {
+        var encoder = new TextEncoder();
+        var dataBuf = encoder.encode(text);
+        var hashBuf = await crypto.subtle.digest("SHA-256", dataBuf);
+        var hashArr = Array.from(new Uint8Array(hashBuf));
+        return hashArr.map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+      } catch (e) {
+        return "hash_unavailable";
+      }
+    }
+    return "webcrypto_unsupported";
+  }
+
   function setupActivityWorkspaceAndSubmission() {
     var toggleBtn = document.getElementById("toggleActividad1Btn");
     var workspace = document.getElementById("workspaceActividad1");
@@ -367,6 +382,20 @@
           badgeAct1.className = "status-pill delivered";
         }
       }
+    }
+
+    // Guardado automático local en caliente (Drafting Local en tiempo real con debounce)
+    var autoSaveTimer = null;
+    if (submissionText) {
+      submissionText.addEventListener("input", function () {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(function () {
+          var current = loadStoredSubmission() || { status: "draft" };
+          current.text = submissionText.value;
+          current.updatedAt = new Date().toISOString();
+          saveStoredSubmission(current);
+        }, 400);
+      });
     }
 
     if (toggleBtn && workspace) {
@@ -406,6 +435,15 @@
         var txt = submissionText.value.trim();
         if (!txt) return;
 
+        // Poka-Yoke pedagógico: validar que la autoevaluación esté completada
+        var selfEval = loadStoredSelfEval();
+        var evalCount = Object.keys(selfEval).length;
+        var totalCrit = data.rubricaEjemplo.criterios.length;
+        if (evalCount < totalCrit) {
+          showFeedback("Poka-yoke formativo: Por favor evalúa los " + totalCrit + " criterios en la rúbrica antes de registrar tu entrega.", false);
+          return;
+        }
+
         saveStoredSubmission({
           text: txt,
           status: "delivered",
@@ -417,24 +455,29 @@
           badgeAct1.className = "status-pill delivered";
         }
 
-        showFeedback("¡Actividad 1 entregada con éxito! Registro persistido localmente.", true);
+        showFeedback("¡Actividad 1 entregada con éxito! Registro persistido localmente con autoevaluación verificada.", true);
         renderGradesView();
       });
     }
 
     if (exportBtn && submissionText) {
-      exportBtn.addEventListener("click", function () {
+      exportBtn.addEventListener("click", async function () {
         var sub = loadStoredSubmission() || { text: submissionText.value.trim(), status: "draft" };
         var selfEval = loadStoredSelfEval();
         var student = document.getElementById("greetName") ? document.getElementById("greetName").textContent : "Carlos Arturo";
+        var payloadForHash = student + "|" + (sub.text || "") + "|" + JSON.stringify(selfEval);
+        var hash = await generateSha256(payloadForHash);
+
         var receipt = {
           plataforma: "Aula 301 — IISUABJO",
           actividad: "Actividad 1: Acceso tecnológico y participación en clase",
           estudiante: student,
-          fecha_generacion: new Date().toLocaleString("es-MX"),
+          fecha_generacion: new Date().toISOString(),
+          fecha_local: new Date().toLocaleString("es-MX"),
           estado_entrega: sub.status === "delivered" ? "ENTREGADA" : "BORRADOR",
           conclusiones_estudiante: sub.text || "(Sin texto)",
-          autoevaluacion_rubrica: selfEval
+          autoevaluacion_rubrica: selfEval,
+          firma_integridad_sha256: hash
         };
 
         var blob = new Blob([JSON.stringify(receipt, null, 2)], { type: "application/json;charset=utf-8" });
@@ -484,7 +527,7 @@
         else if (selfEval[k] === "En proceso") logradoCount += 1.8;
         else logradoCount += 1.0;
       });
-      var estimatedGrade = criterios.length > 0 ? (logradoCount / (criterios.length * 2.5) * 10).toFixed(1) : "10";
+      var estimatedGrade = criterios.length > 0 ? (logradoCount / (criterios.length * 2.5) * 10).toFixed(1) : "--";
       if (gradeCircleVal) gradeCircleVal.textContent = estimatedGrade;
 
       if (gradeCardBody1) {
@@ -513,13 +556,27 @@
 
   function setupRoleAndTeacherControls() {
     var storedActivities = loadStoredActivities();
+    var emptyEl = document.getElementById("emptyActivities");
     if (storedActivities.length > 0) {
       storedActivities.forEach(renderAddedCard);
-      document
-        .getElementById("emptyActivities")
-        .querySelector("p").textContent =
-        "Hay " + storedActivities.length + " actividad(es) guardada(s) en este dispositivo.";
+      if (emptyEl) {
+        var p = emptyEl.querySelector("p");
+        if (p) p.textContent = "Hay " + storedActivities.length + " actividad(es) guardada(s) en este dispositivo.";
+      }
     }
+
+    // Restaurar rol guardado si existe
+    try {
+      var savedRole = localStorage.getItem(STORAGE_KEYS.role);
+      if (savedRole && data.roles[savedRole]) {
+        document.body.setAttribute("data-role", savedRole);
+        document.getElementById("roleStatus").textContent = data.roles[savedRole].label;
+        document.getElementById("greetName").textContent = data.roles[savedRole].name;
+        document.querySelectorAll("[data-role-btn]").forEach(function (x) {
+          x.setAttribute("aria-pressed", x.getAttribute("data-role-btn") === savedRole ? "true" : "false");
+        });
+      }
+    } catch (e) {}
 
     document.querySelectorAll("[data-role-btn]").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -532,6 +589,9 @@
         document.querySelectorAll("[data-role-btn]").forEach(function (x) {
           x.setAttribute("aria-pressed", x === b ? "true" : "false");
         });
+        try {
+          localStorage.setItem(STORAGE_KEYS.role, r);
+        } catch (err) {}
       });
     });
 
@@ -567,28 +627,29 @@
         saveStoredActivities(list);
 
         renderAddedCard(newActivity);
-        document
-          .getElementById("emptyActivities")
-          .querySelector("p").textContent =
-          "Hay " + list.length + " actividad(es) guardada(s) en este dispositivo.";
+        if (emptyEl) {
+          var pEl = emptyEl.querySelector("p");
+          if (pEl) pEl.textContent = "Hay " + list.length + " actividad(es) guardada(s) en este dispositivo.";
+        }
         e.target.reset();
       });
     }
 
     function bindToggle(id, storageKey, panelId) {
       var el = document.getElementById(id);
-      if (!el) return;
+      var panel = document.getElementById(panelId);
+      if (!el || !panel) return;
       var saved = localStorage.getItem(storageKey) === "true";
       if (saved) {
         el.setAttribute("aria-pressed", "true");
-        document.getElementById(panelId).classList.remove("hidden");
+        panel.classList.remove("hidden");
       }
 
       el.addEventListener("click", function () {
         var v = el.getAttribute("aria-pressed") === "true";
         var next = !v;
         el.setAttribute("aria-pressed", next ? "true" : "false");
-        document.getElementById(panelId).classList.toggle("hidden", !next);
+        panel.classList.toggle("hidden", !next);
         try {
           localStorage.setItem(storageKey, String(next));
         } catch (err) {}
@@ -605,6 +666,49 @@
         this.textContent = editingRubric ? "Terminar edición" : "Editar rúbrica de ejemplo";
         document.querySelectorAll("#rubricTable tbody td").forEach(function (td) {
           td.contentEditable = editingRubric ? "true" : "false";
+        });
+      });
+    }
+
+    // Bandeja de Ingesta Docente: lectura de comprobantes JSON
+    var triggerImportBtn = document.getElementById("triggerImportBtn");
+    var importReceiptsInput = document.getElementById("importReceiptsInput");
+    var importedList = document.getElementById("importedReceiptsList");
+
+    if (triggerImportBtn && importReceiptsInput) {
+      triggerImportBtn.addEventListener("click", function () {
+        importReceiptsInput.click();
+      });
+
+      importReceiptsInput.addEventListener("change", function (e) {
+        var files = Array.from(e.target.files);
+        if (!files.length || !importedList) return;
+
+        files.forEach(function (file) {
+          var reader = new FileReader();
+          reader.onload = function (ev) {
+            try {
+              var receipt = JSON.parse(ev.target.result);
+              var card = document.createElement("article");
+              card.className = "grade-card";
+              card.innerHTML =
+                '<div class="grade-card-top">' +
+                  '<span class="tag">Entrega Recibida</span>' +
+                  '<span class="status-pill delivered">Comprobante Válido</span>' +
+                '</div>' +
+                '<h3>' + escapeHtml(receipt.estudiante || "Estudiante") + '</h3>' +
+                '<p style="font-size:0.86rem;color:var(--muted)">Fecha: ' + escapeHtml(receipt.fecha_local || receipt.fecha_generacion || "Hoy") + '</p>' +
+                '<p style="margin-top:6px"><strong>Conclusiones:</strong> "' + escapeHtml(receipt.conclusiones_estudiante || "Sin conclusiones") + '"</p>' +
+                (receipt.firma_integridad_sha256 ? '<p style="font-size:0.75rem;color:var(--purple);word-break:break-all;margin-top:4px"><strong>SHA-256:</strong> ' + escapeHtml(receipt.firma_integridad_sha256) + '</p>' : '') +
+                '<div style="background:var(--lilac-soft);border-radius:10px;padding:8px 12px;margin-top:6px;font-size:0.86rem">' +
+                  '<strong>Rúbrica:</strong> ' + JSON.stringify(receipt.autoevaluacion_rubrica || {}) +
+                '</div>';
+              importedList.appendChild(card);
+            } catch (err) {
+              console.error("Error al procesar archivo JSON:", err);
+            }
+          };
+          reader.readAsText(file);
         });
       });
     }

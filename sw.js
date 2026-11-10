@@ -3,8 +3,8 @@
  * Permite que la plataforma funcione al 100% sin conexión a internet.
  */
 
-const CACHE_NAME = 'aula301-cache-v2';
-const ASSETS_TO_CACHE = [
+const CACHE_NAME = 'aula301-cache-v3';
+const LOCAL_ASSETS_TO_CACHE = [
   './',
   './index.html',
   './css/styles.css',
@@ -12,7 +12,9 @@ const ASSETS_TO_CACHE = [
   './js/app.js',
   './manifest.json',
   './icons/icon-192.png',
-  './icons/icon-512.png',
+  './icons/icon-512.png'
+];
+const OPTIONAL_ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Public+Sans:wght@400;500;600;700;800;900&display=swap'
 ];
 
@@ -20,7 +22,13 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+      // Primero asegurar los archivos locales obligatorios
+      return cache.addAll(LOCAL_ASSETS_TO_CACHE).then(() => {
+        // Intentar precargar fuentes externas de manera tolerante a fallos
+        return Promise.allSettled(
+          OPTIONAL_ASSETS_TO_CACHE.map((url) => cache.add(url).catch(() => null))
+        );
+      });
     }).then(() => self.skipWaiting())
   );
 });
@@ -53,7 +61,7 @@ self.addEventListener('fetch', (event) => {
       }
       // Si no estaba en caché, intenta obtenerlo por la red y guardarlo
       return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+        if (!networkResponse || networkResponse.status !== 200 || (networkResponse.type !== 'basic' && networkResponse.type !== 'cors')) {
           return networkResponse;
         }
         const responseToCache = networkResponse.clone();

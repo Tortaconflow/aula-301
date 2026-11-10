@@ -531,7 +531,7 @@ p {
   background: var(--purple);
   color: #fff;
   padding: 10px 16px;
-  min-height: 42px;
+  min-height: 44px;
   border-radius: var(--radius-pill);
   font: inherit;
   font-weight: 700;
@@ -547,9 +547,9 @@ p {
 }
 
 .btn.small {
-  padding: 7px 14px;
+  padding: 8px 14px;
   font-size: 0.86rem;
-  min-height: 38px;
+  min-height: 44px;
 }
 
 .rolebar {
@@ -580,8 +580,8 @@ p {
   border: 0;
   background: transparent;
   color: var(--ink);
-  padding: 7px 11px;
-  min-height: 36px;
+  padding: 8px 12px;
+  min-height: 44px;
   border-radius: var(--radius-pill);
   font: inherit;
   font-weight: 700;

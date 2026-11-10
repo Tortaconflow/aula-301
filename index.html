@@ -261,10 +261,11 @@
         </article>
 
         <!-- Tarjetas dinámicas agregadas por el Docente -->
+        <div class="empty hidden" id="emptyActivities"><p>No hay actividades adicionales.</p></div>
         <div class="added" id="addedList" aria-live="polite"></div>
       </div>
 
-      <!-- Panel del Docente (para crear nuevas actividades) -->
+      <!-- Panel del Docente (para crear nuevas actividades y recibir entregas) -->
       <div class="teacher-only panel panel-spaced">
         <h3>+ Crear nueva actividad (Docente)</h3>
         <form class="form-grid" id="addForm">
@@ -283,6 +284,23 @@
         <div class="switch-row"><div><strong>Autoevaluación obligatoria</strong></div><button type="button" class="toggle" id="toggleAuto" aria-pressed="false" aria-label="Activar o desactivar autoevaluación"></button></div>
         <div class="switch-row"><div><strong>Coevaluación entre pares</strong></div><button type="button" class="toggle" id="toggleCo" aria-pressed="false" aria-label="Activar o desactivar coevaluación"></button></div>
         <p style="margin-top:12px"><button type="button" class="btn secondary small" id="editRubricBtn">Editar rúbrica de ejemplo</button></p>
+      </div>
+
+      <!-- Panel de Coevaluación (visible cuando se active) -->
+      <div class="panel panel-spaced hidden" id="coPanel">
+        <h3>Coevaluación entre pares</h3>
+        <p style="color:var(--muted)">Revisa el trabajo de un compañero con la misma rúbrica y justifica cada nivel de logro que marques.</p>
+      </div>
+
+      <!-- Bandeja de Ingesta Docente (Cierre de ciclo de información) -->
+      <div class="teacher-only panel panel-spaced">
+        <h3>Bandeja de Entregas (Consolidación de Comprobantes JSON)</h3>
+        <p style="color:var(--muted);font-size:0.9rem">Selecciona o suelta los archivos de comprobante (.json) recibidos por WhatsApp, correo o Bluetooth para registrar y auditar las entregas de los alumnos.</p>
+        <div style="margin-top:10px">
+          <input type="file" id="importReceiptsInput" accept=".json" multiple style="display:none">
+          <button type="button" class="btn secondary small" id="triggerImportBtn">📥 Cargar comprobantes (.json)</button>
+        </div>
+        <div id="importedReceiptsList" class="grades-stack" style="margin-top:14px"></div>
       </div>
 
       <div class="admin-only panel panel-spaced">
