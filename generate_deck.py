@@ -5,27 +5,33 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
+
 def create_deck():
     prs = pptx.Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
     blank_layout = prs.slide_layouts[6]
 
-    # Paleta cromática educativa institucional
-    BG_DARK = RGBColor(26, 27, 65)         # Indigo oscuro profundo
-    BG_CARD = RGBColor(255, 255, 255)      # Blanco tarjeta
-    BG_LIGHT = RGBColor(248, 250, 252)     # Gris slate ultra suave
-    TEXT_MAIN = RGBColor(15, 23, 42)       # Texto principal oscuro
-    TEXT_MUTED = RGBColor(71, 85, 105)     # Texto secundario / gris
-    TEXT_WHITE = RGBColor(255, 255, 255)   # Blanco puro
-    TEXT_LILAC = RGBColor(199, 210, 254)   # Lilac suave
-    ACCENT_PURPLE = RGBColor(79, 70, 229)  # Púrpura educativo
-    ACCENT_GOLD = RGBColor(217, 119, 6)    # Ámbar Oaxaca
-    ACCENT_GREEN = RGBColor(16, 185, 129)  # Verde logro DUA
-    BORDER_LIGHT = RGBColor(226, 232, 240) # Borde sutil
+    # Paleta cromática de alto contraste para proyectores VGA y equipos modestos
+    BG_DARK = RGBColor(26, 27, 65)          # Índigo oscuro profundo
+    BG_CARD = RGBColor(255, 255, 255)       # Blanco limpio
+    BG_LIGHT = RGBColor(244, 246, 251)      # Fondo claro descanso visual
+    TEXT_MAIN = RGBColor(15, 23, 42)        # Negro pizarra legible
+    TEXT_MUTED = RGBColor(51, 65, 85)       # Gris pizarra alto contraste
+    TEXT_WHITE = RGBColor(255, 255, 255)    # Blanco
+    TEXT_LILAC = RGBColor(214, 222, 255)    # Lila claro sobre fondo oscuro
+    ACCENT_PURPLE = RGBColor(75, 46, 131)   # Morado IISUABJO
+    ACCENT_GOLD = RGBColor(180, 83, 9)      # Ámbar Oaxaca legible
+    ACCENT_GREEN = RGBColor(21, 128, 61)    # Verde logro DUA
+    ACCENT_RED = RGBColor(185, 28, 28)      # Rojo alerta contrastado
+    BORDER_LIGHT = RGBColor(203, 213, 225)  # Borde visible en proyector
 
-    CAPTURES_DIR = r"C:\Users\reily\.gemini\antigravity\scratch\aula-301\docs\presentacion\capturas"
+    FONT_UI = "Arial"  # Tipografía universal compatible con Windows antiguo y LibreOffice
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    CAPTURES_DIR = os.path.join(BASE_DIR, "docs", "presentacion", "capturas")
     REPO_URL = "https://github.com/Tortaconflow/aula-301"
+    WEB_URL = "https://aula-301.vercel.app"
+    TOTAL_SLIDES = 13
 
     def set_slide_bg(slide, color):
         bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, prs.slide_height)
@@ -34,795 +40,697 @@ def create_deck():
         bg.line.fill.background()
         return bg
 
-    def add_header(slide, title, category, slide_num, total_slides=13):
-        # Franja superior o encabezado limpio
-        header_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(10.5), Inches(0.95))
+    def add_header(slide, title, category, slide_num):
+        header_box = slide.shapes.add_textbox(Inches(0.65), Inches(0.32), Inches(10.8), Inches(0.95))
         tf = header_box.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
-        
-        # Categoría / Supertítulo
+
         p_cat = tf.paragraphs[0]
         p_cat.text = category.upper()
-        p_cat.font.name = "Calibri"
+        p_cat.font.name = FONT_UI
         p_cat.font.size = Pt(11)
         p_cat.font.bold = True
         p_cat.font.color.rgb = ACCENT_PURPLE
         p_cat.space_after = Pt(2)
 
-        # Título principal
         p_title = tf.add_paragraph()
         p_title.text = title
-        p_title.font.name = "Calibri"
-        p_title.font.size = Pt(22)
+        p_title.font.name = FONT_UI
+        p_title.font.size = Pt(20)
         p_title.font.bold = True
         p_title.font.color.rgb = TEXT_MAIN
 
-        # Contador de diapositiva
-        num_box = slide.shapes.add_textbox(Inches(11.5), Inches(0.4), Inches(1.0), Inches(0.4))
+        num_box = slide.shapes.add_textbox(Inches(11.6), Inches(0.35), Inches(1.08), Inches(0.4))
         ntf = num_box.text_frame
         ntf.margin_right = ntf.margin_top = 0
         np = ntf.paragraphs[0]
         np.alignment = PP_ALIGN.RIGHT
-        np.text = f"{slide_num:02d} / {total_slides:02d}"
-        np.font.name = "Calibri"
+        np.text = f"{slide_num:02d} / {TOTAL_SLIDES:02d}"
+        np.font.name = FONT_UI
         np.font.size = Pt(12)
         np.font.bold = True
         np.font.color.rgb = TEXT_MUTED
 
     def add_footer(slide):
-        footer_box = slide.shapes.add_textbox(Inches(0.8), Inches(7.0), Inches(11.733), Inches(0.35))
+        footer_box = slide.shapes.add_textbox(Inches(0.65), Inches(7.02), Inches(12.03), Inches(0.35))
         tf = footer_box.text_frame
         tf.margin_left = tf.margin_top = tf.margin_bottom = tf.margin_right = 0
         p = tf.paragraphs[0]
-        p.text = f"Aula 301 · Adecuación Curricular UCA Estadística Aplicada (IISUABJO) · Repositorio: {REPO_URL}"
-        p.font.name = "Calibri"
-        p.font.size = Pt(9.5)
+        p.text = f"Aula 301 · Adecuación Curricular Estadística Aplicada (IISUABJO - UABJO) · GitHub: {REPO_URL}"
+        p.font.name = FONT_UI
+        p.font.size = Pt(10.5)
         p.font.color.rgb = TEXT_MUTED
 
     def add_card(slide, left, top, width, height, bg_color=BG_CARD, border_color=BORDER_LIGHT):
         card = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, width, height)
+        card.adjustments[0] = 0.04
         card.fill.solid()
         card.fill.fore_color.rgb = bg_color
         if border_color:
             card.line.color.rgb = border_color
-            card.line.width = Pt(1)
+            card.line.width = Pt(1.2)
         else:
             card.line.fill.background()
         return card
 
-    # ==========================================
-    # SLIDE 1: PORTADA
-    # ==========================================
+    def add_bullet_list(tf, items, font_size=12.5, space_after=8):
+        for bold_txt, norm_txt in items:
+            p = tf.add_paragraph()
+            p.space_after = Pt(space_after)
+            rb = p.add_run()
+            rb.text = bold_txt
+            rb.font.name = FONT_UI
+            rb.font.bold = True
+            rb.font.size = Pt(font_size)
+            rb.font.color.rgb = TEXT_MAIN
+            rn = p.add_run()
+            rn.text = norm_txt
+            rn.font.name = FONT_UI
+            rn.font.size = Pt(font_size)
+            rn.font.color.rgb = TEXT_MUTED
+
+    # =========================================================================
+    # LÁMINA 1: PORTADA INSTITUCIONAL Y PEDAGÓGICA
+    # =========================================================================
     s1 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s1, BG_DARK)
 
-    # Franja decorativa Oaxaca
-    decoline = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.1), Inches(11.733), Inches(0.06))
+    decoline = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(0.95), Inches(11.73), Inches(0.07))
     decoline.fill.solid()
-    decoline.fill.fore_color.rgb = ACCENT_GOLD
+    decoline.fill.fore_color.rgb = RGBColor(245, 158, 11)
     decoline.line.fill.background()
 
-    # Caja de Título
-    tb1 = s1.shapes.add_textbox(Inches(0.8), Inches(1.4), Inches(11.733), Inches(4.5))
+    tb1 = s1.shapes.add_textbox(Inches(0.8), Inches(1.25), Inches(11.73), Inches(4.0))
     tf1 = tb1.text_frame
     tf1.word_wrap = True
+    tf1.margin_top = tf1.margin_bottom = 0
 
     p = tf1.paragraphs[0]
-    p.text = "CIENCIAS DE LA EDUCACIÓN & DISEÑO UNIVERSAL PARA EL APRENDIZAJE (DUA)"
-    p.font.name = "Calibri"
-    p.font.size = Pt(12)
+    p.text = "CIENCIAS DE LA EDUCACIÓN · ADECUACIÓN CURRICULAR Y DISEÑO UNIVERSAL (DUA)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(12.5)
     p.font.bold = True
     p.font.color.rgb = TEXT_LILAC
-    p.space_after = Pt(12)
-
-    p = tf1.add_paragraph()
-    p.text = "Adecuación Curricular Inclusiva y\nMediación Didáctica Situada en Oaxaca"
-    p.font.name = "Calibri"
-    p.font.size = Pt(36)
-    p.font.bold = True
-    p.font.color.rgb = TEXT_WHITE
     p.space_after = Pt(14)
 
     p = tf1.add_paragraph()
-    p.text = "UCA: Estadística Aplicada a las Ciencias Sociales (Clave DI-EAC-03 · 3er Semestre)\nLicenciatura en Ciencias Sociales y Estudios Políticos — IISUABJO, UABJO"
-    p.font.name = "Calibri"
+    p.text = "Adecuación Curricular Inclusiva y\nMediación Didáctica Situada en Oaxaca"
+    p.font.name = FONT_UI
+    p.font.size = Pt(34)
+    p.font.bold = True
+    p.font.color.rgb = TEXT_WHITE
+    p.space_after = Pt(16)
+
+    p = tf1.add_paragraph()
+    p.text = "UCA: Estadística Aplicada a las Ciencias Sociales (Clave DI-EAC-03 · 3er Semestre · 9 créditos)\nLicenciatura en Ciencias Sociales y Estudios Políticos — IISUABJO, UABJO"
+    p.font.name = FONT_UI
     p.font.size = Pt(16)
     p.font.color.rgb = RGBColor(224, 231, 255)
-    p.space_after = Pt(20)
 
-    # Tarjeta inferior con datos clave
-    add_card(s1, Inches(0.8), Inches(5.6), Inches(11.733), Inches(1.3), RGBColor(38, 41, 92), None)
-    tb_meta = s1.shapes.add_textbox(Inches(1.0), Inches(5.7), Inches(11.333), Inches(1.1))
+    add_card(s1, Inches(0.8), Inches(5.45), Inches(11.73), Inches(1.45), RGBColor(38, 41, 92), None)
+    tb_meta = s1.shapes.add_textbox(Inches(1.05), Inches(5.6), Inches(11.23), Inches(1.15))
     tf_meta = tb_meta.text_frame
     tf_meta.word_wrap = True
-    
+
     p = tf_meta.paragraphs[0]
-    p.text = "Docente / Asesoría: Dra. Maldonado  |  Grupo 301 (IISUABJO)  |  Estudiante: Carlos Arturo"
-    p.font.name = "Calibri"
+    p.text = "Grupo 301 (IISUABJO)  |  Enfoque de calidad formativa: Dra. Maldonado  |  Estudiante modelo: Carlos Arturo"
+    p.font.name = FONT_UI
     p.font.size = Pt(13)
     p.font.bold = True
     p.font.color.rgb = TEXT_WHITE
-    p.space_after = Pt(6)
+    p.space_after = Pt(8)
 
     p = tf_meta.add_paragraph()
-    p.text = f"Repositorio de Código Abierto y Documentación: {REPO_URL}\nDespliegue Web Gratuito (PWA): https://aula-301.vercel.app  ·  100% Funcional sin Internet"
-    p.font.name = "Calibri"
-    p.font.size = Pt(11)
-    p.font.color.rgb = RGBColor(199, 210, 254)
+    p.text = f"Repositorio público en GitHub: {REPO_URL}\nRecurso educativo abierto y gratuito (funciona sin internet): {WEB_URL}"
+    p.font.name = FONT_UI
+    p.font.size = Pt(12)
+    p.font.color.rgb = TEXT_LILAC
 
-    # ==========================================
-    # SLIDE 2: DIAGNÓSTICO EN OAXACA & BAP
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 2: DIAGNÓSTICO CONTEXTUAL DE OAXACA Y BAP DEL AULA 301
+    # =========================================================================
     s2 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s2, BG_LIGHT)
-    add_header(s2, "Diagnóstico Situado: Las Barreras de Aprendizaje en Oaxaca", "1. Diagnóstico Contextual", 2)
+    add_header(s2, "Diagnóstico Situado: Realidad de Oaxaca y Barreras de Aprendizaje (BAP)", "1. Diagnóstico Contextual", 2)
     add_footer(s2)
 
-    # Columna izquierda: Realidad Sociodemográfica Oaxaca (Datos del Drive)
-    add_card(s2, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2))
-    tb_oax = s2.shapes.add_textbox(Inches(1.0), Inches(1.7), Inches(5.2), Inches(4.8))
+    add_card(s2, Inches(0.65), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_oax = s2.shapes.add_textbox(Inches(0.9), Inches(1.55), Inches(5.35), Inches(5.0))
     tf_oax = tb_oax.text_frame
     tf_oax.word_wrap = True
 
     p = tf_oax.paragraphs[0]
-    p.text = "Realidad Sociodemográfica de Oaxaca (INEGI 2024-2026)"
-    p.font.name = "Calibri"
-    p.font.size = Pt(15)
+    p.text = "Contexto Sociodemográfico de Oaxaca (INEGI 2024-2026)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
     p.font.bold = True
     p.font.color.rgb = ACCENT_PURPLE
     p.space_after = Pt(10)
 
-    points_oax = [
-        ("Pobreza Multidimensional:", " 51.6% en Oaxaca vs. 29.6% nacional (INEGI / CONEVAL)."),
-        ("Rezago Educativo:", " 30.5% en Oaxaca frente a 18.6% a escala nacional."),
-        ("Informalidad Laboral:", " 79.9% de la población ocupada (1er Trimestre 2026)."),
-        ("Diversidad Lingüística:", " 31.2% de la población de 3+ años habla lengua originaria."),
-        ("Limitación Tecnológica:", " Estudiantes combinan estudio con trabajo informal y largos trayectos.")
-    ]
-    for bold_txt, norm_txt in points_oax:
-        p = tf_oax.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "• " + bold_txt
-        run_b.font.bold = True
-        run_b.font.size = Pt(12)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = norm_txt
-        run_n.font.size = Pt(12)
-        run_n.font.color.rgb = TEXT_MUTED
+    add_bullet_list(tf_oax, [
+        ("- Pobreza multidimensional: ", "51.6 % en Oaxaca frente a 29.6 % nacional (INEGI / CONEVAL)."),
+        ("- Rezago educativo: ", "30.5 % en la entidad frente a 18.6 % en el promedio del país."),
+        ("- Informalidad laboral: ", "79.9 % de la población ocupada (1er Trimestre 2026); muchos alumnos trabajan."),
+        ("- Diversidad lingüística: ", "31.2 % de la población de 3 años y más habla una lengua originaria."),
+        ("- Movilidad y conectividad: ", "Traslados largos y señal intermitente en Ciudad Universitaria y comunidades.")
+    ], font_size=12.5, space_after=9)
 
-    # Columna derecha: Cuestionario Grupo 301 & BAP
-    add_card(s2, Inches(6.8), Inches(1.5), Inches(5.733), Inches(5.2))
-    tb_bap = s2.shapes.add_textbox(Inches(7.0), Inches(1.7), Inches(5.333), Inches(4.8))
+    add_card(s2, Inches(6.83), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_bap = s2.shapes.add_textbox(Inches(7.08), Inches(1.55), Inches(5.35), Inches(5.0))
     tf_bap = tb_bap.text_frame
     tf_bap.word_wrap = True
 
     p = tf_bap.paragraphs[0]
-    p.text = "Diagnóstico del Aula 301: BAP Identificadas"
-    p.font.name = "Calibri"
-    p.font.size = Pt(15)
+    p.text = "BAP Identificadas en el Grupo 301 (Cuestionario a 13 alumnos)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
     p.font.bold = True
     p.font.color.rgb = ACCENT_GOLD
     p.space_after = Pt(10)
 
-    points_bap = [
-        ("Brecha de Dispositivos:", " 46.7% solo cuenta con teléfono celular para entregar tareas. Solo 23.3% tiene computadora propia."),
-        ("Infraestructura Crítica:", " Las computadoras del aula 'a duras penas arrancan' y la red de CU es intermitente o inexistente."),
-        ("BAP Pedagógica:", " Inseguridad y timidez para participar verbalmente; temor al juicio por error."),
-        ("Premisa de Educación Inclusiva:", " Las BAP NO están en el estudiante ni en su capacidad; están en la rigidez de los medios y en el entorno didáctico.")
-    ]
-    for bold_txt, norm_txt in points_bap:
-        p = tf_bap.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "• " + bold_txt
-        run_b.font.bold = True
-        run_b.font.size = Pt(12)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = norm_txt
-        run_n.font.size = Pt(12)
-        run_n.font.color.rgb = TEXT_MUTED
+    add_bullet_list(tf_bap, [
+        ("- Brecha de acceso (caso modelo n=30): ", "46.7 % solo cuenta con teléfono celular; 30.0 % comparte equipo familiar; solo 23.3 % tiene PC propia."),
+        ("- Equipos escolares modestos: ", "Las computadoras del aula apenas arrancan y la red de internet falla con frecuencia."),
+        ("- Barrera afectiva y comunicativa: ", "Timidez o inseguridad para participar en voz alta por temor a equivocarse."),
+        ("- Principio de Educación Inclusiva: ", "Las BAP NO residen en el alumno, sino en medios y didácticas rígidas.")
+    ], font_size=12.5, space_after=9)
 
-    # ==========================================
-    # SLIDE 3: FUNDAMENTACIÓN PEDAGÓGICA (DUA & CASOS)
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 3: FUNDAMENTACIÓN PEDAGÓGICA EN CIENCIAS DE LA EDUCACIÓN
+    # =========================================================================
     s3 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s3, BG_LIGHT)
-    add_header(s3, "Marco Pedagógico: DUA, Aprendizaje Situado y Estudio de Casos", "2. Fundamentación Educativa", 3)
+    add_header(s3, "Marco Pedagógico: Adecuación Curricular, DUA y Aprendizaje Situado", "2. Ciencias de la Educación", 3)
     add_footer(s3)
 
     pillars = [
-        ("Adecuación No Significativa", "Conserva el rigor curricular", 
-         "No recorta contenidos ni disminuye la exigencia académica. Se mantienen los 9 créditos, 144 horas y propósitos formativos, adaptando tiempos, medios y formatos de acceso."),
-        ("Diseño Universal (DUA)", "Montoya et al., 2024 / UNESCO",
-         "1. Múltiples formas de representación (tabla, gráfica, texto).\n2. Múltiples formas de acción/expresión (móvil, papel, CSV).\n3. Múltiples formas de implicación (casos reales de Oaxaca)."),
+        ("Adecuación No Significativa", "Rigor e inclusión (UCA DI-EAC-03)",
+         "No recorta contenidos ni baja estándares académicos: conserva intactos los 9 créditos, 144 horas y 8 bloques de Estadística. Ajusta acceso, tiempos, formatos y mediación docente."),
+        ("Diseño Universal (DUA)", "Montoya et al. (2024) / UNESCO",
+         "1) Múltiples representaciones (tablas, gráficas, glosario y libreta).\n2) Múltiples formas de expresión (celular, PC o entrega en papel).\n3) Implicación genuina mediante problemas reales de Oaxaca."),
         ("Aprendizaje Situado", "Díaz Barriga / López Ocampo (2021)",
-         "El conocimiento se construye en interacción con la realidad comunitaria. La estadística deja de ser abstracta (dados y canicas) y aborda el empleo, tecnología y servicios de Oaxaca."),
+         "Abandona ejercicios descontextualizados (dados o canicas). Conecta las variables estadísticas con el acceso educativo, empleo juvenil y servicios comunitarios de Oaxaca."),
         ("Estudio de Casos", "Wassermann (1999) / Stake / Yin",
-         "Mini casos didácticos delimitados con preguntas críticas. Fomenta el análisis individual, la discusión respetuosa entre pares y el reconocimiento del locus de enunciación.")
+         "Tres mini casos delimitados con preguntas críticas y trabajo en pares. Favorece la reflexión individual previa para que el alumno participe con seguridad y sin presión oral espontánea.")
     ]
 
-    for i, (title, author, desc) in enumerate(pillars):
-        left_pos = Inches(0.8 + i * 2.98)
-        add_card(s3, left_pos, Inches(1.5), Inches(2.8), Inches(5.2))
-        tb_p = s3.shapes.add_textbox(left_pos + Inches(0.15), Inches(1.65), Inches(2.5), Inches(4.9))
-        tf_p = tb_p.text_frame
-        tf_p.word_wrap = True
+    for idx, (p_title, p_ref, p_desc) in enumerate(pillars):
+        col = idx % 2
+        row = idx // 2
+        lx = Inches(0.65 + col * 6.1)
+        ty = Inches(1.38 + row * 2.72)
 
-        p = tf_p.paragraphs[0]
-        p.text = title
-        p.font.name = "Calibri"
-        p.font.size = Pt(14)
+        add_card(s3, lx, ty, Inches(5.9), Inches(2.5))
+        tb = s3.shapes.add_textbox(lx + Inches(0.22), ty + Inches(0.16), Inches(5.46), Inches(2.18))
+        tf = tb.text_frame
+        tf.word_wrap = True
+        tf.margin_top = tf.margin_bottom = 0
+
+        p = tf.paragraphs[0]
+        p.text = p_title
+        p.font.name = FONT_UI
+        p.font.size = Pt(14.5)
         p.font.bold = True
         p.font.color.rgb = ACCENT_PURPLE
         p.space_after = Pt(2)
 
-        p = tf_p.add_paragraph()
-        p.text = author
-        p.font.name = "Calibri"
-        p.font.size = Pt(10)
+        p = tf.add_paragraph()
+        p.text = p_ref
+        p.font.name = FONT_UI
+        p.font.size = Pt(11)
         p.font.bold = True
         p.font.color.rgb = ACCENT_GOLD
-        p.space_after = Pt(10)
+        p.space_after = Pt(8)
 
-        p = tf_p.add_paragraph()
-        p.text = desc
-        p.font.name = "Calibri"
-        p.font.size = Pt(11.5)
+        p = tf.add_paragraph()
+        p.text = p_desc
+        p.font.name = FONT_UI
+        p.font.size = Pt(12.5)
         p.font.color.rgb = TEXT_MAIN
 
-    # ==========================================
-    # SLIDE 4: LAS 6 TABLAS CURRICULARES (DEL DRIVE)
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 4: LAS 6 TABLAS CURRICULARES DEL DOCUMENTO OFICIAL
+    # =========================================================================
     s4 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s4, BG_LIGHT)
-    add_header(s4, "Estructura Curricular: Las 6 Tablas de la Propuesta", "3. Diseño Curricular", 4)
+    add_header(s4, "Matriz Curricular Completa: Las 6 Tablas de la Propuesta", "3. Diseño Curricular", 4)
     add_footer(s4)
 
-    tables_info = [
-        ("Tabla 1: Continuidad", "Clave DI-EAC-03; 3er Semestre; 9 créditos; 144 horas semestrales (4 docentes + 4 independientes semanales). Bases firmes para Estadística Inferencial."),
-        ("Tabla 2: Matriz BAP", "Ajustes de acceso y mediación: De solo Excel en aula a alternativas gratuitas offline y papel. De examen punitivo a evaluación formativa."),
-        ("Tabla 3: Contenidos Situados", "8 bloques articulados: Conceptos, Métodos, Excel, Tendencia Central, Dispersión, Curva Normal (asimetría oaxaqueña), Muestreo y Apartado Metodológico."),
-        ("Tabla 4: Saberes y Evidencias", "Articulación de saberes: Científico/Disciplinar (base ordenada), Cultural/Comunitario (locus de enunciación) y Ético (sin estigmatizar comunidades)."),
-        ("Tabla 5: Tres Mini Casos", "1. Acceso tecnológico y participación educativa.\n2. Escolaridad y empleo juvenil (contingencia).\n3. Acceso a servicios básicos (cobertura)."),
-        ("Tabla 6: 8 Semanas de Proyecto", "Secuencia gradual: Diagnóstico inicial, formulación de variables, prácticas de tendencia central, dispersión, contraste con curva normal y reporte final.")
+    tables_summary = [
+        ("Tabla 1: Continuidad", "Conserva Clave DI-EAC-03, 3er semestre, 9 créditos y 144 horas (4 docentes y 4 independientes semanales), dando base a Estadística Inferencial."),
+        ("Tabla 2: Matriz BAP y Mediación", "Mantiene el trabajo en Excel y añade alternativas gratuitas, formatos compatibles offline y práctica equivalente en papel o libreta."),
+        ("Tabla 3: Contenidos Situados", "Aplica los 8 bloques temáticos (conceptos, gráficas, tendencia central, dispersión, curva normal, muestreo e informe) a preguntas sociales."),
+        ("Tabla 4: Saberes de la UCA", "Integra el saber científico-disciplinar, el saber cultural-comunitario (locus de enunciación) y el empírico-ético para el bien común."),
+        ("Tabla 5: Tres Mini Casos", "1) Acceso tecnológico y participación educativa.\n2) Escolaridad y empleo juvenil.\n3) Acceso a servicios básicos."),
+        ("Tabla 6: Secuencia de 8 Semanas", "Ruta gradual (64 horas de proyecto dentro de las 144 de la UCA): de diagnóstico y variables en Semanas 1-2 hasta informe final en Semana 8.")
     ]
 
-    for idx, (t_title, t_desc) in enumerate(tables_info):
+    for idx, (t_head, t_body) in enumerate(tables_summary):
         col = idx % 3
         row = idx // 3
-        left_pos = Inches(0.8 + col * 4.0)
-        top_pos = Inches(1.5 + row * 2.65)
-        
-        add_card(s4, left_pos, top_pos, Inches(3.75), Inches(2.4))
-        tb_t = s4.shapes.add_textbox(left_pos + Inches(0.18), top_pos + Inches(0.15), Inches(3.4), Inches(2.1))
-        tf_t = tb_t.text_frame
-        tf_t.word_wrap = True
+        lx = Inches(0.65 + col * 4.1)
+        ty = Inches(1.38 + row * 2.72)
 
-        p = tf_t.paragraphs[0]
-        p.text = t_title
-        p.font.name = "Calibri"
-        p.font.size = Pt(13)
+        add_card(s4, lx, ty, Inches(3.88), Inches(2.5))
+        tb = s4.shapes.add_textbox(lx + Inches(0.2), ty + Inches(0.16), Inches(3.48), Inches(2.18))
+        tf = tb.text_frame
+        tf.word_wrap = True
+        tf.margin_top = tf.margin_bottom = 0
+
+        p = tf.paragraphs[0]
+        p.text = t_head
+        p.font.name = FONT_UI
+        p.font.size = Pt(13.5)
         p.font.bold = True
         p.font.color.rgb = ACCENT_PURPLE
-        p.space_after = Pt(6)
+        p.space_after = Pt(8)
 
-        p = tf_t.add_paragraph()
-        p.text = t_desc
-        p.font.name = "Calibri"
-        p.font.size = Pt(11)
-        p.font.color.rgb = TEXT_MUTED
+        p = tf.add_paragraph()
+        p.text = t_body
+        p.font.name = FONT_UI
+        p.font.size = Pt(12)
+        p.font.color.rgb = TEXT_MAIN
 
-    # ==========================================
-    # SLIDE 5: LA TECNOLOGÍA COMO MEDIACIÓN PEDAGÓGICA
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 5: TRES SABERES, TRES MINI CASOS Y SECUENCIA DE 8 SEMANAS
+    # =========================================================================
     s5 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s5, BG_LIGHT)
-    add_header(s5, "La Tecnología como Mediación Didáctica (No como Protagonista)", "4. Mediación Tecnológica", 5)
+    add_header(s5, "Articulación en el Aula: Saberes (T4), Mini Casos (T5) y 8 Semanas (T6)", "4. Concreción Didáctica", 5)
     add_footer(s5)
 
-    # Izquierda: El problema de las plataformas tradicionales
-    add_card(s5, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2))
-    tb_trad = s5.shapes.add_textbox(Inches(1.0), Inches(1.7), Inches(5.2), Inches(4.8))
-    tf_trad = tb_trad.text_frame
-    tf_trad.word_wrap = True
+    # Columna izquierda: 3 Saberes (Tabla 4)
+    add_card(s5, Inches(0.65), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_sab = s5.shapes.add_textbox(Inches(0.9), Inches(1.55), Inches(5.35), Inches(5.0))
+    tf_sab = tb_sab.text_frame
+    tf_sab.word_wrap = True
 
-    p = tf_trad.paragraphs[0]
-    p.text = "¿Por qué fallan Classroom y SICE en Oaxaca?"
-    p.font.name = "Calibri"
-    p.font.size = Pt(15)
+    p = tf_sab.paragraphs[0]
+    p.text = "Tres Saberes del Perfil IISUABJO (Tabla 4)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
     p.font.bold = True
-    p.font.color.rgb = RGBColor(220, 38, 38) # Rojo advertencia
+    p.font.color.rgb = ACCENT_PURPLE
     p.space_after = Pt(10)
 
-    points_trad = [
-        ("Dependencia de Conectividad Continua:", " Si se cae el internet a mitad de un formulario, se pierde la respuesta y genera frustración."),
-        ("Alto Consumo de Datos Móviles:", " Plataformas pesadas con scripts comerciales gastan las recargas de celular de los alumnos."),
-        ("Exclusión en Máquinas Lentas:", " Exigen navegadores modernos y alta memoria RAM. En las computadoras del aula que 'a duras penas arrancan', el sistema se congela."),
-        ("Opacidad Evaluativa:", " La retroalimentación llega tarde, como una calificación sumativa sin proceso reflexivo.")
-    ]
-    for bold_txt, norm_txt in points_trad:
-        p = tf_trad.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "✗ " + bold_txt
-        run_b.font.bold = True
-        run_b.font.size = Pt(12)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = norm_txt
-        run_n.font.size = Pt(12)
-        run_n.font.color.rgb = TEXT_MUTED
+    add_bullet_list(tf_sab, [
+        ("1. Científico y disciplinario: ", "Identifica variables, construye una base ordenada, justifica procedimientos y presenta resultados reproducibles."),
+        ("2. Cultural y comunitario: ", "Reconoce su locus de enunciación y contrasta lecturas de los datos con compañeros de distintas identidades culturales."),
+        ("3. Empírico y de sentido común: ", "Propone acciones proporcionales a los datos bajo principios éticos, sin divulgar identidades ni estigmatizar comunidades.")
+    ], font_size=12.5, space_after=12)
 
-    # Derecha: La respuesta pedagógica de Aula 301
-    add_card(s5, Inches(6.8), Inches(1.5), Inches(5.733), Inches(5.2))
-    tb_a301 = s5.shapes.add_textbox(Inches(7.0), Inches(1.7), Inches(5.333), Inches(4.8))
-    tf_a301 = tb_a301.text_frame
-    tf_a301.word_wrap = True
+    # Columna derecha: Secuencia 8 Semanas (Tabla 6) + 3 Mini casos (Tabla 5)
+    add_card(s5, Inches(6.83), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_sem = s5.shapes.add_textbox(Inches(7.08), Inches(1.55), Inches(5.35), Inches(5.0))
+    tf_sem = tb_sem.text_frame
+    tf_sem.word_wrap = True
 
-    p = tf_a301.paragraphs[0]
-    p.text = "La Respuesta de Aula 301: Mediación DUA Situada"
-    p.font.name = "Calibri"
-    p.font.size = Pt(15)
+    p = tf_sem.paragraphs[0]
+    p.text = "Secuencia de 8 Semanas y Mini Casos (Tablas 5 y 6)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
+    p.font.bold = True
+    p.font.color.rgb = ACCENT_GOLD
+    p.space_after = Pt(10)
+
+    add_bullet_list(tf_sem, [
+        ("Semanas 1 a 3 (Entrada y gráficas): ", "Minicaso 1 (Acceso tecnológico), glosario, ficha de variables y tablas en Excel o LibreOffice."),
+        ("Semanas 4 a 6 (Centro, dispersión y curva): ", "Categoría modal vs. media, desviación estándar en horas de conexión y crítica a la simetría ideal de la curva normal."),
+        ("Semana 7 (Muestreo y contingencia): ", "Minicaso 2 (Escolaridad y empleo juvenil, tabla 3x2) más diseño breve de instrumento de encuesta."),
+        ("Semana 8 (Cierre metodológico): ", "Minicaso 3 (Acceso a servicios básicos), revisión entre pares e informe cuantitativo corregido.")
+    ], font_size=12.5, space_after=10)
+
+    # =========================================================================
+    # LÁMINA 6: LA TECNOLOGÍA COMO MEDIACIÓN DIDÁCTICA (NO COMO FIN)
+    # =========================================================================
+    s6 = prs.slides.add_slide(blank_layout)
+    set_slide_bg(s6, BG_LIGHT)
+    add_header(s6, "La Tecnología como Mediación Didáctica (Al Servicio de la Inclusión)", "5. Mediación Pedagógica", 6)
+    add_footer(s6)
+
+    add_card(s6, Inches(0.65), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_fail = s6.shapes.add_textbox(Inches(0.9), Inches(1.55), Inches(5.35), Inches(5.0))
+    tf_fail = tb_fail.text_frame
+    tf_fail.word_wrap = True
+
+    p = tf_fail.paragraphs[0]
+    p.text = "¿Por qué excluyen Classroom y SICE en Oaxaca?"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
+    p.font.bold = True
+    p.font.color.rgb = ACCENT_RED
+    p.space_after = Pt(10)
+
+    add_bullet_list(tf_fail, [
+        ("[X] Conexión obligatoria permanente: ", "Si la señal se corta en el trayecto o en clase, se borra lo escrito y el alumno abandona la entrega."),
+        ("[X] Gasto de datos móviles: ", "Las aplicaciones comerciales consumen saldo y memoria que muchos estudiantes de Oaxaca no pueden costear."),
+        ("[X] Incompatibilidad con PCs antiguas: ", "En computadoras escolares que apenas arrancan, los sitios pesados se bloquean o congelan la clase."),
+        ("[X] Silo escolar sin papel: ", "Dejan fuera a quien necesita trabajar en libreta o con hojas impresas.")
+    ], font_size=12.5, space_after=10)
+
+    add_card(s6, Inches(6.83), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_med = s6.shapes.add_textbox(Inches(7.08), Inches(1.55), Inches(5.35), Inches(5.0))
+    tf_med = tb_med.text_frame
+    tf_med.word_wrap = True
+
+    p = tf_med.paragraphs[0]
+    p.text = "Aula 301 como Mediación DUA (Equidad de Acceso)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
     p.font.bold = True
     p.font.color.rgb = ACCENT_GREEN
     p.space_after = Pt(10)
 
-    points_a301 = [
-        ("Arquitectura Local-First:", " Funciona 100% sin internet. El alumno puede redactar, autoevaluarse y consultar rúbricas en modo avión."),
-        ("Cero Peso Computacional:", " Construida en HTML5/CSS3 limpio sin librerías pesadas. Carga instantánea incluso en computadoras escolares de 2010."),
-        ("Autoguardado Local Reactivo:", " Cada letra pulsada se respalda en el navegador. Si la computadora se apaga de golpe, no se pierde el trabajo."),
-        ("Emancipación Tecnológica:", " Código libre en GitHub (Tortaconflow/aula-301) para que cualquier escuela oaxaqueña pueda replicarla gratis.")
-    ]
-    for bold_txt, norm_txt in points_a301:
-        p = tf_a301.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "✓ " + bold_txt
-        run_b.font.bold = True
-        run_b.font.size = Pt(12)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = norm_txt
-        run_n.font.size = Pt(12)
-        run_n.font.color.rgb = TEXT_MUTED
+    add_bullet_list(tf_med, [
+        ("[OK] Trabaja 100 % sin internet: ", "Se abre una vez o directo desde memoria USB y permite estudiar, autoevaluarse y redactar sin red."),
+        ("[OK] Cero consumo de datos al estudiar: ", "Resguarda automáticamente el avance en el teléfono o PC para no perder el esfuerzo ante cortes de luz."),
+        ("[OK] Ultraligera para equipos modestos: ", "Sin elementos pesados ni dependencias externas; arranca de inmediato en celulares básicos y aulas de Oaxaca."),
+        ("[OK] Puente con el papel y libreta: ", "Incluye hoja de trabajo imprimible y registro docente de tareas hechas en cuaderno.")
+    ], font_size=12.5, space_after=10)
 
-    # ==========================================
-    # SLIDE 6: CAPTURAS 1 & 2 - ACCESO ERGONÓMICO
-    # ==========================================
-    s6 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(s6, BG_LIGHT)
-    add_header(s6, "Evidencia Visual 1: Acceso Ergonómico y Reducción de la Ansiedad", "5. Entorno de Aprendizaje", 6)
-    add_footer(s6)
-
-    # Imagen 1: Login
-    img1_path = os.path.join(CAPTURES_DIR, "01_login_view.png")
-    if os.path.exists(img1_path):
-        s6.shapes.add_picture(img1_path, Inches(0.8), Inches(1.5), width=Inches(3.8))
-    
-    # Imagen 2: Home
-    img2_path = os.path.join(CAPTURES_DIR, "02_inicio_home.png")
-    if os.path.exists(img2_path):
-        s6.shapes.add_picture(img2_path, Inches(4.8), Inches(1.5), width=Inches(3.8))
-
-    # Explicación Pedagógica Derecha
-    add_card(s6, Inches(8.8), Inches(1.5), Inches(3.733), Inches(5.2))
-    tb_s6 = s6.shapes.add_textbox(Inches(9.0), Inches(1.7), Inches(3.333), Inches(4.8))
-    tf_s6 = tb_s6.text_frame
-    tf_s6.word_wrap = True
-
-    p = tf_s6.paragraphs[0]
-    p.text = "Principios Pedagógicos Visibles"
-    p.font.name = "Calibri"
-    p.font.size = Pt(14)
-    p.font.bold = True
-    p.font.color.rgb = ACCENT_PURPLE
-    p.space_after = Pt(10)
-
-    p_items6 = [
-        ("Bienvenida Personalizada:", " Saludo cálido 'Que sea un gran semestre', reduciendo la barrera afectiva inicial."),
-        ("Navegación sin Sobrecarga:", " Menú claro de 4 opciones: Inicio, Actividades, Calificaciones y Recursos."),
-        ("Diseño sin Scroll en Inicio:", " Pensado para pantallas pequeñas de celular y monitores escolares de baja resolución."),
-        ("Barra de Avisos Asíncrona:", " La información esencial llega sin necesidad de recargar la página.")
-    ]
-    for b_t, n_t in p_items6:
-        p = tf_s6.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "• " + b_t
-        run_b.font.bold = True
-        run_b.font.size = Pt(11)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = n_t
-        run_n.font.size = Pt(11)
-        run_n.font.color.rgb = TEXT_MUTED
-
-    # ==========================================
-    # SLIDE 7: CAPTURAS 3 & 4 - MINI CASOS & WORKSPACE
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 7: EVIDENCIA VISUAL 1 — ACCESO SIN BARRERAS E INICIO LIMPIO
+    # =========================================================================
     s7 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s7, BG_LIGHT)
-    add_header(s7, "Evidencia Visual 2: Metodología de Mini Casos Didácticos", "6. Mediación en el Aula", 7)
+    add_header(s7, "Evidencia Visual 1: Acceso Simple y Ambiente Libre de Ansiedad", "6. Entorno de Aprendizaje", 7)
     add_footer(s7)
 
-    img3_path = os.path.join(CAPTURES_DIR, "03_actividades_cards.png")
-    if os.path.exists(img3_path):
-        s7.shapes.add_picture(img3_path, Inches(0.8), Inches(1.5), width=Inches(3.8))
+    p1 = os.path.join(CAPTURES_DIR, "01_login_view.png")
+    p2 = os.path.join(CAPTURES_DIR, "02_inicio_home.png")
+    if os.path.exists(p1):
+        add_card(s7, Inches(0.65), Inches(1.38), Inches(5.7), Inches(4.25))
+        s7.shapes.add_picture(p1, Inches(0.75), Inches(1.45), height=Inches(4.1))
+    if os.path.exists(p2):
+        add_card(s7, Inches(6.98), Inches(1.38), Inches(5.7), Inches(4.25))
+        s7.shapes.add_picture(p2, Inches(7.08), Inches(1.45), height=Inches(4.1))
 
-    img4_path = os.path.join(CAPTURES_DIR, "04_workspace_minicaso.png")
-    if os.path.exists(img4_path):
-        s7.shapes.add_picture(img4_path, Inches(4.8), Inches(1.5), width=Inches(3.8))
-
-    add_card(s7, Inches(8.8), Inches(1.5), Inches(3.733), Inches(5.2))
-    tb_s7 = s7.shapes.add_textbox(Inches(9.0), Inches(1.7), Inches(3.333), Inches(4.8))
+    add_card(s7, Inches(0.65), Inches(5.78), Inches(12.03), Inches(1.1))
+    tb_s7 = s7.shapes.add_textbox(Inches(0.85), Inches(5.86), Inches(11.63), Inches(0.95))
     tf_s7 = tb_s7.text_frame
     tf_s7.word_wrap = True
+    tf_s7.margin_top = tf_s7.margin_bottom = 0
 
     p = tf_s7.paragraphs[0]
-    p.text = "Andamiaje del Mini Caso 1"
-    p.font.name = "Calibri"
-    p.font.size = Pt(14)
+    p.text = "Lectura Pedagógica de ambas pantallas:"
+    p.font.name = FONT_UI
+    p.font.size = Pt(12.5)
     p.font.bold = True
     p.font.color.rgb = ACCENT_PURPLE
-    p.space_after = Pt(10)
+    p.space_after = Pt(3)
 
-    p_items7 = [
-        ("Problema Situado (Tabla 5):", " Acceso tecnológico de 30 compañeros del grupo (46.7% solo celular)."),
-        ("Múltiple Representación (DUA):", " 1) Tabla numérica de frecuencias y porcentajes.\n2) Gráfica de barras visual.\n3) Archivo descargable en CSV para Excel o libreta."),
-        ("Locus de Enunciación:", " Pregunta reflexiva: ¿Qué formato debe solicitar el docente para no excluir a quien solo tiene celular?"),
-        ("Despliegue Modular:", " Las tareas no abruman al estudiante; se revelan por semanas.")
-    ]
-    for b_t, n_t in p_items7:
-        p = tf_s7.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "• " + b_t
-        run_b.font.bold = True
-        run_b.font.size = Pt(11)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = n_t
-        run_n.font.size = Pt(11)
-        run_n.font.color.rgb = TEXT_MUTED
+    p = tf_s7.add_paragraph()
+    p.text = "• Acceso con matrícula y nombre (sin contraseñas olvidadas) más casilla de equipo compartido (30 % del aula) para evitar mezclar borradores.\n• Inicio estático con bienvenida cálida, menú de 5 botones grandes y aviso interactivo del proyecto sin saturar la vista."
+    p.font.name = FONT_UI
+    p.font.size = Pt(11.8)
+    p.font.color.rgb = TEXT_MAIN
 
-    # ==========================================
-    # SLIDE 8: EVALUACIÓN FORMATIVA & POKA-YOKE
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 8: EVIDENCIA VISUAL 2 — LOS 3 MINI CASOS Y LAS 6 TABLAS
+    # =========================================================================
     s8 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s8, BG_LIGHT)
-    add_header(s8, "Evaluación Formativa, Metacognición y Andamiaje Preventivo", "7. Evaluación Auténtica", 8)
+    add_header(s8, "Evidencia Visual 2: Los 3 Mini Casos y Visor Curricular en Recursos", "7. Estructura Curricular Viva", 8)
     add_footer(s8)
 
-    ev_cards = [
-        ("Rúbrica Transparente desde el Inicio", "Eliminación de la ambigüedad",
-         "El estudiante conoce con precisión los criterios de calidad antes de escribir una sola línea. Cuatro criterios clave: Planteamiento, Organización de datos, Interpretación social situada y Comunicación."),
-        ("Autoevaluación Obligatoria (Metacognición)", "El estudiante como evaluador de su propio aprendizaje",
-         "Antes de entregar, el alumno valora su propio trabajo (Logrado / En proceso / Inicial). Esto fomenta la autorregulación y la conciencia sobre sus propios saberes (Tabla 4)."),
-        ("Poka-Yoke Pedagógico (Diseño sin Errores)", "Shigeo Shingo / Ingeniería Industrial al servicio del aula",
-         "La plataforma no permite enviar una tarea incompleta o sin autoevaluación. No es un castigo, es un andamiaje preventivo que evita que el alumno repruebe por descuidos mecánicos."),
-        ("Respaldo y Seguridad Emocional", "Protección contra imprevistos técnicos",
-         "Autoguardado cada 400ms en el navegador. La entrega genera un comprobante descargable con firma de integridad local, dando certeza al alumno de que su esfuerzo está respaldado.")
-    ]
+    p3 = os.path.join(CAPTURES_DIR, "03_actividades_cards.png")
+    p7 = os.path.join(CAPTURES_DIR, "07_recursos_tablas.png")
+    if os.path.exists(p3):
+        add_card(s8, Inches(0.65), Inches(1.38), Inches(5.7), Inches(4.25))
+        s8.shapes.add_picture(p3, Inches(0.75), Inches(1.45), height=Inches(4.1))
+    if os.path.exists(p7):
+        add_card(s8, Inches(6.98), Inches(1.38), Inches(5.7), Inches(4.25))
+        s8.shapes.add_picture(p7, Inches(7.08), Inches(1.45), height=Inches(4.1))
 
-    for idx, (c_title, c_sub, c_body) in enumerate(ev_cards):
-        col = idx % 2
-        row = idx // 2
-        left_pos = Inches(0.8 + col * 5.95)
-        top_pos = Inches(1.5 + row * 2.65)
+    add_card(s8, Inches(0.65), Inches(5.78), Inches(12.03), Inches(1.1))
+    tb_s8 = s8.shapes.add_textbox(Inches(0.85), Inches(5.86), Inches(11.63), Inches(0.95))
+    tf_s8 = tb_s8.text_frame
+    tf_s8.word_wrap = True
+    tf_s8.margin_top = tf_s8.margin_bottom = 0
 
-        add_card(s8, left_pos, top_pos, Inches(5.75), Inches(2.4))
-        tb_e = s8.shapes.add_textbox(left_pos + Inches(0.2), top_pos + Inches(0.15), Inches(5.35), Inches(2.1))
-        tf_e = tb_e.text_frame
-        tf_e.word_wrap = True
+    p = tf_s8.paragraphs[0]
+    p.text = "Alineación exacta con las Tablas 1 a 6 de la Adecuación Curricular:"
+    p.font.name = FONT_UI
+    p.font.size = Pt(12.5)
+    p.font.bold = True
+    p.font.color.rgb = ACCENT_PURPLE
+    p.space_after = Pt(3)
 
-        p = tf_e.paragraphs[0]
-        p.text = c_title
-        p.font.name = "Calibri"
-        p.font.size = Pt(13.5)
-        p.font.bold = True
-        p.font.color.rgb = ACCENT_PURPLE
-        p.space_after = Pt(2)
+    p = tf_s8.add_paragraph()
+    p.text = "• Izquierda: Los 3 mini casos reales de Tabla 5 (Acceso tecnológico, Escolaridad y empleo juvenil, y Servicios básicos) accesibles en todo momento.\n• Derecha: Pestaña Recursos y Tablas con glosario pedagógico-estadístico, visor de las 6 tablas y enlaces gratuitos (INEGI, CONEVAL, LibreOffice, Redalyc)."
+    p.font.name = FONT_UI
+    p.font.size = Pt(11.8)
+    p.font.color.rgb = TEXT_MAIN
 
-        p = tf_e.add_paragraph()
-        p.text = c_sub
-        p.font.name = "Calibri"
-        p.font.size = Pt(10)
-        p.font.bold = True
-        p.font.color.rgb = ACCENT_GOLD
-        p.space_after = Pt(6)
-
-        p = tf_e.add_paragraph()
-        p.text = c_body
-        p.font.name = "Calibri"
-        p.font.size = Pt(11)
-        p.font.color.rgb = TEXT_MUTED
-
-    # ==========================================
-    # SLIDE 9: CAPTURAS 5 & 6 - CALIFICACIONES & DOCENTE
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 9: EVIDENCIA VISUAL 3 — ESPACIO DE TRABAJO DEL MINICASO 1 (DUA)
+    # =========================================================================
     s9 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s9, BG_LIGHT)
-    add_header(s9, "Evidencia Visual 3: Acompañamiento Docente y Cierre de Ciclo", "8. Evaluación en Acción", 9)
+    add_header(s9, "Evidencia Visual 3: Múltiple Representación y Locus de Enunciación", "8. Estudio de Caso en Acción", 9)
     add_footer(s9)
 
-    img5_path = os.path.join(CAPTURES_DIR, "05_calificaciones_resumen.png")
-    if os.path.exists(img5_path):
-        s9.shapes.add_picture(img5_path, Inches(0.8), Inches(1.5), width=Inches(3.8))
+    p4 = os.path.join(CAPTURES_DIR, "04_workspace_minicaso.png")
+    if os.path.exists(p4):
+        add_card(s9, Inches(0.65), Inches(1.38), Inches(7.15), Inches(5.4))
+        s9.shapes.add_picture(p4, Inches(0.75), Inches(1.46), height=Inches(5.22))
 
-    img6_path = os.path.join(CAPTURES_DIR, "06_docente_ingesta.png")
-    if os.path.exists(img6_path):
-        s9.shapes.add_picture(img6_path, Inches(4.8), Inches(1.5), width=Inches(3.8))
-
-    add_card(s9, Inches(8.8), Inches(1.5), Inches(3.733), Inches(5.2))
-    tb_s9 = s9.shapes.add_textbox(Inches(9.0), Inches(1.7), Inches(3.333), Inches(4.8))
+    add_card(s9, Inches(8.05), Inches(1.38), Inches(4.63), Inches(5.4))
+    tb_s9 = s9.shapes.add_textbox(Inches(8.25), Inches(1.55), Inches(4.23), Inches(5.05))
     tf_s9 = tb_s9.text_frame
     tf_s9.word_wrap = True
 
     p = tf_s9.paragraphs[0]
-    p.text = "El Rol Docente en Aula 301"
-    p.font.name = "Calibri"
-    p.font.size = Pt(14)
+    p.text = "Principios DUA Aplicados"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
     p.font.bold = True
     p.font.color.rgb = ACCENT_PURPLE
     p.space_after = Pt(10)
 
-    p_items9 = [
-        ("Consulta Formativa:", " El estudiante monitorea su promedio y avances sin esperar semanas al reporte final."),
-        ("Bandeja de Ingesta Docente:", " El profesor recibe comprobantes por WhatsApp, correo o memoria USB y los arrastra al panel."),
-        ("Consolidación sin Servidor Central:", " La plataforma lee y verifica automáticamente los comprobantes locales."),
-        ("Cierre de Ciclo de Información:", " Garantiza que ningún alumno se quede atrás por falta de internet en su hogar.")
-    ]
-    for b_t, n_t in p_items9:
-        p = tf_s9.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "• " + b_t
-        run_b.font.bold = True
-        run_b.font.size = Pt(11)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = n_t
-        run_n.font.size = Pt(11)
-        run_n.font.color.rgb = TEXT_MUTED
+    add_bullet_list(tf_s9, [
+        ("1. Representación múltiple: ", "Tabla de frecuencias (46.7 % solo celular), gráfica de barras proporcionales y descarga para Excel o LibreOffice Calc."),
+        ("2. Rigor estadístico real: ", "Distingue la variable cualitativa (categoría modal) de las horas de conexión semanales (media 6.20 h, mediana 5.5 h) para Semana 4 y 5."),
+        ("3. Opción en papel: ", "Botón directo para imprimir hoja de trabajo legible en blanco y negro."),
+        ("4. Locus de enunciación: ", "Glosa accesible que invita al alumno a interpretar los números desde su experiencia en Oaxaca.")
+    ], font_size=12, space_after=8)
 
-    # ==========================================
-    # SLIDE 10: ¿CÓMO SE ATREVE UN EDUCADOR A CREAR SOFTWARE?
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 10: EVALUACIÓN FORMATIVA, METACOGNICIÓN Y PREVENCIÓN DE ERRORES
+    # =========================================================================
     s10 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s10, BG_LIGHT)
-    add_header(s10, "¿Cómo un Educador se Atreve a Crear Software? La IA como Taller", "9. Democratización Tecnológica", 10)
+    add_header(s10, "Evaluación Formativa, Autoevaluación y Prevención de Errores", "9. Evaluación Auténtica", 10)
     add_footer(s10)
 
-    # Izquierda: El riesgo del Vibe Coding
-    add_card(s10, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2))
-    tb_vibe = s10.shapes.add_textbox(Inches(1.0), Inches(1.7), Inches(5.2), Inches(4.8))
-    tf_vibe = tb_vibe.text_frame
-    tf_vibe.word_wrap = True
+    p5 = os.path.join(CAPTURES_DIR, "05_calificaciones_resumen.png")
+    if os.path.exists(p5):
+        add_card(s10, Inches(0.65), Inches(1.38), Inches(7.15), Inches(5.4))
+        s10.shapes.add_picture(p5, Inches(0.75), Inches(1.46), height=Inches(5.22))
 
-    p = tf_vibe.paragraphs[0]
-    p.text = "El Riesgo del 'Vibe Coding' en Educación"
-    p.font.name = "Calibri"
-    p.font.size = Pt(15)
+    add_card(s10, Inches(8.05), Inches(1.38), Inches(4.63), Inches(5.4))
+    tb_s10 = s10.shapes.add_textbox(Inches(8.25), Inches(1.55), Inches(4.23), Inches(5.05))
+    tf_s10 = tb_s10.text_frame
+    tf_s10.word_wrap = True
+
+    p = tf_s10.paragraphs[0]
+    p.text = "Andamiaje Formativo (Dra. Maldonado)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
     p.font.bold = True
-    p.font.color.rgb = RGBColor(220, 38, 38)
+    p.font.color.rgb = ACCENT_GOLD
     p.space_after = Pt(10)
 
-    points_v = [
-        ("¿Qué es?", " Programar a tientas pidiendo cosas a un chat sin diseño pedagógico ni control de arquitectura."),
-        ("Consecuencias:", " Código pesado, plagado de librerías innecesarias que saturan los celulares."),
-        ("Inestabilidad:", " Funciona bien en la computadora nueva del docente, pero en el aula de Oaxaca con computadoras lentas simplemente colapsa."),
-        ("Falsa Ilusión:", " Pareciera que 'ya hay app', pero pedagógicamente es inaccesible y excluyente.")
-    ]
-    for b_t, n_t in points_v:
-        p = tf_vibe.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "✗ " + b_t
-        run_b.font.bold = True
-        run_b.font.size = Pt(12)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = n_t
-        run_n.font.size = Pt(12)
-        run_n.font.color.rgb = TEXT_MUTED
+    add_bullet_list(tf_s10, [
+        ("Rúbrica abierta desde el inicio: ", "4 criterios claros (Planteamiento, Organización, Interpretación situada y Comunicación)."),
+        ("Autoevaluación previa (Metacognición): ", "Siguiendo el principio preventivo (Poka-Yoke), guía al estudiante a revisar los 4 criterios antes de entregar, evitando olvidos."),
+        ("Escala transparente: ", "Muestra estimación orientativa (4.0 / 7.2 / 10.0) aclarando que la nota oficial corresponde al docente."),
+        ("Cero pérdidas por corte eléctrico: ", "Guarda el texto al instante y ofrece copia directa para WhatsApp.")
+    ], font_size=12, space_after=8)
 
-    # Derecha: La solución con Enjambre Goldfish
-    add_card(s10, Inches(6.8), Inches(1.5), Inches(5.733), Inches(5.2))
-    tb_gold = s10.shapes.add_textbox(Inches(7.0), Inches(1.7), Inches(5.333), Inches(4.8))
-    tf_gold = tb_gold.text_frame
-    tf_gold.word_wrap = True
+    # =========================================================================
+    # LÁMINA 11: EVIDENCIA VISUAL 4 — RECEPCIÓN DOCENTE DIGITAL Y EN PAPEL
+    # =========================================================================
+    s11 = prs.slides.add_slide(blank_layout)
+    set_slide_bg(s11, BG_LIGHT)
+    add_header(s11, "Evidencia Visual 4: Recepción Docente Integrada (Digital y Libreta DUA)", "10. Acompañamiento Docente", 11)
+    add_footer(s11)
 
-    p = tf_gold.paragraphs[0]
-    p.text = "Ingeniería Pedagógica Asistida (Goldfish Swarm)"
-    p.font.name = "Calibri"
-    p.font.size = Pt(15)
+    p6 = os.path.join(CAPTURES_DIR, "06_docente_ingesta.png")
+    if os.path.exists(p6):
+        add_card(s11, Inches(0.65), Inches(1.38), Inches(7.15), Inches(5.4))
+        s11.shapes.add_picture(p6, Inches(0.75), Inches(1.46), height=Inches(5.22))
+
+    add_card(s11, Inches(8.05), Inches(1.38), Inches(4.63), Inches(5.4))
+    tb_s11 = s11.shapes.add_textbox(Inches(8.25), Inches(1.55), Inches(4.23), Inches(5.05))
+    tf_s11 = tb_s11.text_frame
+    tf_s11.word_wrap = True
+
+    p = tf_s11.paragraphs[0]
+    p.text = "Cierre de Ciclo sin Internet"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
     p.font.bold = True
     p.font.color.rgb = ACCENT_PURPLE
     p.space_after = Pt(10)
 
-    points_g = [
-        ("La Pedagogía Mandó sobre el Código:", " El educador definió las BAP, el DUA y las 6 tablas curriculares; la IA se subordinó a esas reglas."),
-        ("Enjambre de 7 Agentes Especialistas:", " Críticos hostiles que auditaron simplicidad, ergonomía táctil (44px) y cero librerías innecesarias."),
-        ("Ingeniería Inversa con REA:", " Se tomó la interfaz original soñada por Carlos Arturo y se limpiaron todos los vicios técnicos."),
-        ("Resultado Emancipador:", " Un estudiante o docente de educación puede materializar software sostenible y seguro sin depender de un departamento de TI.")
-    ]
-    for b_t, n_t in points_g:
-        p = tf_gold.add_paragraph()
-        p.space_after = Pt(8)
-        run_b = p.add_run()
-        run_b.text = "✓ " + b_t
-        run_b.font.bold = True
-        run_b.font.size = Pt(12)
-        run_b.font.color.rgb = TEXT_MAIN
-        run_n = p.add_run()
-        run_n.text = n_t
-        run_n.font.size = Pt(12)
-        run_n.font.color.rgb = TEXT_MUTED
+    add_bullet_list(tf_s11, [
+        ("Recepción flexible (DUA): ", "El docente reúne archivos enviados por WhatsApp o USB, mensajes copiados y trabajos entregados en libreta física."),
+        ("Verificación automática amigable: ", "Valida que la constancia digital no haya sufrido alteraciones durante el envío, en lenguaje claro para el maestro."),
+        ("Retroalimentación real: ", "Permite asentar calificación y observaciones formativas por alumno."),
+        ("Concentrado listo para acta: ", "Exporta todo el grupo en un archivo compatible con Excel y LibreOffice.")
+    ], font_size=12, space_after=8)
 
-    # ==========================================
-    # SLIDE 11: ¿POR QUÉ CAPTURAS Y NO DEMO EN VIVO?
-    # ==========================================
-    s11 = prs.slides.add_slide(blank_layout)
-    set_slide_bg(s11, BG_LIGHT)
-    add_header(s11, "Estrategia Didáctica: ¿Por qué Usar Capturas y no Demo en Vivo?", "10. Protocolo de Aula", 11)
-    add_footer(s11)
-
-    cards_strat = [
-        ("La Realidad del Aula en Oaxaca", "Hardware limitado y fallas de red",
-         "En el salón de clases las computadoras 'a duras penas arrancan'. Abrir múltiples pestañas de navegador o depender del Wi-Fi de la escuela es la causa #1 por la que fallan las presentaciones académicas de tecnología."),
-        ("El Principio de Certeza Pedagógica", "El contenido debe fluir sin estrés",
-         "El objetivo de la sesión no es presumir una conexión a internet, sino presentar y discutir la adecuación curricular. Las capturas garantizan que los 30 compañeros aprecien cada detalle sin interrupciones técnicas."),
-        ("El Respaldo Triple de Aula 301", "Cero improvisación frente al grupo",
-         "1. Presentación visual autosuficiente (este PowerPoint).\n2. Código auditable y público en GitHub para quien desee revisarlo.\n3. Aplicación PWA instalada localmente como respaldo optativo."),
-        ("Lección de Ciencias de la Educación", "La didáctica anticipa contingencias",
-         "Un buen diseño educativo prevé los fallos del contexto. Presentar con material estático de alta fidelidad es una decisión pedagógica profesional, no una limitación.")
-    ]
-
-    for idx, (c_t, c_s, c_b) in enumerate(cards_strat):
-        col = idx % 2
-        row = idx // 2
-        left_pos = Inches(0.8 + col * 5.95)
-        top_pos = Inches(1.5 + row * 2.65)
-
-        add_card(s11, left_pos, top_pos, Inches(5.75), Inches(2.4))
-        tb_st = s11.shapes.add_textbox(left_pos + Inches(0.2), top_pos + Inches(0.15), Inches(5.35), Inches(2.1))
-        tf_st = tb_st.text_frame
-        tf_st.word_wrap = True
-
-        p = tf_st.paragraphs[0]
-        p.text = c_t
-        p.font.name = "Calibri"
-        p.font.size = Pt(13.5)
-        p.font.bold = True
-        p.font.color.rgb = ACCENT_PURPLE
-        p.space_after = Pt(2)
-
-        p = tf_st.add_paragraph()
-        p.text = c_s
-        p.font.name = "Calibri"
-        p.font.size = Pt(10)
-        p.font.bold = True
-        p.font.color.rgb = ACCENT_GOLD
-        p.space_after = Pt(6)
-
-        p = tf_st.add_paragraph()
-        p.text = c_b
-        p.font.name = "Calibri"
-        p.font.size = Pt(11)
-        p.font.color.rgb = TEXT_MUTED
-
-    # ==========================================
-    # SLIDE 12: DINÁMICA DE PREGUNTAS CON EL GRUPO
-    # ==========================================
+    # =========================================================================
+    # LÁMINA 12: ¿CÓMO UN EDUCADOR DISEÑA HERRAMIENTAS CON IA SIN IMPROVISAR?
+    # =========================================================================
     s12 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s12, BG_LIGHT)
-    add_header(s12, "Dinámica con el Aula: Banco de Preguntas Reflexivas", "11. Interacción Pedagógica", 12)
+    add_header(s12, "De Usuarios Pasivos a Creadores de Mediaciones Didácticas Situadas", "11. Soberanía Pedagógica", 12)
     add_footer(s12)
 
-    questions = [
-        ("Pregunta 1 (Inclusión & DUA):", 
-         "Si casi la mitad de nosotros solo tiene celular para estudiar, ¿por qué insistir en formatos cerrados como PDF o plataformas que consumen saldo en vez de herramientas offline?"),
-        ("Pregunta 2 (Evaluación Formativa):", 
-         "¿En qué te beneficia conocer la rúbrica y autoevaluarte antes de enviar la tarea en lugar de recibir una calificación fría dos semanas después?"),
-        ("Pregunta 3 (Locus de Enunciación):", 
-         "Al analizar que el 79.9% de Oaxaca labora en la informalidad, ¿podemos juzgar los datos estadísticos sin considerar nuestra propia realidad comunitaria?"),
-        ("Pregunta 4 (Democratización):", 
-         "¿Cómo cambia nuestra perspectiva al saber que como estudiantes de Ciencias Sociales y Educación podemos diseñar herramientas a la medida de nuestras escuelas?")
-    ]
+    add_card(s12, Inches(0.65), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_l12 = s12.shapes.add_textbox(Inches(0.9), Inches(1.55), Inches(5.35), Inches(5.0))
+    tf_l12 = tb_l12.text_frame
+    tf_l12.word_wrap = True
 
-    for idx, (q_num, q_text) in enumerate(questions):
-        top_pos = Inches(1.5 + idx * 1.3)
-        add_card(s12, Inches(0.8), top_pos, Inches(11.733), Inches(1.15))
-        tb_q = s12.shapes.add_textbox(Inches(1.0), top_pos + Inches(0.1), Inches(11.333), Inches(0.95))
-        tf_q = tb_q.text_frame
-        tf_q.word_wrap = True
+    p = tf_l12.paragraphs[0]
+    p.text = "El riesgo de usar tecnología sin criterio educativo"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
+    p.font.bold = True
+    p.font.color.rgb = ACCENT_RED
+    p.space_after = Pt(10)
 
-        p = tf_q.paragraphs[0]
-        p.text = q_num
-        p.font.name = "Calibri"
-        p.font.size = Pt(12)
-        p.font.bold = True
-        p.font.color.rgb = ACCENT_PURPLE
-        p.space_after = Pt(2)
+    add_bullet_list(tf_l12, [
+        ("[X] Improvisación superficial ('Vibe Coding'): ", "Pedir una herramienta genérica a una inteligencia artificial sin diagnóstico del aula produce recursos pesados que fallan en Oaxaca."),
+        ("[X] Dependencia de especialistas ajenos: ", "Un programador externo rara vez conoce qué es una BAP, el locus de enunciación o que 46.7 % estudia en celular."),
+        ("[X] Soluciones frágiles: ", "Se ven bien en computadoras nuevas con internet rápido, pero colapsan en salones universitarios con equipo limitado.")
+    ], font_size=12.5, space_after=11)
 
-        p = tf_q.add_paragraph()
-        p.text = q_text
-        p.font.name = "Calibri"
-        p.font.size = Pt(12)
-        p.font.color.rgb = TEXT_MAIN
+    add_card(s12, Inches(6.83), Inches(1.38), Inches(5.85), Inches(5.35))
+    tb_r12 = s12.shapes.add_textbox(Inches(7.08), Inches(1.55), Inches(5.35), Inches(5.0))
+    tf_r12 = tb_r12.text_frame
+    tf_r12.word_wrap = True
 
-    # ==========================================
-    # SLIDE 13: CONCLUSIONES Y COMPROMISO CON OAXACA
-    # ==========================================
+    p = tf_r12.paragraphs[0]
+    p.text = "La Pedagogía Gobierna a la Técnica (Enjambre Goldfish)"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14.5)
+    p.font.bold = True
+    p.font.color.rgb = ACCENT_PURPLE
+    p.space_after = Pt(10)
+
+    add_bullet_list(tf_r12, [
+        ("[+] El educador define las reglas: ", "Se establecieron primero las 6 tablas de la UCA, principios DUA, accesibilidad en papel y cero dependencias externas."),
+        ("[+] Revisión crítica multi-perspectiva: ", "El equipo auditor Goldfish (5 miradas especializadas en código, diseño, claridad pedagógica, estructura y sencillez) corrigió errores estadísticos, tecnicismos y fallos visuales."),
+        ("[+] Resultado sostenible: ", "Cualquier docente o estudiante de Ciencias Sociales puede adaptar y sostener la herramienta desde GitHub sin presupuesto costoso.")
+    ], font_size=12.5, space_after=11)
+
+    # =========================================================================
+    # LÁMINA 13: PROTOCOLO DE AULA, PREGUNTAS AL GRUPO Y CIERRE EN OAXACA
+    # =========================================================================
     s13 = prs.slides.add_slide(blank_layout)
     set_slide_bg(s13, BG_DARK)
 
-    decoline13 = s13.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.1), Inches(11.733), Inches(0.06))
+    decoline13 = s13.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.65), Inches(0.75), Inches(12.03), Inches(0.06))
     decoline13.fill.solid()
-    decoline13.fill.fore_color.rgb = ACCENT_GOLD
+    decoline13.fill.fore_color.rgb = RGBColor(245, 158, 11)
     decoline13.line.fill.background()
 
-    tb13 = s13.shapes.add_textbox(Inches(0.8), Inches(1.4), Inches(11.733), Inches(4.2))
-    tf13 = tb13.text_frame
-    tf13.word_wrap = True
-
-    p = tf13.paragraphs[0]
-    p.text = "CONCLUSIONES Y COMPROMISO SOCIAL DESDE OAXACA"
-    p.font.name = "Calibri"
-    p.font.size = Pt(12)
+    tb13_top = s13.shapes.add_textbox(Inches(0.65), Inches(0.92), Inches(12.03), Inches(1.3))
+    tf13_top = tb13_top.text_frame
+    tf13_top.word_wrap = True
+    p = tf13_top.paragraphs[0]
+    p.text = "12. ESTRATEGIA SEGURA EN EL AULA Y DIÁLOGO CON EL GRUPO 301"
+    p.font.name = FONT_UI
+    p.font.size = Pt(11.5)
     p.font.bold = True
     p.font.color.rgb = TEXT_LILAC
-    p.space_after = Pt(10)
+    p.space_after = Pt(4)
 
-    p = tf13.add_paragraph()
-    p.text = "La Educación no debe adaptarse al Software;\nel Software debe subordinarse a la Justicia Educativa."
-    p.font.name = "Calibri"
-    p.font.size = Pt(28)
+    p = tf13_top.add_paragraph()
+    p.text = "La Educación no debe adaptarse al Software; el Software debe servir a la Justicia Educativa."
+    p.font.name = FONT_UI
+    p.font.size = Pt(21)
     p.font.bold = True
     p.font.color.rgb = TEXT_WHITE
-    p.space_after = Pt(14)
 
-    concl_points = [
-        "1. La adecuación curricular no significativa demostró que se puede mantener la máxima exigencia universitaria cuidando la dignidad y las condiciones materiales del alumno.",
-        "2. El Diseño Universal para el Aprendizaje (DUA) no es un ideal teórico; en el Aula 301 es una realidad técnica accesible.",
-        "3. La Inteligencia Artificial asistida permitió a un estudiante del área educativa crear un entorno seguro, eliminando las barreras del 'vibe coding'.",
-        "4. El conocimiento es comunitario: todo el código y la documentación quedan abiertos para la UABJO y para Oaxaca."
-    ]
-    for cp in concl_points:
-        p = tf13.add_paragraph()
-        p.text = cp
-        p.font.name = "Calibri"
-        p.font.size = Pt(13)
+    # Izquierda: Por qué usamos capturas y no demo en vivo
+    add_card(s13, Inches(0.65), Inches(2.25), Inches(5.85), Inches(3.25), RGBColor(38, 41, 92), None)
+    tb13_l = s13.shapes.add_textbox(Inches(0.88), Inches(2.4), Inches(5.39), Inches(2.95))
+    tf13_l = tb13_l.text_frame
+    tf13_l.word_wrap = True
+    p = tf13_l.paragraphs[0]
+    p.text = "¿Por qué exponemos con capturas estáticas?"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14)
+    p.font.bold = True
+    p.font.color.rgb = RGBColor(251, 191, 36)
+    p.space_after = Pt(8)
+
+    for line_txt in [
+        "• En salones donde la PC 'a duras penas arranca' o no hay red, depender de una demostración en vivo provoca pausas e interrupciones.",
+        "• Las capturas reales garantizan fluidez pedagógica ante todo el grupo; la aplicación queda lista en USB o navegador como respaldo.",
+        "• Una buena didáctica previene contingencias técnicas del entorno."
+    ]:
+        p = tf13_l.add_paragraph()
+        p.text = line_txt
+        p.font.name = FONT_UI
+        p.font.size = Pt(12)
         p.font.color.rgb = RGBColor(224, 231, 255)
         p.space_after = Pt(6)
 
-    # Tarjeta de cierre
-    add_card(s13, Inches(0.8), Inches(5.8), Inches(11.733), Inches(1.1), RGBColor(38, 41, 92), None)
-    tb_cierre = s13.shapes.add_textbox(Inches(1.0), Inches(5.9), Inches(11.333), Inches(0.9))
-    tf_c = tb_cierre.text_frame
-    tf_c.word_wrap = True
+    # Derecha: Preguntas rápidas del Banco para el Grupo 301
+    add_card(s13, Inches(6.83), Inches(2.25), Inches(5.85), Inches(3.25), RGBColor(38, 41, 92), None)
+    tb13_r = s13.shapes.add_textbox(Inches(7.06), Inches(2.4), Inches(5.39), Inches(2.95))
+    tf13_r = tb13_r.text_frame
+    tf13_r.word_wrap = True
+    p = tf13_r.paragraphs[0]
+    p.text = "Preguntas de diálogo para el Grupo 301"
+    p.font.name = FONT_UI
+    p.font.size = Pt(14)
+    p.font.bold = True
+    p.font.color.rgb = RGBColor(167, 243, 208)
+    p.space_after = Pt(8)
 
-    p = tf_c.paragraphs[0]
-    p.text = f"Repositorio Oficial en GitHub: {REPO_URL}  |  Despliegue: https://aula-301.vercel.app"
-    p.font.name = "Calibri"
-    p.font.size = Pt(13)
+    for q_txt in [
+        "1. Si 46.7 % solo tiene celular, ¿es justo exigir tareas en programas pesados de computadora?",
+        "2. ¿Qué ventaja tiene autoevaluarte con la rúbrica antes de entregar?",
+        "3. Al leer datos de Oaxaca (79.9 % informalidad), ¿por qué evitar estigmatizar?",
+        "4. ¿De qué otras materias del IISUABJO adaptarías actividades con este enfoque?"
+    ]:
+        p = tf13_r.add_paragraph()
+        p.text = q_txt
+        p.font.name = FONT_UI
+        p.font.size = Pt(12)
+        p.font.color.rgb = RGBColor(224, 231, 255)
+        p.space_after = Pt(5)
+
+    # Banda de cierre GitHub y agradecimientos
+    add_card(s13, Inches(0.65), Inches(5.72), Inches(12.03), Inches(1.25), RGBColor(30, 32, 74), None)
+    tb13_f = s13.shapes.add_textbox(Inches(0.88), Inches(5.84), Inches(11.57), Inches(1.0))
+    tf13_f = tb13_f.text_frame
+    tf13_f.word_wrap = True
+    p = tf13_f.paragraphs[0]
+    p.text = f"Repositorio público en GitHub: {REPO_URL}   |   Plataforma web: {WEB_URL}"
+    p.font.name = FONT_UI
+    p.font.size = Pt(13.5)
     p.font.bold = True
     p.font.color.rgb = TEXT_WHITE
-    p.space_after = Pt(4)
+    p.space_after = Pt(6)
 
-    p = tf_c.add_paragraph()
-    p.text = "Agradecimiento especial a la Dra. Maldonado y al Instituto de Investigaciones Sociológicas (IISUABJO - UABJO)."
-    p.font.name = "Calibri"
-    p.font.size = Pt(11)
-    p.font.color.rgb = RGBColor(199, 210, 254)
+    p = tf13_f.add_paragraph()
+    p.text = "Agradecimiento especial a la Dra. Maldonado, al Instituto de Investigaciones Sociológicas (IISUABJO - UABJO) y a las y los compañeros del Grupo 301 en Oaxaca."
+    p.font.name = FONT_UI
+    p.font.size = Pt(11.5)
+    p.font.color.rgb = TEXT_LILAC
 
-    output_path = r"C:\Users\reily\.gemini\antigravity\scratch\aula-301\docs\presentacion\Aula_301_Adecuacion_Curricular_Oaxaca.pptx"
+    output_path = os.path.join(BASE_DIR, "docs", "presentacion", "Aula_301_Adecuacion_Curricular_Oaxaca.pptx")
     prs.save(output_path)
-    print(f"Presentación generada exitosamente en: {output_path}")
+    print(f"Presentación regenerada con éxito en: {output_path}")
+
 
 if __name__ == "__main__":
     create_deck()

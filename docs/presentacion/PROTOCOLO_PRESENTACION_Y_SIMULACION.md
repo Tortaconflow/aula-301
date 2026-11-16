@@ -1,88 +1,63 @@
 # Protocolo de Presentación y Simulación Segura: Aula 301
-## Estrategia Anti-Fallos para Demostración en el Aula
-**Materia:** Estadística Aplicada a las Ciencias Sociales · Grupo 301  
-**Catedrática:** Dra. Maldonado  
-**Objetivo:** Garantizar el 100% de éxito en la exposición pública eliminando la dependencia de internet en vivo, fallas de proyectores o bloqueos de red en la universidad.
+
+**Unidad Curricular:** Estadística Aplicada a las Ciencias Sociales (`DI-EAC-03`) · Grupo 301 · IISUABJO, UABJO  
+**Orientación de Calidad Educativa:** Dra. Maldonado  
+**Objetivo:** Garantizar una exposición presencial fluida en equipos escolares con recursos muy limitados (*"que a duras penas arrancan"*), evitando fallos de internet en vivo y manteniendo el enfoque en **Ciencias de la Educación y Adecuación Curricular**.
 
 ---
 
-## 1. La Regla de Oro: La Falacia de la "Demo en Vivo sin Red de Seguridad"
+## 1. Estrategia Anti-Fallos para Aulas de Oaxaca
 
-En el ámbito de la inteligencia artificial y el desarrollo de software, la causa número 1 de fallos en presentaciones presenciales es **intentar ejecutar todo en vivo dependiendo de la red del recinto**:
-* La red Wi-Fi universitaria suele estar saturada o bloquear puertos.
-* Los navegadores pueden quedar en blanco si hay cortes momentáneos.
-* El proyector puede cambiar la resolución y desbordar los elementos si no están preparados.
+Intentar una demostración web en vivo desde cero sobre computadoras universitarias antiguas y redes Wi-Fi saturadas es el principal motivo de tropiezos en exposiciones académicas:
+* La señal puede caer o quedarse cargando por tiempo indefinido.
+* Los navegadores antiguos consumen toda la memoria disponible.
+* Un proyector VGA 4:3 puede recortar partes de la pantalla si no se prepara material de respaldo.
 
-### La Solución Profesional: Simulación Basada en Evidencia (*The Evidence-First Slide Deck*)
-El expositor profesional **no improvisa**. Presenta la plataforma con **capturas de alta definición de cada paso crítico**, y mantiene la aplicación corriendo en segundo plano en modo avión (offline) únicamente como respaldo para quien pida verlo en vivo.
-
-```mermaid
-flowchart LR
-    A["Diapositiva con Captura HD"] -->|Explicación clara y sin estrés| B["Pregunta al Grupo (Banco de 100)"]
-    B -->|Compañero responde| C["Validación con Datos Estadísticos"]
-    C -.->|Opcional si hay tiempo| D["Demostración en vivo 100% Offline"]
-```
+### Solución Adoptada: Respaldo Triple sin Dependencia de Internet
+1. **Presentación principal autosuficiente (`Aula_301_Adecuacion_Curricular_Oaxaca.pptx`):** Archivo ligero con tipografía universal (*Arial*) y **7 capturas reales de alta nitidez embebidas**, listo para abrir desde memoria USB.
+2. **Respaldo universal en PDF (`Aula_301_Adecuacion_Curricular_Oaxaca.pdf`):** Exportado desde el `.pptx` por si la computadora del aula no tiene PowerPoint o usa una versión incompatible.
+3. **Aplicación local optativa (`index.html`):** Si algún profesor o compañero solicita ver la plataforma funcionando, se puede abrir directamente desde la carpeta local (`file://`) sin internet o en [https://aula-301.vercel.app](https://aula-301.vercel.app).
 
 ---
 
-## 2. Galería de Capturas Oficiales Generadas para Diapositivas
+## 2. Galería de las 7 Capturas Oficiales Actualizadas (`docs/presentacion/capturas/`)
 
-Las siguientes capturas fueron tomadas automáticamente en resolución estándar de visualización y se encuentran listas en la carpeta local `docs/presentacion/capturas/`:
+Todas las capturas fueron generadas y verificadas directamente sobre la interfaz final (en resolución estándar `4:3` compatible con proyectores escolares):
 
-1. **Pantalla de Inicio de Sesión (`01_login_view.png`):**
-   * *Qué mostrar en la diapositiva:* El formulario de bienvenida con campos ergonómicos para matrícula y contraseña, y la nota de modelo de demostración sin riesgo de robo de identidad.
-2. **Pantalla Principal de Inicio (`02_inicio_home.png`):**
-   * *Qué mostrar en la diapositiva:* La estética *glassmorphism*, el saludo personalizado a Carlos Arturo, la barra de avisos con megáfono y la leyenda institucional sin duplicidad de enlaces.
-3. **Pestaña "Mis Actividades" (`03_actividades_cards.png`):**
-   * *Qué mostrar en la diapositiva:* La distribución de tarjetas limpias (Actividad 1 y Actividad 2) con sus respectivos estados (*Pendiente* y *Próxima semana*).
-4. **Espacio de Trabajo del Minicaso 1 (`04_workspace_minicaso.png`):**
-   * *Qué mostrar en la diapositiva:* La tabla de distribución de frecuencias ($N = 30$), la gráfica reactiva de barras proporcionales, el botón de descarga CSV y la rúbrica formativa con la autoevaluación.
-5. **Pestaña "Mis Calificaciones" Actualizada (`05_calificaciones_resumen.png`):**
-   * *Qué mostrar en la diapositiva:* El círculo con la calificación proyectada de **10.0**, la métrica *1 de 2 entregadas*, el estatus *Al corriente* y el desglose de la entrega.
-6. **Bandeja de Ingesta Docente (`06_docente_ingesta.png`):**
-   * *Qué mostrar en la diapositiva:* La herramienta que permite a la Dra. Maldonado cargar los archivos `.json` enviados por los alumnos por WhatsApp o Bluetooth y auditar el hash criptográfico SHA-256.
+1. **`01_login_view.png` — Acceso sin barreras:** Muestra el ingreso por matrícula y nombre completo, casilla para equipos compartidos y nota clara de privacidad sin contraseñas bloqueantes.
+2. **`02_inicio_home.png` — Inicio limpio y humano:** Saludo personalizado (*Carlos Arturo*, matrícula `2025301`), barra de navegación de 5 opciones, cápsula interactiva de *Avisos del Grupo 301* y leyenda enfocada en el Diseño Universal para el Aprendizaje (DUA).
+3. **`03_actividades_cards.png` — Tarjetas de Mini Casos Situados:** Presenta los mini casos oficiales de la Tabla 5 (*Minicaso 1: Acceso tecnológico y participación educativa* y *Minicaso 2: Escolaridad y empleo juvenil*, seguidos por el *Minicaso 3*), con selector simple Estudiante / Docente y guía de trabajo sin internet.
+4. **`04_workspace_minicaso.png` — Espacio de trabajo estadístico (DUA):** Muestra la tabla de frecuencias ($n = 30$), la variable cuantitativa complementaria de horas semanales (media `6.20 h`, mediana `5.5 h`, rango `14 h`), la gráfica de barras proporcionales, la consigna pedagógica y la *Reflexión situada (Locus de enunciación)*.
+5. **`05_calificaciones_resumen.png` — Evaluación formativa y calificaciones:** Muestra el indicador orientativo en círculo (`10.0 AUTO-EST.`) con su escala explicada fuera del círculo (`4.0 / 7.2 / 10.0`), conteo `1 de 3 minicasos registrados` y el desglose de autoevaluación en los 4 criterios.
+6. **`06_docente_ingesta.png` — Bandeja de Recepción Docente:** Muestra el panel docente funcionando con entregas consolidadas: un trabajo en papel/libreta DUA (*Sofía Morales*) y una constancia enviada por WhatsApp verificada como *Archivo íntegro* (*Carlos Arturo*), con campos de nota, retroalimentación y botón de exportación en Excel/Calc (`.csv`).
+7. **`07_recursos_tablas.png` — Visor de las 6 Tablas Curriculares:** Muestra la pestaña *Recursos y Tablas* con los botones de las Tablas 1 a 6 del documento curricular y la *Tabla 2: Matriz de adecuación curricular (Acceso y mediación BAP)*.
 
 ---
 
-## 3. Estructura Recomendada de Diapositivas (12 Láminas de Alto Impacto)
+## 3. Estructura de la Presentación (13 Láminas)
 
-* **Lámina 1: Portada Institucional:**
-  * Título: *Aula 301: Plataforma Educativa Descentralizada y Resiliente*.
-  * Materia: Estadística Aplicada a las Ciencias Sociales · Grupo 301 (IISUABJO / UABJO).
-  * Ponente y Catedrática: Dra. Maldonado.
-* **Lámina 2: El Diagnóstico Empírico (La Realidad del Aula):**
-  * Gráfico del Minicaso 1: 46.7% celular exclusivo, 30% compartido, 23.3% PC propia.
-  * *Pregunta al grupo (Pregunta #4 del banco):* "¿Qué porcentaje del grupo depende únicamente del celular?"
-* **Lámina 3: La Falla de los Sistemas Actuales (SICE y Classroom):**
-  * Cuellos de botella en fechas límite, caídas de red y pérdida de tareas a mitad del envío.
-* **Lámina 4: El Cambio de Paradigma: Superando el "Vibe Coding":**
-  * Comparación entre programar a ciegas con IA vs. diseñar con reglas de Ingeniería Industrial.
-* **Lámina 5: La Arquitectura Local-First y PWA:**
-  * Cero servidores para entregar tareas. Funcionamiento al 100% en modo avión.
-* **Lámina 6: Demostración Visual 1 — Acceso y Bienvenida (Capturas 01 y 02):**
-  * Explicación de la ergonomía móvil y diseño estático sin scroll innecesario.
-* **Lámina 7: Demostración Visual 2 — Espacio de Trabajo Estadístico (Capturas 03 y 04):**
-  * Tabla de frecuencias, gráfica interactiva y descarga de CSV.
-* **Lámina 8: Calidad y Prevención de Errores (*Poka-Yoke Pedagógico*):**
-  * La rúbrica formativa obligatoria y el guardado automático de borrador en caliente.
-* **Lámina 9: Seguridad y No-Repudio (Sello Criptográfico SHA-256):**
-  * Cómo se genera la huella digital del trabajo para que no pueda ser alterado en el archivo `.json`.
-* **Lámina 10: Demostración Visual 3 — Cierre Docente y Calificaciones (Capturas 05 y 06):**
-  * La Bandeja de Ingesta donde el profesor recibe y califica sin servidores escolares.
-* **Lámina 11: La Auditoría del Enjambre Goldfish de Google:**
-  * Cómo 3 agentes independientes auditaron el código, la arquitectura y el lenguaje antes de liberar la app.
-* **Lámina 12: Conclusión y Mensaje Final:**
-  * *"La tecnología más avanzada no es la que exige más megas, sino la que garantiza que nadie se quede atrás"*.
+1. **Lámina 1 (Portada):** Adecuación Curricular Inclusiva y Mediación Didáctica Situada en Oaxaca (`DI-EAC-03`, IISUABJO - UABJO, Dra. Maldonado, GitHub).
+2. **Lámina 2 (Diagnóstico Contextual):** Cifras sociodemográficas de Oaxaca (INEGI 2024–2026) y BAP identificadas en el Grupo 301.
+3. **Lámina 3 (Ciencias de la Educación):** Adecuación Curricular No Significativa, DUA, Aprendizaje Situado y Estudio de Casos (Wassermann, Stake, Yin).
+4. **Lámina 4 (Diseño Curricular):** Resumen estructurado de las 6 Tablas de la propuesta del documento de Drive.
+5. **Lámina 5 (Concreción Didáctica):** Tres Saberes de la UCA (Tabla 4), Tres Mini Casos (Tabla 5) y Secuencia de 8 Semanas (Tabla 6).
+6. **Lámina 6 (Mediación Pedagógica):** Por qué excluyen Classroom/SICE en Oaxaca y cómo Aula 301 opera como puente DUA accesible (incluso con papel).
+7. **Lámina 7 (Evidencia Visual 1):** Capturas `01` y `02` — Acceso simple sin contraseñas y entorno sin ansiedad.
+8. **Lámina 8 (Evidencia Visual 2):** Capturas `03` y `07` — Los 3 Mini Casos situados y visor de las 6 tablas en Recursos.
+9. **Lámina 9 (Evidencia Visual 3):** Captura `04` — Múltiple representación estadística (modal + horas semanales), impresión DUA y *locus de enunciación*.
+10. **Lámina 10 (Evaluación Auténtica):** Captura `05` — Rúbrica abierta, autoevaluación preventiva (*Poka-Yoke* pedagógico), escala orientativa y resguardo ante cortes de luz.
+11. **Lámina 11 (Acompañamiento Docente):** Captura `06` — Recepción integrada de archivos sin red, mensajes de WhatsApp y trabajos en libreta de papel.
+12. **Lámina 12 (Soberanía Pedagógica):** Cómo el educador gobierna la tecnología sin improvisar (*vibe coding*) apoyándose en auditorías críticas Goldfish.
+13. **Lámina 13 (Protocolo en el Aula y Cierre):** Justificación de capturas estáticas, 4 preguntas de diálogo del Banco para el Grupo 301, GitHub y agradecimientos.
 
 ---
 
-## 4. Guion para Ejecutar la Simulación en Vivo (Plan de Respaldo)
+## 4. Guion Rápido por si Piden Ver la Plataforma en Vivo (Modo Contingencia)
 
-Si el jurado o la Dra. Maldonado solicitan ver la plataforma funcionando en la pantalla:
-1. **Paso 1:** Abre el navegador en [https://aula-301.vercel.app](https://aula-301.vercel.app) o el archivo local `index.html`.
-2. **Paso 2:** Activa el **Modo Avión** en la laptop o desconecta el cable de red frente a la clase.
-3. **Paso 3:** Recarga la página. Demuestra que abre en menos de un segundo gracias al Service Worker.
-4. **Paso 4:** Ingresa con el usuario `Carlos Arturo` y contraseña `1234`.
-5. **Paso 5:** Ve a "Mis actividades", abre la Actividad 1, marca la rúbrica y presiona "Registrar entrega final".
-6. **Paso 6:** Presiona "Exportar comprobante" y muestra en el proyector el archivo `.json` descargado con su hash SHA-256.
-7. **Paso 7:** Cambia al rol "Docente" y muestra cómo la bandeja de ingesta procesa el archivo.
+1. Abrir el archivo local `index.html` directo con el navegador de la computadora (o entrar a [https://aula-301.vercel.app](https://aula-301.vercel.app) si ya cargó en caché).
+2. Ingresar con matrícula `2025301` y nombre `Carlos Arturo`.
+3. Mostrar **Inicio** (pulsar *Avisos del Grupo 301*).
+4. Ir a **Mis actividades**, abrir el **Minicaso 1**, enseñar el aviso preventivo de autoevaluación obligatoria, valorar los 4 criterios, escribir dos ideas de análisis y pulsar **Registrar entrega final**.
+5. Mostrar el botón **Descargar constancia de entrega** / **Copiar texto para WhatsApp** y **Descargar datos para Excel / Calc (.csv)**.
+6. Cambiar al modo **Docente** (clave de aula para pruebas: `3010`) y mostrar la **Recepción de constancias** con registro en libreta física y exportación de acta.
+7. Mostrar en **Recursos y Tablas** el visor interactivo de las **6 Tablas Curriculares** y el glosario pedagógico.

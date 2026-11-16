@@ -1,11 +1,11 @@
 {
-  "name": "Aula 301 — Estadística Aplicada",
+  "name": "Aula 301 — Estadística Aplicada (IISUABJO)",
   "short_name": "Aula 301",
-  "description": "Plataforma educativa ligera offline-first para Estadística Aplicada a las Ciencias Sociales · Grupo 301 · IISUABJO, UABJO",
+  "description": "Plataforma educativa accesible y ligera sin conexión para Estadística Aplicada a las Ciencias Sociales · Grupo 301 · IISUABJO, UABJO",
   "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#ebf0fc",
+  "orientation": "any",
+  "background_color": "#e9eeff",
   "theme_color": "#4b2e83",
   "icons": [
     {

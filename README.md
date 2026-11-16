@@ -1,57 +1,61 @@
-# Aula 301 — Estadística Aplicada a las Ciencias Sociales (ICEUABJO / UABJO)
+# Aula 301 — Adecuación Curricular y Mediación Inclusiva (IISUABJO, UABJO)
 
-Plataforma educativa interactiva y **Offline-First** desarrollada para **Estadística Aplicada a las Ciencias Sociales · Grupo 301** (ICEUABJO / IISUABJO, UABJO). Diseñada con enfoque **mobile-first**, estética moderna *glassmorphism* y capacidades PWA para operar 100% sin conexión a internet en beneficio de estudiantes con conectividad intermitente en Oaxaca.
+Plataforma educativa abierta, ultraligera y funcional **sin conexión a internet**, construida como recurso de mediación pedagógica desde las **Ciencias de la Educación** y el **Diseño Universal para el Aprendizaje (DUA)** para la Unidad Curricular de Aprendizaje (UCA) **Estadística Aplicada a las Ciencias Sociales** (`DI-EAC-03`, tercer semestre, Grupo 301) en el Instituto de Investigaciones Sociológicas de la UABJO (**IISUABJO**), Oaxaca, bajo orientación de calidad de procesos de la **Dra. Maldonado**.
 
-🌐 **Demo en vivo:** [https://aula-301.vercel.app](https://aula-301.vercel.app)  
-📦 **Repositorio:** [https://github.com/Tortaconflow/aula-301](https://github.com/Tortaconflow/aula-301)  
-🏛️ **Dictamen Universitario Formal (Ingeniería Inversa REA & Goldfish Swarm):** [docs/JUSTIFICACION_FORMAL_REA_GOLDFISH_UNIVERSIDAD.md](docs/JUSTIFICACION_FORMAL_REA_GOLDFISH_UNIVERSIDAD.md)  
-📖 **Manual Oficial Docente y Alumno:** [docs/MANUAL_USUARIO_DOCENTE_ALUMNO.md](docs/MANUAL_USUARIO_DOCENTE_ALUMNO.md)  
-🎯 **Guía de Presentación, Simulación y Banco de 100 Preguntas:** [docs/presentacion/PROTOCOLO_PRESENTACION_Y_SIMULACION.md](docs/presentacion/PROTOCOLO_PRESENTACION_Y_SIMULACION.md)  
-📄 **Dossier de Ingeniería Industrial (Dra. Maldonado):** [docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md](docs/DOCUMENTACION_TECNICA_INDUSTRIAL.md)  
-🎓 **Artículo Académico Formal (Metodología REA & Goldfish Swarm):** [docs/METODOLOGIA_INGENIERIA_INVERSA_Y_AGENTES_GOLDFISH.md](docs/METODOLOGIA_INGENIERIA_INVERSA_Y_AGENTES_GOLDFISH.md)
-
----
-
-## Características Principales
-
-1. **Diseño Mobile-First Estricto (`390px` base) & Glassmorphism:**
-   - Inspirado en las maquetas visuales del equipo: efecto cristal translúcido (*backdrop blur*), bordes suaves y fondo con malla de gradiente atmosférico.
-   - La pantalla de **Inicio** es estática y sin scroll innecesario, mostrando bienvenida personalizada, cápsula de avisos y propósito institucional.
-
-2. **Arquitectura Offline-First (PWA Instalable):**
-   - **Service Worker (`sw.js` Cache-First):** Almacena en caché todos los activos esenciales (HTML, CSS, JS, fuentes e iconos) permitiendo que la plataforma funcione en modo avión o sin red celular.
-   - **Web App Manifest (`manifest.json`):** Permite instalar la plataforma como una app nativa en Android e iOS.
-   - **Persistencia Local (`localStorage`):** Guarda sesiones, autoevaluaciones, borradores de tareas, entregas de actividades y actividades creadas por el docente sin depender de un servidor externo.
-
-3. **Vistas de Contenido Modulares (Paso 3):**
-   - **Mis actividades:** Tarjetas limpias de actividades (`Actividad 1`, `Actividad 2`) con espacio de trabajo interactivo desplegable (tabla de frecuencias, gráfica de barras reactiva, descarga CSV, rúbrica, autoevaluación y módulo de entrega offline con exportación de comprobante JSON).
-   - **Mis calificaciones:** Tarjeta de resumen general con promedio reactivo ponderado por autoevaluación, métricas de avance y desglose de entrega por actividad con retroalimentación.
-   - **Recursos:** Tarjetas *glass* con guías paso a paso para el canje de beneficios estudiantiles (Microsoft 365, GitHub Student Pack, Notion, Figma, Spotify Universitario).
-
-4. **Fuente Única de Verdad (`Single Source of Truth`):**
-   - Los datos del minicaso (*"Acceso tecnológico y participación en clase"*, `n = 30`) y los criterios de la rúbrica se definen una sola vez en `js/data.js`, alimentando de forma sincronizada tablas, gráficas, CSV descargable y formularios.
+* **Plataforma en línea (PWA):** [https://aula-301.vercel.app](https://aula-301.vercel.app)
+* **Repositorio público en GitHub:** [https://github.com/Tortaconflow/aula-301](https://github.com/Tortaconflow/aula-301)
+* **Protocolo para agentes e IA:** [AGENTS.md](AGENTS.md)
+* **Documento rector en Ciencias de la Educación:** [docs/MARCO_PEDAGOGICO_Y_ADECUACION_CURRICULAR.md](docs/MARCO_PEDAGOGICO_Y_ADECUACION_CURRICULAR.md)
+* **Manual Docente y Estudiante:** [docs/MANUAL_USUARIO_DOCENTE_ALUMNO.md](docs/MANUAL_USUARIO_DOCENTE_ALUMNO.md)
+* **Presentación lista para PC escolar (.pptx y .pdf):** [docs/presentacion/Aula_301_Adecuacion_Curricular_Oaxaca.pptx](docs/presentacion/Aula_301_Adecuacion_Curricular_Oaxaca.pptx) · [PDF de respaldo](docs/presentacion/Aula_301_Adecuacion_Curricular_Oaxaca.pdf)
+* **Protocolo de exposición y Banco de 100 preguntas:** [PROTOCOLO_PRESENTACION_Y_SIMULACION.md](docs/presentacion/PROTOCOLO_PRESENTACION_Y_SIMULACION.md) · [BANCO_100_PREGUNTAS_AULA301.md](docs/presentacion/BANCO_100_PREGUNTAS_AULA301.md)
 
 ---
 
-## Estructura del Proyecto
+## Características Pedagógicas y de Accesibilidad (Oaxaca)
+
+1. **Acceso sin contraseñas bloqueantes y seguro en equipos compartidos:** Ingreso por matrícula y nombre completo, con limpieza opcional de sesión tras descargar constancias (pensado para el 30 % que comparte equipo o usa PCs escolares).
+2. **Los 3 Mini Casos oficiales de la Adecuación Curricular (Tabla 5):**
+   * *Minicaso 1:* Acceso tecnológico y participación educativa ($n = 30$, con variable cuantitativa complementaria de horas semanales para tendencia central y dispersión).
+   * *Minicaso 2:* Escolaridad y empleo juvenil (matriz de contingencia 3 × 2, $n = 40$).
+   * *Minicaso 3:* Acceso a servicios básicos (proporciones y cierre metodológico, $n = 50$).
+3. **Evaluación Formativa y Andamiaje Preventivo:** Rúbrica abierta desde el inicio, autoevaluación previa obligatoria (*Poka-Yoke* formativo), estimación orientativa en *Mis calificaciones* (`0 de 3 minicasos`) y hoja imprimible para práctica en papel/libreta (DUA).
+4. **Entrega sin internet y Bandeja Docente Unificada:** Descarga de datos CSV con codificación UTF-8 BOM para Excel/LibreOffice, constancia verificable o copiable para **WhatsApp**, más recepción docente (clave de demostración: `3010`) por archivo, texto pegado o registro de entregas en papel físico.
+5. **Visor Curricular y Glosario:** Consulta interactiva de las **6 Tablas de la Adecuación Curricular** y glosario breve en la pestaña *Recursos y Tablas*, sin depender de internet ni de tipografías externas.
+
+---
+
+## Estructura Real del Repositorio
 
 ```text
 aula-301/
-├── index.html       # Estructura semántica con 5 vistas únicas (Login, Inicio, Actividades, Calificaciones, Recursos)
-├── manifest.json    # Manifiesto PWA para instalación móvil nativa
-├── sw.js            # Service Worker con estrategia de caché offline v2
-├── css/
-│   └── styles.css   # Estilos mobile-first, glassmorphism y temas adaptativos
+├── AGENTS.md                                      # Reglas pedagógicas y técnicas para agentes
+├── README.md                                      # Guía general del proyecto
+├── .gitignore
+├── index.html                                     # Aplicación PWA ligera compatible con file://
+├── manifest.json                                  # Manifiesto PWA instalable
+├── sw.js                                          # Service Worker offline (aula301-cache-v6)
+├── generate_deck.py                               # Generador reproducible de la presentación PPTX
+├── css/styles.css                                 # Estilos ligeros, >=44px ISO 9241-110 e impresión DUA
 ├── js/
-│   ├── data.js      # Fuente única de verdad de datos, roles y rúbricas
-│   └── app.js       # Control de navegación, persistencia offline, entregas y lógica de usuario
-├── icons/
-│   ├── icon-192.png # Icono PWA para pantalla de inicio
-│   └── icon-512.png # Icono PWA de alta resolución
-└── README.md        # Documentación para portafolio
+│   ├── data.js                                    # Fuente Única de Verdad (Tablas 1-6, 3 Minicasos, Glosario)
+│   └── app.js                                     # Controlador ES5/ES6 sin dependencias externas
+├── icons/                                         # Íconos PWA (192px y 512px)
+└── docs/
+    ├── MARCO_PEDAGOGICO_Y_ADECUACION_CURRICULAR.md # Documento rector de Ciencias de la Educación
+    ├── MANUAL_USUARIO_DOCENTE_ALUMNO.md           # Guía de uso para alumnos y docentes
+    ├── DOCUMENTACION_TECNICA_INDUSTRIAL.md        # Anexo de calidad de procesos (Dra. Maldonado)
+    ├── JUSTIFICACION_FORMAL_REA_GOLDFISH_UNIVERSIDAD.md # Anexo formal REA y Goldfish
+    ├── METODOLOGIA_INGENIERIA_INVERSA_Y_AGENTES_GOLDFISH.md # Bitácora de Olas 1 y 2 Goldfish
+    └── presentacion/
+        ├── Aula_301_Adecuacion_Curricular_Oaxaca.pptx # Diapositivas ligeras con capturas (2.5 MB)
+        ├── Aula_301_Adecuacion_Curricular_Oaxaca.pdf  # Respaldo universal para aulas sin Office (2.0 MB)
+        ├── BANCO_100_PREGUNTAS_AULA301.md          # 100 preguntas de Ciencias Sociales, DUA y Estadística
+        ├── PROTOCOLO_PRESENTACION_Y_SIMULACION.md  # Estrategia anti-fallos para PCs modestas
+        └── capturas/                               # 7 capturas reales actualizadas (01 a 07)
 ```
 
 ---
 
-## Licencia y Créditos
-Proyecto desarrollado para la comunidad estudiantil de la **Universidad Autónoma Benito Juárez de Oaxaca (UABJO)**. Libre para fines educativos y formativos.
+## Licencia y Uso Universitario
+Material abierto y gratuito para la comunidad estudiantil y docente de la **Universidad Autónoma "Benito Juárez" de Oaxaca (UABJO)**.

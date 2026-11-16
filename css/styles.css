@@ -1,37 +1,28 @@
 /* ==========================================================================
-   Aula 301 — Hoja de estilos Mobile-First basada en la maqueta de Carlos
-   Atmósfera estética: degradado ambiental sutil (azul/lila/morado),
-   glassmorphism (cristal translúcido) y diseño estático sin scroll.
+   Aula 301 — Hoja de estilos accesible, ultraligera y compatible (DUA)
+   Optimizada para teléfonos modestos y computadoras escolares de baja gama.
    ========================================================================== */
 
 :root {
-  --bg-gradient: radial-gradient(at 10% 20%, rgba(135, 172, 255, 0.5) 0px, transparent 50%),
-                 radial-gradient(at 90% 15%, rgba(200, 170, 250, 0.55) 0px, transparent 50%),
-                 radial-gradient(at 50% 50%, rgba(230, 240, 255, 0.65) 0px, transparent 60%),
-                 radial-gradient(at 85% 85%, rgba(165, 135, 230, 0.45) 0px, transparent 50%),
-                 radial-gradient(at 15% 85%, rgba(110, 75, 190, 0.28) 0px, transparent 50%),
-                 #ebf0fc;
-  --glass-surface: rgba(255, 255, 255, 0.62);
-  --glass-surface-strong: rgba(255, 255, 255, 0.82);
-  --glass-card: rgba(255, 255, 255, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.75);
-  --glass-border-subtle: rgba(255, 255, 255, 0.45);
-  
+  --bg-gradient: linear-gradient(135deg, #e4ebff 0%, #eee7fd 52%, #e8efff 100%);
+  --glass-surface: rgba(255, 255, 255, 0.92);
+  --glass-surface-strong: rgba(255, 255, 255, 0.98);
+  --glass-border: rgba(255, 255, 255, 0.95);
+
   --ink: #1f143a;
-  --muted: #5e547a;
+  --muted: #4b4266;
   --purple: #4b2e83;
   --purple-2: #6545b2;
   --purple-dark: #231342;
   --lilac: #d7c9f7;
-  --lilac-soft: rgba(236, 229, 251, 0.7);
-  --lilac-bg: rgba(239, 233, 253, 0.6);
-  --line: rgba(216, 204, 243, 0.6);
-  
-  --radius: 22px;
+  --lilac-soft: #efeafd;
+  --line: #d8ccf3;
+
+  --radius: 20px;
   --radius-sm: 14px;
   --radius-pill: 999px;
-  --shadow-glass: 0 12px 36px rgba(50, 30, 95, 0.08), 0 2px 8px rgba(255, 255, 255, 0.4) inset;
-  --shadow-sm: 0 4px 16px rgba(50, 30, 95, 0.05);
+  --shadow-glass: 0 8px 24px rgba(50, 30, 95, 0.08);
+  --shadow-sm: 0 3px 10px rgba(50, 30, 95, 0.05);
 }
 
 * {
@@ -39,7 +30,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   height: 100%;
 }
 
@@ -47,31 +37,32 @@ body {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  font-family: "Public Sans", system-ui, sans-serif;
-  background: var(--bg-gradient);
-  background-attachment: fixed;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #e9eeff;
+  background-image: var(--bg-gradient);
   color: var(--ink);
-  line-height: 1.45;
+  line-height: 1.48;
 }
 
 a {
-  color: var(--purple-2);
+  color: var(--purple);
+  font-weight: 600;
 }
 
-h1, h2, h3 {
-  line-height: 1.1;
+h1, h2, h3, h4 {
+  line-height: 1.15;
   margin: 0;
   color: var(--purple-dark);
 }
 
 h2 {
+  font-size: 1.55rem;
   font-size: clamp(1.35rem, 4vw, 1.85rem);
   font-weight: 800;
-  letter-spacing: -0.01em;
 }
 
 h3 {
-  font-size: 1.1rem;
+  font-size: 1.12rem;
   font-weight: 800;
 }
 
@@ -90,17 +81,19 @@ p {
 }
 
 /* ==========================================================================
-   1. Vista de Login de Demostración (Fiel a la maqueta de Carlos)
+   1. Vista de Acceso Inicial (Simple, sin contraseñas falsas ni colisiones)
    ========================================================================== */
 
 #loginView {
+  min-height: 100vh;
   min-height: 100dvh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
   overflow-y: auto;
   padding: 16px;
-  background: var(--bg-gradient);
+  background: #e9eeff;
+  background-image: var(--bg-gradient);
 }
 
 .login-topbar {
@@ -117,48 +110,41 @@ p {
   color: var(--purple-dark);
 }
 
-.login-topbar .brand-text {
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-
 .login-topbar .group-badge {
   font-weight: 800;
   letter-spacing: 0.08em;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .login-center {
   flex: 1;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 12px 0 20px;
+  padding: 12px 0 24px;
 }
 
 .login-card {
   background: var(--glass-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid var(--glass-border);
-  border-radius: 28px;
+  border-radius: 24px;
   box-shadow: var(--shadow-glass);
-  max-width: 380px;
+  max-width: 420px;
   width: 100%;
-  padding: 28px 22px 24px;
+  padding: 26px 22px 24px;
   text-align: center;
 }
 
 .login-card h1 {
   font-size: 1.48rem;
   font-weight: 900;
-  letter-spacing: -0.01em;
   color: var(--purple-dark);
 }
 
 .login-card .sub {
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   margin-top: 6px;
 }
 
@@ -169,7 +155,17 @@ p {
   text-align: left;
 }
 
-/* Campos con icono integrado a la izquierda */
+.field-block {
+  display: grid;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--purple-dark);
+}
+
 .input-group {
   position: relative;
   display: flex;
@@ -180,37 +176,51 @@ p {
   position: absolute;
   left: 14px;
   color: var(--purple-2);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
-  opacity: 0.85;
 }
 
 .input-group input {
   font: inherit;
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid var(--glass-border);
+  background: #ffffff;
+  border: 1.5px solid var(--line);
   border-radius: var(--radius-pill);
-  padding: 12px 16px 12px 42px;
+  padding: 11px 16px 11px 42px;
   width: 100%;
   min-height: 48px;
   outline: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(75, 46, 131, 0.04) inset;
 }
 
 .input-group input:focus {
-  background: #ffffff;
-  border-color: var(--purple-2);
-  box-shadow: 0 0 0 3px rgba(109, 76, 187, 0.2);
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(101, 69, 178, 0.22);
+}
+
+.shared-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: var(--ink);
+  cursor: pointer;
+  min-height: 44px;
+  padding: 4px 2px;
+}
+
+.shared-check input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--purple);
+  flex-shrink: 0;
 }
 
 .login-form .btn-submit {
-  justify-content: center;
   width: 100%;
-  padding: 13px 18px;
+  padding: 12px 18px;
   border-radius: var(--radius-pill);
   background: var(--purple);
   color: #ffffff;
@@ -220,57 +230,36 @@ p {
   font-size: 1rem;
   cursor: pointer;
   min-height: 48px;
-  box-shadow: 0 6px 18px rgba(75, 46, 131, 0.25);
-  transition: transform 0.15s, background 0.15s;
-}
-
-.login-form .btn-submit:active {
-  transform: scale(0.98);
-}
-
-.forgot {
-  background: none;
-  border: 0;
-  font: inherit;
-  font-weight: 700;
-  color: var(--purple-2);
-  cursor: pointer;
-  padding: 6px 10px;
-  font-size: 0.88rem;
+  box-shadow: 0 4px 12px rgba(75, 46, 131, 0.22);
 }
 
 .login-note {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   margin-top: 16px;
   border-top: 1px solid var(--line);
   padding-top: 12px;
-  line-height: 1.4;
-}
-
-#forgotMsg {
-  color: var(--purple);
-  font-size: 0.86rem;
-  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
 }
 
 /* ==========================================================================
-   2. Barra Superior y Contenedor Principal (Mobile-First 390px)
+   2. Barra Superior y Contenedor Principal
    ========================================================================== */
 
 #appView {
   display: flex;
   flex-direction: column;
+  height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: var(--bg-gradient);
+  background: #e9eeff;
+  background-image: var(--bg-gradient);
 }
 
 .topbar {
-  background: var(--glass-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1.5px solid var(--glass-border);
+  background: var(--glass-surface-strong);
+  border-bottom: 1.5px solid var(--line);
   flex-shrink: 0;
   z-index: 20;
 }
@@ -287,6 +276,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .brand {
@@ -294,9 +284,9 @@ p {
   align-items: center;
   gap: 8px;
   font-weight: 900;
-  font-size: 1.05rem;
-  letter-spacing: 0.05em;
+  font-size: 0.98rem;
   color: var(--purple-dark);
+  white-space: nowrap;
 }
 
 .brand .cap {
@@ -304,23 +294,24 @@ p {
   height: 32px;
   border-radius: 10px;
   background: var(--lilac-soft);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--purple);
   flex-shrink: 0;
 }
 
-.user-avatar-badge {
+.user-id-chip {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--glass-surface-strong);
-  border: 1.5px solid var(--glass-border);
-  color: var(--purple);
-  box-shadow: var(--shadow-sm);
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--lilac-soft);
+  border: 1px solid var(--line);
+  color: var(--purple-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .topnav {
@@ -342,13 +333,12 @@ p {
   color: var(--purple-dark);
   font-weight: 700;
   font-size: 0.72rem;
-  line-height: 1.1;
+  line-height: 1.15;
   text-align: center;
   padding: 6px 2px;
   min-height: 44px;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.15s;
 }
 
 .topnav button svg {
@@ -356,13 +346,12 @@ p {
 }
 
 .topnav button:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--lilac-soft);
 }
 
 .topnav button[aria-current="true"] {
-  background: var(--glass-surface-strong);
-  color: var(--purple);
-  box-shadow: 0 2px 8px rgba(75, 46, 131, 0.08);
+  background: var(--purple);
+  color: #ffffff;
 }
 
 .app-main {
@@ -383,18 +372,16 @@ p {
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 16px 14px 24px;
+  padding: 16px 14px 28px;
 }
 
 .app-footer {
   flex-shrink: 0;
-  margin-top: 0;
   border-top: 1px solid var(--line);
   padding: 8px 0 10px;
   color: var(--muted);
-  font-size: 0.76rem;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(10px);
+  font-size: 0.78rem;
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .app-footer p {
@@ -402,17 +389,17 @@ p {
 }
 
 /* ==========================================================================
-   3. Vista Inicio — Idéntica a la captura de Carlos (Estática, sin scroll)
+   3. Vista Inicio (Limpia, legible en celulares y monitores chicos)
    ========================================================================== */
 
 .view-home {
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 14px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 14px;
+  padding-bottom: 18px;
 }
 
 .hero-box {
@@ -422,21 +409,22 @@ p {
 }
 
 .greeting-prefix {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(2rem, 8vw, 3.4rem);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.2rem;
+  font-size: clamp(2rem, 7vw, 3.2rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  line-height: 1.08;
   color: var(--purple-dark);
 }
 
 .greeting-user {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(2.4rem, 10vw, 4.2rem);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.6rem;
+  font-size: clamp(2.3rem, 9vw, 4rem);
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  line-height: 1.05;
   color: var(--purple);
+  word-break: break-word;
 }
 
 .semester-badge {
@@ -449,25 +437,31 @@ p {
   font-weight: 600;
 }
 
-/* Cápsula de Avisos con estilo glassmorphism */
 .avisos-glass {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  border: 1.5px solid var(--line);
   background: var(--glass-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1.5px solid var(--glass-border);
   border-radius: var(--radius-sm);
   padding: 12px 16px;
+  min-height: 56px;
   box-shadow: var(--shadow-sm);
   color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.avisos-glass:hover {
+  border-color: var(--purple-2);
 }
 
 .avisos-glass .ic {
   color: var(--purple);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
@@ -480,46 +474,41 @@ p {
 
 .avisos-glass b {
   display: block;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   color: var(--purple-dark);
 }
 
 .avisos-glass span {
   color: var(--muted);
-  font-size: 0.84rem;
-  line-height: 1.3;
+  font-size: 0.86rem;
+  line-height: 1.35;
 }
 
 .avisos-glass .arrow {
   margin-left: auto;
-  color: var(--purple-2);
+  color: var(--purple);
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
 }
 
-/* Leyenda de propósito en Inicio (sustituye a las tarjetas repetidas) */
 .intro-legend-glass {
   background: var(--glass-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 18px 20px;
   box-shadow: var(--shadow-glass);
-  margin-top: 6px;
 }
 
 .intro-legend-glass p {
   margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.96rem;
+  line-height: 1.55;
   color: var(--ink);
-  font-weight: 500;
 }
 
 /* ==========================================================================
-   4. Estilos de Paneles, Actividades, Calificaciones y Recursos (Glass)
+   4. Botones, Paneles, Tarjetas de Minicasos y Rúbricas
    ========================================================================== */
 
 .btn {
@@ -529,7 +518,7 @@ p {
   gap: 8px;
   border: 1.5px solid var(--purple);
   background: var(--purple);
-  color: #fff;
+  color: #ffffff;
   padding: 10px 16px;
   min-height: 44px;
   border-radius: var(--radius-pill);
@@ -537,13 +526,21 @@ p {
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(75, 46, 131, 0.15);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:hover {
+  background: var(--purple-dark);
 }
 
 .btn.secondary {
-  background: var(--glass-surface-strong);
+  background: #ffffff;
   color: var(--purple);
-  border-color: var(--glass-border);
+  border-color: var(--line);
+}
+
+.btn.secondary:hover {
+  background: var(--lilac-soft);
 }
 
 .btn.small {
@@ -562,14 +559,14 @@ p {
 
 .role-label {
   font-weight: 700;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   color: var(--muted);
 }
 
 .seg {
   display: flex;
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
+  background: #ffffff;
+  border: 1px solid var(--line);
   border-radius: var(--radius-pill);
   padding: 3px;
   gap: 3px;
@@ -580,24 +577,22 @@ p {
   border: 0;
   background: transparent;
   color: var(--ink);
-  padding: 8px 12px;
+  padding: 8px 14px;
   min-height: 44px;
   border-radius: var(--radius-pill);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  font-size: 0.84rem;
+  font-size: 0.86rem;
 }
 
 .seg button[aria-pressed="true"] {
   background: var(--purple);
-  color: #fff;
+  color: #ffffff;
 }
 
 .panel {
   background: var(--glass-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 18px;
@@ -611,34 +606,27 @@ p {
 .example-badge {
   display: inline-flex;
   background: var(--purple);
-  color: #fff;
+  color: #ffffff;
   font-weight: 800;
   font-size: 0.76rem;
-  letter-spacing: 0.08em;
-  padding: 4px 12px;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
   border-radius: var(--radius-pill);
-}
-
-.badge-top {
-  margin-top: 14px;
 }
 
 .tag {
   display: inline-block;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   background: var(--lilac-soft);
   color: var(--purple);
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: var(--radius-pill);
   margin-bottom: 8px;
 }
 
-/* ==========================================================================
-   Paso 3: Tarjetas de Actividades y Espacio de Trabajo (Estilo Carlos)
-   ========================================================================== */
 .view-header {
   margin-bottom: 14px;
 }
@@ -651,30 +639,14 @@ p {
 
 .activity-card-carlos {
   background: var(--glass-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid var(--glass-border);
+  border-left: 5px solid var(--purple);
   border-radius: var(--radius);
   padding: 20px;
   box-shadow: var(--shadow-glass);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-
-.activity-card-carlos:hover {
-  border-color: var(--purple-2);
-  box-shadow: 0 10px 28px rgba(75, 46, 131, 0.14);
-}
-
-.activity-card-carlos.active-card {
-  border-left: 5px solid var(--purple);
-}
-
-.activity-card-carlos.future-card {
-  opacity: 0.85;
-  background: rgba(255, 255, 255, 0.45);
 }
 
 .activity-card-top {
@@ -682,6 +654,7 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .activity-card-badge {
@@ -689,45 +662,48 @@ p {
   font-size: 0.82rem;
   color: var(--purple-dark);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .status-pill {
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 800;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: var(--radius-pill);
-  background: rgba(235, 148, 12, 0.16);
-  color: #b45309;
-  border: 1px solid rgba(235, 148, 12, 0.35);
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
 }
 
 .status-pill.delivered {
-  background: rgba(22, 163, 74, 0.16);
-  color: #15803d;
-  border-color: rgba(22, 163, 74, 0.35);
+  background: #dcfce7;
+  color: #166534;
+  border-color: #22c55e;
 }
 
 .status-pill.scheduled {
-  background: rgba(109, 76, 187, 0.14);
-  color: var(--purple);
-  border-color: rgba(109, 76, 187, 0.28);
+  background: var(--lilac-soft);
+  color: var(--purple-dark);
+  border-color: var(--lilac);
+}
+
+.status-pill.warn {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #ef4444;
 }
 
 .activity-card-title {
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--purple-dark);
-  line-height: 1.25;
   margin: 0;
 }
 
 .activity-card-desc {
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   color: var(--ink);
-  line-height: 1.45;
   margin: 0;
-  opacity: 0.9;
 }
 
 .activity-card-footer {
@@ -742,33 +718,36 @@ p {
 }
 
 .activity-meta {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--muted);
   font-weight: 600;
 }
 
-/* Espacio de trabajo de la Actividad (acordeón desplegable) */
 .activity-workspace-panel {
-  display: none;
-  animation: fadeIn 0.2s ease;
-  margin-top: 6px;
-  margin-bottom: 12px;
-}
-
-.activity-workspace-panel.is-open {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 4px;
+  margin-bottom: 12px;
 }
 
 .workspace-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: -4px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-/* Formulario de entrega Offline-First */
+.quant-box {
+  background: #f8f6fe;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 0.86rem;
+}
+
 .submission-panel form {
   display: grid;
   gap: 12px;
@@ -777,22 +756,20 @@ p {
 
 .submission-panel textarea {
   font: inherit;
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.85);
-  border: 1.5px solid var(--glass-border);
+  background: #ffffff;
+  border: 1.5px solid var(--line);
   border-radius: 12px;
   padding: 12px 14px;
   width: 100%;
-  box-shadow: 0 2px 6px rgba(75, 46, 131, 0.04) inset;
   resize: vertical;
 }
 
 .submission-panel textarea:focus {
-  background: #ffffff;
-  border-color: var(--purple-2);
+  border-color: var(--purple);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(109, 76, 187, 0.18);
+  box-shadow: 0 0 0 3px rgba(101, 69, 178, 0.18);
 }
 
 .submission-actions {
@@ -803,23 +780,52 @@ p {
 }
 
 .submission-feedback {
-  padding: 10px 14px;
+  padding: 12px 14px;
   border-radius: 10px;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
   margin: 0;
-  background: rgba(22, 163, 74, 0.15);
-  color: #15803d;
-  border: 1px solid rgba(22, 163, 74, 0.3);
+  border: 1px solid transparent;
+}
+
+/* Zona arrastrar y pegar en Bandeja Docente */
+.drop-zone {
+  border: 2px dashed var(--purple-2);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  text-align: center;
+  background: var(--lilac-soft);
+  margin: 12px 0;
+}
+
+.drop-zone.drag-over {
+  background: #e2d5fc;
+  border-color: var(--purple-dark);
+}
+
+.paste-details {
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  background: #ffffff;
+}
+
+.paste-details summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: var(--purple-dark);
+  cursor: pointer;
 }
 
 /* ==========================================================================
-   Paso 3: Mis calificaciones (Tarjetas Glass & Resumen)
+   5. Calificaciones y Tarjetas
    ========================================================================== */
+
 .grades-summary-card {
   background: var(--glass-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 20px;
@@ -833,21 +839,20 @@ p {
 }
 
 .grade-circle {
-  width: 76px;
-  height: 76px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
   background: var(--lilac-soft);
-  border: 2.5px solid var(--purple-2);
+  border: 3px solid var(--purple-2);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 14px rgba(75, 46, 131, 0.12);
 }
 
 .grade-val {
-  font-size: 1.6rem;
+  font-size: 1.65rem;
   font-weight: 900;
   color: var(--purple);
   line-height: 1;
@@ -858,24 +863,22 @@ p {
   text-transform: uppercase;
   font-weight: 800;
   color: var(--muted);
-  letter-spacing: 0.05em;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .grade-summary-details {
   flex: 1;
-  min-width: 200px;
+  min-width: 220px;
 }
 
 .grade-summary-details h3 {
   margin: 0;
   font-size: 1.25rem;
-  color: var(--purple-dark);
 }
 
 .grade-summary-details .sub {
-  margin: 2px 0 8px;
-  font-size: 0.84rem;
+  margin: 2px 0 6px;
+  font-size: 0.86rem;
   color: var(--muted);
 }
 
@@ -886,10 +889,10 @@ p {
 }
 
 .metric-chip {
-  font-size: 0.78rem;
-  padding: 4px 10px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid var(--glass-border);
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  background: var(--lilac-soft);
+  border: 1px solid var(--line);
   border-radius: var(--radius-pill);
   color: var(--ink);
 }
@@ -901,8 +904,6 @@ p {
 
 .grade-card {
   background: var(--glass-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 18px;
@@ -916,25 +917,24 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .grade-card h3 {
   margin: 0;
-  font-size: 1.05rem;
-  color: var(--purple-dark);
+  font-size: 1.06rem;
 }
 
 .grade-card-body {
-  font-size: 0.9rem;
-  line-height: 1.45;
+  font-size: 0.92rem;
 }
 
 .view-intro {
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   margin-top: 4px;
   margin-bottom: 12px;
-  line-height: 1.45;
 }
 
 .case-detail {
@@ -942,19 +942,19 @@ p {
   grid-template-columns: 1fr;
   gap: 14px;
   align-items: start;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 th, td {
   text-align: left;
-  padding: 8px 8px;
+  padding: 8px 6px;
   border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
@@ -962,7 +962,7 @@ th, td {
 th {
   font-size: 0.76rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--muted);
 }
 
@@ -980,7 +980,7 @@ td.num, th.num {
 
 .bar-track {
   grid-column: 1 / -1;
-  height: 10px;
+  height: 11px;
   background: var(--lilac-soft);
   border-radius: var(--radius-pill);
   overflow: hidden;
@@ -996,91 +996,23 @@ td.num, th.num {
   background: var(--lilac-soft);
   border-radius: var(--radius-sm);
   padding: 14px;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .divider {
   border: 0;
   border-top: 1px solid var(--line);
-  margin: 18px 0;
-}
-
-.empty {
-  border: 2px dashed var(--line);
-  border-radius: var(--radius);
-  padding: 22px 16px;
-  text-align: center;
-  margin-top: 18px;
-  background: var(--glass-surface);
-}
-
-.empty p {
-  color: var(--muted);
-  margin: 4px auto;
-}
-
-.switch-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.switch-row:last-child {
-  border-bottom: 0;
-}
-
-.toggle {
-  flex: 0 0 auto;
-  width: 54px;
-  height: 30px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--line);
-  background: var(--lilac-soft);
-  position: relative;
-  cursor: pointer;
-  padding: 0;
-}
-
-.toggle::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid var(--line);
-  transition: left 0.18s;
-}
-
-.toggle[aria-pressed="true"] {
-  background: var(--purple-2);
-}
-
-.toggle[aria-pressed="true"]::after {
-  left: 26px;
+  margin: 16px 0;
 }
 
 .rubric {
-  table-layout: fixed;
   width: 100%;
-  font-size: 0.78rem;
+  font-size: 0.84rem;
 }
 
 .rubric th, .rubric td {
-  padding: 7px 5px;
+  padding: 7px 8px;
   overflow-wrap: break-word;
-  word-break: break-word;
-}
-
-.rubric td[contenteditable="true"] {
-  outline: 2px dashed var(--purple-2);
-  outline-offset: -4px;
-  background: var(--lilac-soft);
 }
 
 .crit-block {
@@ -1091,32 +1023,32 @@ td.num, th.num {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .eval-grid button {
-  border: 1px solid var(--glass-border);
-  background: var(--glass-surface);
+  border: 1.5px solid var(--line);
+  background: #ffffff;
   color: var(--ink);
   border-radius: 10px;
   padding: 10px 6px;
-  min-height: 40px;
+  min-height: 44px;
   font: inherit;
   font-size: 0.86rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .eval-grid button.sel {
   background: var(--purple);
-  color: #fff;
+  color: #ffffff;
   border-color: var(--purple);
 }
 
 .form-grid {
   display: grid;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .form-grid label {
@@ -1126,15 +1058,16 @@ td.num, th.num {
   gap: 6px;
 }
 
-.form-grid input, .form-grid textarea {
+.form-grid input, .form-grid textarea, .form-grid select {
   font: inherit;
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
   padding: 10px 12px;
   width: 100%;
+  min-height: 44px;
 }
 
 .added {
@@ -1147,27 +1080,7 @@ td.num, th.num {
   display: none;
 }
 
-.added-card {
-  background: var(--glass-surface-strong);
-  border: 1.5px solid var(--purple-2);
-  border-radius: 14px;
-  padding: 16px;
-}
-
-.added-card p {
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.added-card .rub {
-  font-size: 0.9rem;
-  background: var(--lilac-soft);
-  border-radius: 10px;
-  padding: 10px 12px;
-  white-space: pre-wrap;
-}
-
-.teacher-only, .admin-only {
+.teacher-only {
   display: none;
 }
 
@@ -1175,23 +1088,32 @@ body[data-role="docente"] .teacher-only {
   display: block;
 }
 
-body[data-role="administrador"] .admin-only,
-body[data-role="administrador"] .teacher-only {
-  display: block;
+/* Recursos y Glosario */
+.glossary-item {
+  background: #f8f6fe;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
 }
 
-/* Recursos */
+.glossary-item summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  color: var(--purple-dark);
+  cursor: pointer;
+}
+
 .benefits {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .benefit {
   background: var(--glass-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1.5px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 18px;
@@ -1200,101 +1122,55 @@ body[data-role="administrador"] .teacher-only {
   flex-direction: column;
 }
 
-.benefit h4 {
-  margin: 14px 0 4px;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--purple-2);
-}
-
-.benefit ul, .benefit ol {
-  margin: 4px 0 0;
-  padding-left: 20px;
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-.benefit li {
-  margin: 4px 0;
-}
-
 .benefit details {
-  margin-top: 14px;
+  margin-top: 12px;
   border-top: 1px solid var(--line);
-  padding-top: 12px;
+  padding-top: 8px;
 }
 
 .benefit summary {
   font-weight: 800;
   cursor: pointer;
-  color: var(--purple-2);
-  padding: 4px 0;
+  color: var(--purple);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .benefit .source {
   margin-top: auto;
-  padding-top: 14px;
-  font-size: 0.84rem;
+  padding-top: 12px;
+  font-size: 0.85rem;
   color: var(--muted);
 }
 
-.courses {
-  margin-top: 16px;
-}
-
-.courses .panel {
+.teacher-eval-row {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 6px 22px;
+  grid-template-columns: 110px 1fr;
+  gap: 8px;
+  margin-top: 8px;
 }
 
-.courses h3 {
-  grid-column: 1 / -1;
-}
-
-.muted-note {
-  color: var(--muted);
+.teacher-eval-row input {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-height: 44px;
+  font: inherit;
   font-size: 0.88rem;
-  margin-top: 12px;
 }
 
 /* ==========================================================================
-   5. Ampliación progresiva: Tablet (min-width: 640px)
+   6. Responsivo Tablet y Escritorio (Todos los controles >= 44px)
    ========================================================================== */
 
 @media (min-width: 640px) {
-  .wrap {
-    padding: 0 18px;
-  }
-
-  .login-card {
-    padding: 34px 28px;
-  }
-
-  .login-card h1 {
-    font-size: 1.6rem;
-  }
-
-  .view {
-    padding: 22px 18px 30px;
-  }
-
-
-
-  .rubric {
-    table-layout: auto;
-    font-size: 0.9rem;
-  }
-
-  .rubric th, .rubric td {
-    padding: 9px 10px;
-  }
+  .wrap { padding: 0 18px; }
+  .login-card { padding: 32px 28px; }
+  .view { padding: 22px 18px 30px; }
+  .rubric { table-layout: auto; font-size: 0.9rem; }
+  .rubric th, .rubric td { padding: 9px 10px; }
 }
-
-/* ==========================================================================
-   6. Ampliación progresiva: Escritorio (min-width: 880px)
-   ========================================================================== */
 
 @media (min-width: 880px) {
   .topbar .wrap {
@@ -1304,76 +1180,52 @@ body[data-role="administrador"] .teacher-only {
     padding-top: 10px;
     padding-bottom: 10px;
   }
-
-  .brand {
-    font-size: 1.22rem;
-  }
-
-  .brand .cap {
-    width: 38px;
-    height: 38px;
-  }
-
+  .brand { font-size: 1.15rem; }
   .topnav {
     display: flex;
     width: auto;
     gap: 6px;
     margin-left: auto;
   }
-
   .topnav button {
     flex-direction: row;
     gap: 7px;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     padding: 8px 14px;
-    min-height: 40px;
+    min-height: 44px;
     border-radius: var(--radius-pill);
   }
-
-  .hero-box {
-    padding: 10px 0;
-  }
-
-  .greeting-prefix {
-    font-size: 3.2rem;
-  }
-
-  .greeting-user {
-    font-size: 4.5rem;
-  }
-
-  .avisos-glass {
-    padding: 14px 20px;
-    border-radius: 18px;
-    max-width: 800px;
-  }
-
-  .intro-legend-glass {
-    padding: 20px 24px;
-    max-width: 800px;
-    margin-top: 10px;
-  }
-
   .case-detail {
     grid-template-columns: 1.1fr 0.9fr;
     gap: 18px;
   }
-
   .benefits {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-
-  .courses .panel {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+/* ==========================================================================
+   7. Hoja Imprimible para Práctica en Papel (Adecuación DUA - Tabla 2)
+   ========================================================================== */
+
+@media print {
+  html, body, #appView, .app-main, .view {
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
   }
-  .toggle::after {
-    transition: none;
+  .topbar, .rolebar, .app-footer, #loginView, .submission-actions,
+  #offlineHelpPanel, #teacherPinPrompt, .teacher-only, .btn {
+    display: none !important;
+  }
+  .panel, .activity-card-carlos {
+    box-shadow: none !important;
+    border: 1px solid #999999 !important;
+    background: #ffffff !important;
+    break-inside: avoid;
   }
 }

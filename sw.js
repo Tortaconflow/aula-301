@@ -1,9 +1,10 @@
 /**
- * Service Worker — Aula 301 (Arquitectura Offline-First)
- * Permite que la plataforma funcione al 100% sin conexión a internet.
+ * Service Worker — Aula 301 (Arquitectura Sin Conexión / Stale-While-Revalidate)
+ * Entrega carga instantánea (< 50 ms) en redes lentas o portales cautivos de Oaxaca
+ * y actualiza silenciosamente cuando existe internet real.
  */
 
-const CACHE_NAME = 'aula301-cache-v4';
+const CACHE_NAME = 'aula301-cache-v6';
 const LOCAL_ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -14,67 +15,52 @@ const LOCAL_ASSETS_TO_CACHE = [
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
-const OPTIONAL_ASSETS_TO_CACHE = [
-  'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Public+Sans:wght@400;500;600;700;800;900&display=swap'
-];
 
-// Instalación: precarga todos los recursos esenciales en el almacenamiento local del dispositivo
-self.addEventListener('install', (event) => {
+self.addEventListener('install', function (event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // Primero asegurar los archivos locales obligatorios
-      return cache.addAll(LOCAL_ASSETS_TO_CACHE).then(() => {
-        // Intentar precargar fuentes externas de manera tolerante a fallos
-        return Promise.allSettled(
-          OPTIONAL_ASSETS_TO_CACHE.map((url) => cache.add(url).catch(() => null))
-        );
-      });
-    }).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(function (cache) {
+      return cache.addAll(LOCAL_ASSETS_TO_CACHE);
+    }).then(function () {
+      return self.skipWaiting();
+    })
   );
 });
 
-// Activación: limpia cachés antiguas si se actualiza la versión
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', function (event) {
   event.waitUntil(
-    caches.keys().then((keys) => {
+    caches.keys().then(function (keys) {
       return Promise.all(
-        keys.map((key) => {
+        keys.map(function (key) {
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
+          return null;
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(function () {
+      return self.clients.claim();
+    })
   );
 });
 
-// Estrategia Cache-First con fallback de red (ideal para baja conectividad en Oaxaca)
-self.addEventListener('fetch', (event) => {
-  // Solo interceptar peticiones GET
+self.addEventListener('fetch', function (event) {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Devuelve el recurso inmediatamente desde la memoria local
-        return cachedResponse;
-      }
-      // Si no estaba en caché, intenta obtenerlo por la red y guardarlo
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || (networkResponse.type !== 'basic' && networkResponse.type !== 'cors')) {
-          return networkResponse;
+    caches.match(event.request, { ignoreSearch: true }).then(function (cached) {
+      var networkUpdate = fetch(event.request).then(function (networkResponse) {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          var copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then(function (cache) {
+            cache.put(event.request, copy);
+          });
         }
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
         return networkResponse;
-      }).catch(() => {
-        // Si no hay red y solicita la página principal, servir index.html desde caché
-        if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-          return caches.match('./index.html');
-        }
+      }).catch(function () {
+        return cached;
       });
+
+      return cached || networkUpdate;
     })
   );
 });
